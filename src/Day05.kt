@@ -2,12 +2,12 @@ import day05.*
 
 fun main() {
     fun part1(input: List<String>): Int {
-        val board = Board(input.map { SimpleLine(it) })
+        val board = Board(input.map(::ComplexLine))
         return board.count { (_, i) -> i > 1 }
     }
 
     fun part2(input: List<String>): Int {
-        val board = Board(input.map { ComplexLine(it) })
+        val board = Board(input.map(::ComplexLine))
         return board.count { (_, i) -> i > 1 }
     }
 

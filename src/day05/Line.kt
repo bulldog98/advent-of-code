@@ -25,35 +25,27 @@ sealed class Line(
 open class SimpleLine(string: String): Line(string) {
     override val points: Set<Point>
         get() = when {
-            from.x == to.x -> buildSet<Point>(maxY - minY) {
-                addAll((minY..maxY).map { y ->
+            from.x == to.x -> emptySet<Point>() + (minY..maxY).map { y ->
                     Point(to.x, y)
-                })
-            }
-            from.y == to.y -> buildSet<Point>(maxX - minX) {
-                addAll((minX..maxX).map { x ->
+                }
+            from.y == to.y -> emptySet<Point>() + (minX..maxX).map { x ->
                     Point(x, to.y)
-                })
-            }
+                }
             else -> emptySet()
         }
 }
 
-class ComplexLine(
-    string: String
-) : SimpleLine(string) {
+class ComplexLine(string: String) : SimpleLine(string) {
     override val points: Set<Point>
         get() =
-            if (from.x != to.x && from.y != to.y)
-                buildSet<Point>(maxX - minX) {
+            if (from.x != to.x && from.y != to.y) {
                     val leftEdge = listOf(to, from).minByOrNull { it.x } ?: throw Error("no left edge found")
                     val rightEdge = listOf(to, from).first { it != leftEdge }
                     val factor = if (leftEdge.y - rightEdge.y >= 0) -1 else 1
                     val incFunc = { steps: Int ->
                         leftEdge.y + factor * steps
                     }
-                    addAll((minX..maxX).map { x -> Point(x, incFunc(x - minX)) })
-                }
-            else
+                emptySet<Point>() + (minX..maxX).map { x -> Point(x, incFunc(x - minX)) }
+            } else
                 super.points
 }
