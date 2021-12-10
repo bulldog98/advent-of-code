@@ -1,3 +1,7 @@
+package day01
+
+import readInput
+
 fun main() {
     fun part1(input: List<String>): Int {
         return input.map { it.toInt() }.fold(-1 to -1) { (sum, last), curr ->
@@ -16,11 +20,11 @@ fun main() {
     }
 
     // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
+    val testInput = readInput("day01/Day01_test")
     check(part1(testInput) == 7)
     check(part2(testInput) == 5)
 
-    val input = readInput("Day01")
+    val input = readInput("day01/Day01")
     println(part1(input))
     println(part2(input))
 }

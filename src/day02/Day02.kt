@@ -1,3 +1,7 @@
+package day02
+
+import readInput
+
 typealias Direction = Pair<String, Int>
 
 fun List<String>.toDirections() = map {
@@ -32,11 +36,11 @@ fun main() {
     }
 
     // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day02_test").toDirections()
+    val testInput = readInput("day02/Day02_test").toDirections()
     check(part1(testInput) == 150)
     check(part2(testInput) == 900)
 
-    val input = readInput("Day02").toDirections()
+    val input = readInput("day02/Day02").toDirections()
     println(part1(input))
     println(part2(input))
 }

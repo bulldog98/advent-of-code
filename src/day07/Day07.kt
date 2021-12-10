@@ -1,3 +1,6 @@
+package day07
+
+import readInput
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -27,8 +30,8 @@ fun main() {
             .minOfOrNull { input.alignTo(it, ::increaseByStep) }
             ?: throw Error("no valid config")
 
-    val testInput = readInput("Day07_test")[0].split(",").map(String::toInt)
-    val input = readInput("Day07")[0].split(",").map(String::toInt)
+    val testInput = readInput("day07/Day07_test")[0].split(",").map(String::toInt)
+    val input = readInput("day07/Day07")[0].split(",").map(String::toInt)
 
     // test if implementation meets criteria from the description:
     check(part1(testInput) == 37)

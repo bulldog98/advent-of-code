@@ -1,3 +1,7 @@
+package day06
+
+import readInput
+
 typealias FishSwarm = Map<Int, Long>
 
 fun String.toFishSwarm(): FishSwarm = splitToSequence(",")
@@ -32,8 +36,8 @@ fun main() {
         return fish.stepXDays(256).values.fold(0L, Long::plus)
     }
 
-    val testInput = readInput("Day06_test")
-    val input = readInput("Day06")
+    val testInput = readInput("day06/Day06_test")
+    val input = readInput("day06/Day06")
     // test if implementation meets criteria from the description:
     check(part1(testInput) == 5934L)
     println(part1(input))

@@ -1,6 +1,6 @@
-import day04.Board
-import day04.GameInput
-import day04.toGameInput
+package day04
+
+import readInput
 
 private fun Board.isWinning(drawn: Collection<Int>): Boolean {
     val rowIsWinning = rows.any { row -> row.cells.count { drawn.contains(it) } == 5 }
@@ -36,8 +36,8 @@ fun main() {
         return losingBoard.score(last, drawn)
     }
 
-    val testInput = readInput("Day04_test").toGameInput()
-    val input = readInput("Day04").toGameInput()
+    val testInput = readInput("day04/Day04_test").toGameInput()
+    val input = readInput("day04/Day04").toGameInput()
     // test if implementation meets criteria from the description:
     check(part1(testInput) == 4512)
     println(part1(input))

@@ -1,3 +1,6 @@
+package day03
+
+import readInput
 import kotlin.math.pow
 
 operator fun UInt.get(index: Int) = (this shr (UInt.SIZE_BITS - 1 - index)) % 2u
@@ -32,8 +35,8 @@ fun main() {
         return oxygenRating * scrubberRating
     }
 
-    val testInput = readInput("Day03_test").map { it.toUInt(2) }
-    val input = readInput("Day03").map { it.toUInt(2) }
+    val testInput = readInput("day03/Day03_test").map { it.toUInt(2) }
+    val input = readInput("day03/Day03").map { it.toUInt(2) }
     // test if implementation meets criteria from the description:
     check(part1(testInput) == 198)
     println(part1(input))

@@ -1,4 +1,6 @@
-import day08.Encoder
+package day08
+
+import readInput
 
 val uniqueCountOfSignals = listOf(2, 3, 4, 7)
 
@@ -17,8 +19,8 @@ fun main() {
     fun part2(input: List<String>): Int =
         input.sumOf { it.decode() }
 
-    val testInput = readInput("Day08_test")
-    val input = readInput("Day08")
+    val testInput = readInput("day08/Day08_test")
+    val input = readInput("day08/Day08")
 
     // test if implementation meets criteria from the description:
     check(part1(testInput) == 26)
