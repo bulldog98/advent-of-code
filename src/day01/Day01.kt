@@ -2,26 +2,19 @@ package day01
 
 import readInput
 
-fun List<Int?>.splitOnNull(): List<List<Int>> =
-    this.foldRight(listOf(listOf())) { num, acc: List<List<Int>> ->
-        if (num === null) {
-            acc + listOf(listOf())
-        } else {
-            val start = acc.dropLast(1)
-            start + listOf(acc.last() + num)
-        }
-    }.toList()
-
-
 fun main() {
     fun List<String>.calculateCalories(): List<Int> =
         map {
             it.toIntOrNull()
-        }
-        .splitOnNull()
-        .map {
-            it.sum()
-        }
+        }.
+        foldRight(listOf(0)) { num, acc: List<Int> ->
+            if (num === null) {
+                acc + listOf(0)
+            } else {
+                val start = acc.dropLast(1)
+                start + listOf(acc.last() + num)
+            }
+        }.toList()
 
     fun part1(input: List<String>): Int =
         input.calculateCalories().maxOrNull() ?: 0
