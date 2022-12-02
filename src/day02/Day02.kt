@@ -1,51 +1,65 @@
 package day02
 
+import day02.Shape.*
+import day02.Outcome.*
 import readInput
 
-typealias Strategy = (String, String) -> String
+private typealias Strategy = (String, String) -> Shape
 
-val String.value
-    get() = when (this) {
-        "X", "A" -> 1
-        "Y", "B" -> 2
-        else -> 3
-    }
-
-val String.winningAgainst: String
-    get() = when (this) {
-        "A" -> "B"
-        "B" -> "C"
-        else -> "A"
-    }
-
-fun strategyPart1(a: String, b: String): String = when {
-    a.value == b.value -> a
-    b.value == a.winningAgainst.value -> a.winningAgainst
-    else -> a.winningAgainst.winningAgainst
+private enum class Shape(val points: Int) {
+    ROCK(1),
+    PAPER(2),
+    SCISSORS(3)
 }
 
-fun strategyPart2(opponent: String, goal: String): String = when (goal) {
+private enum class Outcome(val points: Int) {
+    LOSS(0),
+    DRAW(3),
+    WIN(6)
+}
+
+private infix fun Shape.computeOutcome(other: Shape): Outcome = when (other) {
+    this -> DRAW
+    this.getBeatenBy() -> WIN
+    else -> LOSS
+}
+
+private fun Shape(value: String): Shape = when (value) {
+    "X", "A" -> ROCK
+    "Y", "B" -> PAPER
+    else -> SCISSORS
+}
+
+private fun Shape.getBeatenBy(): Shape = when (this) {
+    ROCK -> PAPER
+    PAPER -> SCISSORS
+    else -> ROCK
+}
+
+private fun score(opponent: Shape, you: Shape): Int = you.points + (opponent computeOutcome you).points
+
+private fun strategyPart1(a: String, b: String): Shape = when {
+    Shape(a) == Shape(b) -> Shape(a)
+    Shape(b) == Shape(a).getBeatenBy() -> Shape(a).getBeatenBy()
+    else -> Shape(a).getBeatenBy().getBeatenBy()
+}
+
+private fun strategyPart2(opponent: String, goal: String): Shape = when (goal) {
     // Lose
-    "X" -> opponent.winningAgainst.winningAgainst
+    "X" -> Shape(opponent).getBeatenBy().getBeatenBy()
     // Draw
-    "Y" -> opponent
+    "Y" -> Shape(opponent)
     // Win
-    else -> opponent.winningAgainst
+    else -> Shape(opponent).getBeatenBy()
 }
 
-fun score(opponent: String, you: String): Int = you.value + when {
-    opponent.winningAgainst == you -> 6
-    you.winningAgainst == opponent -> 0
-    else -> 3
-}
-
-fun score(row: String, strategy: Strategy): Int {
+private fun score(row: String, strategy: Strategy): Int {
     val (a, b) = row.split(" ")
-    return score(a, strategy(a, b))
+    return score(Shape(a), strategy(a, b))
 }
 
-fun part1(input: List<String>): Int = input.sumOf { score(it, ::strategyPart1) }
-fun part2(input: List<String>): Int = input.sumOf { score(it, ::strategyPart2) }
+private fun part1(input: List<String>): Int = input.sumOf { score(it, ::strategyPart1) }
+private fun part2(input: List<String>): Int = input.sumOf { score(it, ::strategyPart2) }
 
 fun main() {
     // test if implementation meets criteria from the description, like:
