@@ -2,45 +2,46 @@ package day02
 
 import readInput
 
-typealias Strategy = (String, String) -> Int
+typealias Strategy = (String, String) -> String
 
-fun value(b: String) = when (b) {
-    "X", "A" -> 1
-    "Y", "B" -> 2
-    else -> 3
+val String.value
+    get() = when (this) {
+        "X", "A" -> 1
+        "Y", "B" -> 2
+        else -> 3
+    }
+
+val String.winningAgainst: String
+    get() = when (this) {
+        "A" -> "B"
+        "B" -> "C"
+        else -> "A"
+    }
+
+fun strategyPart1(a: String, b: String): String = when {
+    a.value == b.value -> a
+    b.value == a.winningAgainst.value -> a.winningAgainst
+    else -> a.winningAgainst.winningAgainst
 }
 
-fun winningAgainst(opponent: String): String = when (opponent) {
-    "A" -> "B"
-    "B" -> "C"
-    else -> "A"
-}
-
-fun strategyPart1(a: String, b: String): Int = when {
-    value(a) == value(b) -> 3 + value(b)
-    value(b) == value(winningAgainst(a)) -> 6 + value(b)
-    else -> 0 + value(b)
-}
-
-fun strategyPart2(opponent: String, goal: String): Int = when (goal) {
+fun strategyPart2(opponent: String, goal: String): String = when (goal) {
     // Lose
-    "X" -> value(winningAgainst(winningAgainst(opponent)))
+    "X" -> opponent.winningAgainst.winningAgainst
     // Draw
-    "Y" -> value(opponent) + 3
+    "Y" -> opponent
     // Win
-    else -> 6 + value(winningAgainst(opponent))
+    else -> opponent.winningAgainst
 }
 
-fun score(a: String, b: String, strategy: Strategy) = when (a) {
-    "A" -> strategy(a, b)
-    "B" -> strategy(a, b)
-    "C" -> strategy(a, b)
-    else -> error("")
+fun score(opponent: String, you: String): Int = you.value + when {
+    opponent.winningAgainst == you -> 6
+    you.winningAgainst == opponent -> 0
+    else -> 3
 }
 
 fun score(row: String, strategy: Strategy): Int {
     val (a, b) = row.split(" ")
-    return score(a, b, strategy)
+    return score(a, strategy(a, b))
 }
 
 fun part1(input: List<String>): Int = input.sumOf { score(it, ::strategyPart1) }
