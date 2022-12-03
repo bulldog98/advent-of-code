@@ -2,7 +2,7 @@ package day03
 
 import readInput
 
-typealias Rucksack = Pair<Set<Char>, Set<Char>>
+typealias Bucket = Set<Char>
 
 val Char.priority
     get() = when {
@@ -11,19 +11,22 @@ val Char.priority
         else -> error("check input")
     }
 
-fun splitToCompartments(input: String): Pair<Set<Char>, Set<Char>> =
-    input.take(input.length / 2).toSet() to input.drop(input.length / 2).toSet()
+private fun <E> Collection<Collection<E>>.intersectAll(): Set<E> =
+    map { it.toSet() }.fold(setOf()) { a, b -> a.intersect(b) }
 
-fun computeInBoth(pack: Rucksack): Char {
-    return pack.first.intersect(pack.second).first()
-}
-
-fun part1(input: List<String>): Int = input.sumOf { computeInBoth(splitToCompartments(it)).priority }
-fun part2(input: List<String>): Int = input.chunked(3).map { it.map { i -> i.toSet()} }.sumOf {
-    it[0].intersect(it[1]).intersect(it[2]).first().priority
-}
+private fun splitToCompartments(input: String): List<Bucket> =
+    listOf(input.take(input.length / 2).toSet(), input.drop(input.length / 2).toSet())
 
 fun main() {
+    fun part1(input: List<String>): Int = input.sumOf {
+        splitToCompartments(it)
+            .intersectAll().first().priority
+    }
+    fun part2(input: List<String>): Int = input.chunked(3).sumOf {
+        it.map { i -> i.toSet() }
+            .intersectAll().first().priority
+    }
+
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("day03/Day03_test")
     check(part1(testInput) == 157)
