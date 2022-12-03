@@ -12,7 +12,7 @@ val Char.priority
     }
 
 private fun <E> Collection<Collection<E>>.intersectAll(): Set<E> =
-    map { it.toSet() }.fold(setOf()) { a, b -> a intersect b }
+    fold(setOf()) { a, b -> a intersect b.toSet() }
 
 private fun splitToCompartments(input: String): List<Bucket> =
     listOf(input.take(input.length / 2).toSet(), input.drop(input.length / 2).toSet())
