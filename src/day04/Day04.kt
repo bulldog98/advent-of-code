@@ -12,9 +12,8 @@ private fun String.parsePair(): IntRange {
     return a.toInt() .. b.toInt()
 }
 
-infix fun IntRange.contains(other: IntRange): Boolean {
-    return first <= other.first && other.last <= last
-}
+infix fun IntRange.contains(other: IntRange): Boolean =
+    first <= other.first && other.last <= last
 
 /*
     5-7,7-9 overlaps in a single section, 7.
@@ -22,24 +21,22 @@ infix fun IntRange.contains(other: IntRange): Boolean {
     6-6,4-6 overlaps in a single section, 6.
     2-6,4-8
  */
-infix fun IntRange.overlap(other: IntRange): Boolean {
-    return other.first in this || last in other || other.last in this || first in other
-}
+infix fun IntRange.overlap(other: IntRange): Boolean =
+    other.first in this || other.last in this
+        || first in other || last in other
 
 fun main() {
     fun part1(input: List<String>): Int =
-        input.filter {
+        input.count {
             val (a, b) = parseAssignment(it)
             a contains b || b contains a
         }
-            .count()
 
     fun part2(input: List<String>): Int =
-        input.filter {
+        input.count {
             val (a, b) = parseAssignment(it)
             a overlap b
         }
-            .count()
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("day04/Day04_test")
