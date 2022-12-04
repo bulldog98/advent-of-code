@@ -1,8 +1,5 @@
-package day02
-
-import day02.Shape.*
-import day02.Outcome.*
-import readInput
+import Shape.*
+import Outcome.*
 
 private typealias Strategy = (String, String) -> Shape
 
@@ -58,16 +55,10 @@ private fun score(row: String, strategy: Strategy): Int {
     return score(Shape(a), strategy(a, b))
 }
 
-private fun part1(input: List<String>): Int = input.sumOf { score(it, ::strategyPart1) }
-private fun part2(input: List<String>): Int = input.sumOf { score(it, ::strategyPart2) }
+class Day02 : AdventDay<Int>(2022, 2) {
+    override fun part1(input: List<String>): Int = input.sumOf { score(it, ::strategyPart1) }
 
-fun main() {
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("day02/Day02_test")
-    check(part1(testInput) == 15)
-    check(part2(testInput) == 12)
-
-    val input = readInput("day02/Day02")
-    println(part1(input))
-    println(part2(input))
+    override fun part2(input: List<String>): Int = input.sumOf { score(it, ::strategyPart2) }
 }
+
+fun main() = Day02().run()
