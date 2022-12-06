@@ -1,4 +1,4 @@
-fun String.findXUniqueChars(x: Int) = windowed(x)
+fun String.findXUniqueChars(x: Int) = windowedSequence(x)
     .indexOfFirst { it.toSet().size == x } + x
 
 class Day06 : AdventDay<Int>(2022, 6) {
