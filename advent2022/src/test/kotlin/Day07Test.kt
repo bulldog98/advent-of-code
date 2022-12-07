@@ -5,9 +5,9 @@ class Day07Test {
     private val day = Day07()
 
     @Test
-    fun part1() = assertEquals(1, day.testPart1())
+    fun part1() = assertEquals(95437, day.testPart1())
 
 
     @Test
-    fun part2() = assertEquals(1, day.testPart2())
+    fun part2() = assertEquals(24933642, day.testPart2())
 }
