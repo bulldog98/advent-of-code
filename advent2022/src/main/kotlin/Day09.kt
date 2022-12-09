@@ -35,9 +35,8 @@ class Day09 : AdventDay<Int>(2022, 9) {
     private infix fun Pair<Int, Int>.follow(head: Pair<Int, Int>): Pair<Int, Int> =
         this.first + (head.first - this.first).sign to this.second + (head.second - this.second).sign
 
-    private fun simulate(inst: List<RopeMove>, knots: MutableList<Pair<Int, Int>>): Int {
-        val visited = mutableSetOf(0 to 0)
-        inst.forEach { m ->
+    private fun simulate(inst: List<RopeMove>, knots: MutableList<Pair<Int, Int>>): Int =
+        inst.fold(mutableSetOf(0 to 0)) { visited, m ->
             repeat(m.amount) {
                 knots[0] = knots[0] moveOnce m
                 knots.drop(1).indices.forEach { index ->
@@ -49,9 +48,8 @@ class Day09 : AdventDay<Int>(2022, 9) {
                     }
                 }
             }
-        }
-        return visited.size
-    }
+            visited
+        }.size
 
     override fun part1(input: List<String>): Int = simulate(
         input.map { RopeMove.from(it) },
