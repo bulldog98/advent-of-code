@@ -2,12 +2,6 @@ import kotlin.math.sign
 
 class Day09 : AdventDay<Int>(2022, 9) {
     sealed class RopeMove(val amount: Int) {
-        val move: (Pair<Int, Int>) -> Pair<Int, Int> = when (this) {
-            is Up -> { (a, b) -> a + 1 to b }
-            is Down -> { (a, b) -> a - 1 to b }
-            is Left -> { (a, b) -> a to b - 1 }
-            is Right -> { (a, b) -> a to b + 1 }
-        }
         companion object {
             fun from(input: String) =
                 input.split(" ").let { (a, b) ->
@@ -27,22 +21,29 @@ class Day09 : AdventDay<Int>(2022, 9) {
     class Left(amount: Int) : RopeMove(amount)
     class Right(amount: Int) : RopeMove(amount)
 
-    infix fun Pair<Int, Int>.adjecent(other: Pair<Int, Int>): Boolean =
+    private infix fun Pair<Int, Int>.adjacent(other: Pair<Int, Int>): Boolean =
         (first - other.first) in (-1 .. 1) &&
         (second - other.second) in (-1 .. 1)
 
-    infix fun Pair<Int, Int>.follow(head: Pair<Int, Int>): Pair<Int, Int> =
+    private infix fun Pair<Int, Int>.moveOnce(move: RopeMove): Pair<Int, Int> = when (move) {
+        is Up -> first + 1 to second
+        is Down -> first - 1 to second
+        is Right -> first to second + 1
+        is Left -> first to second - 1
+    }
+
+    private infix fun Pair<Int, Int>.follow(head: Pair<Int, Int>): Pair<Int, Int> =
         this.first + (head.first - this.first).sign to this.second + (head.second - this.second).sign
 
     private fun simulate(inst: List<RopeMove>, knots: MutableList<Pair<Int, Int>>): Int {
         val visited = mutableSetOf(0 to 0)
         inst.forEach { m ->
             repeat(m.amount) {
-                knots[0] = m.move(knots[0])
+                knots[0] = knots[0] moveOnce m
                 knots.drop(1).indices.forEach { index ->
                     val head = knots[index]
                     val tail = knots[index + 1]
-                    if (!(head adjecent tail)) {
+                    if (!(head adjacent tail)) {
                         knots[index + 1] = tail follow head
                         visited += knots.last()
                     }
