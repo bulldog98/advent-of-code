@@ -14,7 +14,7 @@ class Day10 : AdventDay(2022, 10) {
             }
         }
     }
-    sealed class Move(val tick: Int) {
+    sealed class Move {
         companion object {
             fun from(input: String): Move = when {
                 input == "noop" -> Noop
@@ -23,10 +23,10 @@ class Day10 : AdventDay(2022, 10) {
             }
         }
     }
-    object Noop : Move(1) {
+    object Noop : Move() {
         override fun toString(): String = "Noop"
     }
-    class AddX(val v: Int) : Move(2) {
+    class AddX(val v: Int) : Move() {
         override fun toString(): String = "AddX($v)"
     }
     data class State(val program: List<Move>, val x: Int = 1, val cycle: Int = 0, val addXRunning: Boolean = false) {
