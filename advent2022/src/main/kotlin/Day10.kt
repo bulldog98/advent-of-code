@@ -13,7 +13,7 @@ class Day10 : AdventDay(2022, 10) {
                 range.joinToString("") { if (row[it]) "#" else "."}
             }
     }
-    sealed class Move {
+    sealed class Move(val cyclesNeeded: Int) {
         companion object {
             fun from(input: String): Move = when {
                 input == "noop" -> Noop
@@ -22,31 +22,32 @@ class Day10 : AdventDay(2022, 10) {
             }
         }
     }
-    object Noop : Move() {
+    object Noop : Move(1) {
         override fun toString(): String = "Noop"
     }
-    class AddX(val v: Int) : Move() {
+    class AddX(val v: Int) : Move(2) {
         override fun toString(): String = "AddX($v)"
     }
-    data class State(val program: List<Move>, val x: Int = 1, val cycle: Int = 0, val addXRunning: Boolean = false) {
+    data class State(val program: List<Move>, val x: Int = 1, val cycle: Int = 0, val commandAlreadyRunningForCycles: Int = 0) {
         fun tick() = when (val c = program.firstOrNull()) {
             is Noop -> copy(cycle = cycle + 1, program = program.drop(1))
-            is AddX -> if (addXRunning) {
+            is AddX -> if (commandAlreadyRunningForCycles == c.cyclesNeeded - 1) {
                 copy(
                     x = x + c.v,
                     cycle = cycle + 1,
-                    addXRunning = false,
+                    commandAlreadyRunningForCycles = 0,
                     program = program.drop(1)
                 )
             } else {
                 copy(
                     cycle = cycle + 1,
-                    addXRunning = true,
+                    commandAlreadyRunningForCycles = commandAlreadyRunningForCycles + 1,
                 )
             }
             null -> this
         }
     }
+
     override fun part1(input: List<String>): Int {
         val program = input.map { Move.from(it) }
         var state = State(program)
