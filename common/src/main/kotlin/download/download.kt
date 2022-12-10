@@ -1,7 +1,6 @@
 package download
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -15,12 +14,12 @@ fun inputFile(year: Int, day: Int, location: File, suffix: String = ""): File =
 
 private operator fun File.plus(s: String): File = File(this, s)
 
-suspend fun ensureInputExists(year: Int, day: Int, location: File, suffix: String = ""): List<String> {
+suspend fun ensureInputExists(year: Int, day: Int, location: File, suffix: String = ""): File {
     val yearFolder = File(location, year.asDoubleDigit)
     if (!yearFolder.exists()) yearFolder.mkdir()
     val inputFile = yearFolder + "Day${day.asDoubleDigit}$suffix.txt"
     if (inputFile.exists()) {
-        return inputFile.readLines()
+        return inputFile
     }
     val tokenFile = location + "sessionToken.txt"
     if (!tokenFile.exists()) {
@@ -36,8 +35,6 @@ suspend fun ensureInputExists(year: Int, day: Int, location: File, suffix: Strin
         launch(Dispatchers.IO) {
             inputFile.writeText(data.dropLastWhile { it == '\n' })
         }
-        async {
-            data.lines().dropLastWhile { it == "\n" || it == "" }
-        }.await()
+        inputFile
     }
 }

@@ -12,7 +12,7 @@ class Day03Benchmark {
     val day03 = Day03()
     val input by lazy {
         val origin = runBlocking {
-            ensureInputExists(2022, 3, File("data"))
+            ensureInputExists(2022, 3, File("data")).readLines()
         }
         (1..3000).map { origin }.reduce { a, b -> a + b }
     }
