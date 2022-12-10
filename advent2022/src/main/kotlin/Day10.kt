@@ -7,12 +7,11 @@ class Day10 : AdventDay(2022, 10) {
                 .map { BooleanArray(40) { false } }
                 .toTypedArray()
     ) {
-        fun print() {
-            rows.forEach { row ->
+        override fun toString(): String =
+            rows.joinToString("\n") { row ->
                 val range = (0..39)
-                println(range.joinToString("") { if (row[it]) "#" else "."})
+                range.joinToString("") { if (row[it]) "#" else "."}
             }
-        }
     }
     sealed class Move {
         companion object {
@@ -65,7 +64,7 @@ class Day10 : AdventDay(2022, 10) {
         return result
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: List<String>): String {
         val program = input.map { Move.from(it) }
         val screen = Screen()
         var state = State(program)
@@ -78,8 +77,7 @@ class Day10 : AdventDay(2022, 10) {
             }
             state = next
         }
-        screen.print()
-        return -1
+        return screen.toString()
     }
 }
 
