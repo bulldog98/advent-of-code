@@ -10,14 +10,17 @@ import java.io.FileNotFoundException
 private val Int.asDoubleDigit: String
     get() = "$this".padStart(2, '0')
 
+fun inputFile(year: Int, day: Int, location: File, suffix: String = ""): File =
+    File(location, year.asDoubleDigit) + "Day${day.asDoubleDigit}$suffix.txt"
+
 private operator fun File.plus(s: String): File = File(this, s)
 
 suspend fun ensureInputExists(year: Int, day: Int, location: File, suffix: String = ""): List<String> {
     val yearFolder = File(location, year.asDoubleDigit)
     if (!yearFolder.exists()) yearFolder.mkdir()
-    val fileName = yearFolder + "Day${day.asDoubleDigit}$suffix.txt"
-    if (fileName.exists()) {
-        return fileName.readLines()
+    val inputFile = yearFolder + "Day${day.asDoubleDigit}$suffix.txt"
+    if (inputFile.exists()) {
+        return inputFile.readLines()
     }
     val tokenFile = location + "sessionToken.txt"
     if (!tokenFile.exists()) {
@@ -31,7 +34,7 @@ suspend fun ensureInputExists(year: Int, day: Int, location: File, suffix: Strin
     }
     return withContext(Dispatchers.Default) {
         launch(Dispatchers.IO) {
-            fileName.writeText(data.dropLastWhile { it == '\n' })
+            inputFile.writeText(data.dropLastWhile { it == '\n' })
         }
         async {
             data.lines().dropLastWhile { it == "\n" || it == "" }

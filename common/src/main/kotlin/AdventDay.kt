@@ -1,4 +1,5 @@
 import download.ensureInputExists
+import download.inputFile
 import kotlinx.coroutines.runBlocking
 import java.io.File
 
@@ -10,10 +11,14 @@ abstract class  AdventDay<T>(year: Int, day: Int) {
             ensureInputExists(year, day, data)
         }
     }
+    private val defaultTestInput by lazy {
+        inputFile(year, day, data, "_test")
+    }
     private val testInput by lazy {
-        runBlocking {
-            ensureInputExists(year, day, data, "_test")
+        if (!defaultTestInput.exists()) {
+            error("file does not exist give test input")
         }
+        defaultTestInput.readLines()
     }
     abstract fun part1(input: List<String>) : T
     abstract fun part2(input: List<String>) : T
