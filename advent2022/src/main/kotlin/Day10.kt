@@ -13,22 +13,22 @@ class Day10 : AdventDay(2022, 10) {
                 range.joinToString("") { if (row[it]) "#" else "."}
             }
     }
-    sealed class Move(val cyclesNeeded: Int) {
+    sealed class Instruction(val cyclesNeeded: Int) {
         companion object {
-            fun from(input: String): Move = when {
+            fun from(input: String): Instruction = when {
                 input == "noop" -> Noop
                 input.startsWith("addx ") -> AddX(input.split(" ")[1].toInt())
                 else -> error("should not happen")
             }
         }
     }
-    object Noop : Move(1) {
+    object Noop : Instruction(1) {
         override fun toString(): String = "Noop"
     }
-    class AddX(val v: Int) : Move(2) {
+    class AddX(val v: Int) : Instruction(2) {
         override fun toString(): String = "AddX($v)"
     }
-    data class State(val program: List<Move>, val x: Int = 1, val cycle: Int = 0, val commandAlreadyRunningForCycles: Int = 0) {
+    data class State(val program: List<Instruction>, val x: Int = 1, val cycle: Int = 0, val commandAlreadyRunningForCycles: Int = 0) {
         fun tick() = when (val c = program.firstOrNull()) {
             is Noop -> copy(cycle = cycle + 1, program = program.drop(1))
             is AddX -> if (commandAlreadyRunningForCycles == c.cyclesNeeded - 1) {
@@ -49,7 +49,7 @@ class Day10 : AdventDay(2022, 10) {
     }
 
     override fun part1(input: List<String>): Int {
-        val program = input.map { Move.from(it) }
+        val program = input.map { Instruction.from(it) }
         var state = State(program)
         var result = 0
         while (state.cycle < 220) {
@@ -66,7 +66,7 @@ class Day10 : AdventDay(2022, 10) {
     }
 
     override fun part2(input: List<String>): String {
-        val program = input.map { Move.from(it) }
+        val program = input.map { Instruction.from(it) }
         val screen = Screen()
         var state = State(program)
         while (state.cycle < 240) {
