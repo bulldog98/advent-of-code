@@ -1,4 +1,4 @@
-class Day11 : AdventDay<Int>(2022, 11) {
+class Day11 : AdventDay(2022, 11) {
     override fun part1(input: List<String>): Int =
         TODO()
 

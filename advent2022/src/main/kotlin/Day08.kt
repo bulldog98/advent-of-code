@@ -42,7 +42,7 @@ fun Forest.sceniceMeasure(x: Int, y: Int): Int {
     return leftVisible * rightVisible * topVisible * bottomVisible
 }
 
-class Day08 : AdventDay<Int>(2022, 8) {
+class Day08 : AdventDay(2022, 8) {
     override fun part1(input: List<String>): Int {
         return input.parseForest().getVisibleCoords().size
     }

@@ -53,7 +53,7 @@ private fun computeInstructions(input: List<String>, pickup: (List<Char>, Int) -
     return result
 }
 
-class Day05 : AdventDay<String>(2022, 5) {
+class Day05 : AdventDay(2022, 5) {
     override fun part1(input: List<String>): String {
         val result = computeInstructions(input) { column, i ->
             column.take(i).reversed()

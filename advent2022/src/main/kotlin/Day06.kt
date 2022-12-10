@@ -1,7 +1,7 @@
 fun String.findXUniqueChars(x: Int) = windowedSequence(x)
     .indexOfFirst { it.toSet().size == x } + x
 
-class Day06 : AdventDay<Int>(2022, 6) {
+class Day06 : AdventDay(2022, 6) {
     override fun part1(input: List<String>): Int = input
         .first()
         .findXUniqueChars(4)

@@ -1,4 +1,4 @@
-class Day01 : AdventDay<Int>(2022, 1) {
+class Day01 : AdventDay(2022, 1) {
     fun List<String>.calculateCalories(): List<Int> =
         map {
             it.toIntOrNull()

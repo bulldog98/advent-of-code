@@ -53,7 +53,7 @@ fun List<String>.parseInput(): Directory {
     return root
 }
 
-class Day07 : AdventDay<Int>(2022, 7) {
+class Day07 : AdventDay(2022, 7) {
     override fun part1(input: List<String>): Int {
         val root = input.parseInput()
         return root.filterInTree { it.fileSize <= 100_000 }.sumOf { it.fileSize }

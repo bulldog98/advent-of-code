@@ -1,6 +1,6 @@
 import kotlin.math.sign
 
-class Day09 : AdventDay<Int>(2022, 9) {
+class Day09 : AdventDay(2022, 9) {
     sealed class RopeMove(val amount: Int) {
         companion object {
             fun from(input: String) =

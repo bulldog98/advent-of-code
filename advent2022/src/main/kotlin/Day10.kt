@@ -1,6 +1,6 @@
 import kotlin.math.absoluteValue
 
-class Day10 : AdventDay<Int>(2022, 10) {
+class Day10 : AdventDay(2022, 10) {
     class Screen(
         val rows: Array<BooleanArray> =
             (0 until 6)
