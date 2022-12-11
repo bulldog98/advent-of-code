@@ -80,8 +80,8 @@ class Day11 : AdventDay(2022, 11) {
             .toTypedArray()
         val divisors = input
             .filter { it.contains("  Test: divisible by ") }
-            .map { it.split("  Test: divisible by ")[1].toInt() }
-        val lcm = divisors.reduceRight(::lcm)
+            .map { it.split("  Test: divisible by ")[1].toLong() }
+        val lcm = lcm(divisors)
         val monkeyInspects = monkeys.simulateFor(10_000) { i -> (i % lcm).toInt() }
 
         val order = monkeyInspects.sortedByDescending { it }
