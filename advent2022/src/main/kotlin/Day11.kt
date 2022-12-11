@@ -1,18 +1,3 @@
-fun gcd(x: Int, y: Int): Int {
-    var n1 = x
-    var n2 = y
-
-    while (n1 != n2) {
-        if (n1 > n2)
-            n1 -= n2
-        else
-            n2 -= n1
-    }
-    return n1
-}
-
-fun lcm(x: Int, y: Int): Int = (x * y)/ gcd(x, y)
-
 class Day11 : AdventDay(2022, 11) {
     data class Monkey(
         val monkeyNumber: Int,

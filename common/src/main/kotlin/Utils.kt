@@ -8,3 +8,18 @@ import java.security.MessageDigest
 fun String.md5() = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteArray()))
     .toString(16)
     .padStart(32, '0')
+
+fun gcd(x: Int, y: Int): Int {
+    var n1 = x
+    var n2 = y
+
+    while (n1 != n2) {
+        if (n1 > n2)
+            n1 -= n2
+        else
+            n2 -= n1
+    }
+    return n1
+}
+
+fun lcm(x: Int, y: Int): Int = (x * y)/ gcd(x, y)
