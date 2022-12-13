@@ -4,37 +4,33 @@ import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
 
-sealed class Elem
-data class ListElem(val elem: List<Elem>) : Elem()
-data class IntElem(val elem: Int): Elem()
+sealed class Elem : Comparable<Elem>
+data class ListElem(val elem: List<Elem>) : Elem() {
+    override fun compareTo(other: Elem): Int = when (other) {
+        is ListElem -> when {
+            elem.isEmpty() && other.elem.isNotEmpty() -> -1
+            elem.isNotEmpty() && other.elem.isEmpty() -> 1
+            elem.isEmpty() -> 0
+            else -> {
+                val a = this.elem[0]
+                val b = other.elem[0]
 
-fun ListElem.compareRest(other: ListElem): Int {
-    val a = this.elem[0]
-    val b = other.elem[0]
-
-    val result = a.compareTo(b)
-    return if (result == 0) {
-        ListElem(this.elem.drop(1)).compareTo(ListElem(other.elem.drop(1)))
-    } else {
-        result
+                val result = a.compareTo(b)
+                if (result == 0) {
+                    ListElem(this.elem.drop(1)).compareTo(ListElem(other.elem.drop(1)))
+                } else {
+                    result
+                }
+            }
+        }
+        is IntElem -> this.compareTo(ListElem(listOf(other)))
     }
 }
-
-operator fun Elem.compareTo(other: Elem): Int = when {
-    this is IntElem && other is IntElem -> this.elem.compareTo(other.elem)
-    this is ListElem && other is ListElem -> {
-        val foo = if (this.elem.isEmpty() && other.elem.isNotEmpty()) {
-            -1
-        } else if (this.elem.isNotEmpty() && other.elem.isEmpty()) {
-            1
-        } else if (this.elem.isEmpty()) {
-            0
-        } else null
-        foo ?: this.compareRest(other)
+data class IntElem(val elem: Int): Elem() {
+    override fun compareTo(other: Elem): Int = when (other) {
+        is IntElem -> elem.compareTo(other.elem)
+        is ListElem -> ListElem(listOf(this)).compareTo(other)
     }
-    this is IntElem && other is ListElem -> ListElem(listOf(this)).compareTo(other)
-    this is ListElem && other is IntElem -> this.compareTo(ListElem(listOf(other)))
-    else -> error("other")
 }
 
 fun JsonElement.convert(): Elem = when (this) {
