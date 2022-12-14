@@ -1,8 +1,8 @@
 abstract class  AdventDay(year: Int, day: Int) {
     private val inputFiles: InputFiles = InputFiles(year, day)
 
-    abstract fun part1(input: List<String>) : Any?
-    abstract fun part2(input: List<String>) : Any?
+    abstract fun part1(input: List<String>) : Any
+    abstract fun part2(input: List<String>) : Any
     fun run() {
         println(part1(inputFiles.inputFile.readLines()))
         println(part2(inputFiles.inputFile.readLines()))
