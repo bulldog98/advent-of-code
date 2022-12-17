@@ -16,8 +16,16 @@ class Day17 : AdventDay(2022, 17) {
         return chamber.rocks.maxOf { it.y } + 1
     }
 
-    override fun part2(input: List<String>): Long =
-        TODO()
+    override fun part2(input: List<String>): Long {
+        val dirs = input[0].map { dirFrom(it) }
+        val cycleInfo = CycleInfo.findFor(Chamber(dirs = dirs, shapes = shapes))
+
+        val rocksToJumpOver = 1_000_000_000_000 - cycleInfo.cycleStartHeight
+        val cyclesToJump = rocksToJumpOver / cycleInfo.cycleLength
+        val extraRocks = (rocksToJumpOver % cycleInfo.cycleLength).toInt()
+
+        return (cyclesToJump * cycleInfo.cycleHeight) + cycleInfo.partialHeights[extraRocks]
+    }
 }
 
 fun main() = Day17().run()
