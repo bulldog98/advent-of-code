@@ -15,7 +15,7 @@ class Day19Test {
         @Test
         fun `tries to buy ore miner`() {
             val input = Day19.Stock(oreMiners = 0, oresMined = 1)
-            val res = input.allPossibleNextStates(blueprint)
+            val res = input.allPossibleNextStates(blueprint).map { it.first }
 
             assertEquals(listOf(input, Day19.Stock()), res)
         }
@@ -30,20 +30,23 @@ class Day19Test {
             @Test
             fun `correctly makes first step`() {
                 val res = Day19.Stock().allPossibleNextStates(exampleBlueprint1)
+                    .map { it.first }
 
                 assertEquals(listOf(Day19.Stock(oresMined = 1)), res)
             }
 
             @Test
             fun `correctly makes third step`() {
-                val res = Day19.Stock(oresMined = 2).allPossibleNextStates(exampleBlueprint1)
+                val res = Day19.Stock(oresMined = 2)
+                    .allPossibleNextStates(exampleBlueprint1).map { it.first }
 
                 assertTrue(Day19.Stock(oresMined = 1, clayMiners = 1) in res)
             }
 
             @Test
             fun `correctly makes 6 to 7 step`() {
-                val res = Day19.Stock(oresMined = 2, clayMiners = 2, clayMined = 4).allPossibleNextStates(exampleBlueprint1)
+                val res = Day19.Stock(oresMined = 2, clayMiners = 2, clayMined = 4)
+                    .allPossibleNextStates(exampleBlueprint1).map { it.first }
 
                 assertTrue(Day19.Stock(
                     oresMined = 1,
@@ -59,7 +62,7 @@ class Day19Test {
                     clayMined = 12,
                     clayMiners = 3
                 )
-                val res = startingState.allPossibleNextStates(exampleBlueprint1)
+                val res = startingState.allPossibleNextStates(exampleBlueprint1).map { it.first }
 
                 assertTrue(startingState.copy(
                     oresMined = 4,
@@ -75,6 +78,7 @@ class Day19Test {
                     clayMiners = 3
                 )
                 val res = startingState.allPossibleNextStates(exampleBlueprint1)
+                    .map { it.first }
 
                 assertTrue(startingState.copy(
                     oresMined = 2,
@@ -95,6 +99,7 @@ class Day19Test {
             fun `minute 3 to 4`() {
                 val stock = Day19.Stock(oresMined = 2)
                 val res = stock.allPossibleNextStates(exampleBlueprint2)
+                    .map { it.first }
 
                 assertEquals(
                     listOf(

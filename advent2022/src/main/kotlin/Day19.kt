@@ -1,9 +1,9 @@
 class Day19 : AdventDay(2022, 19) {
-    private enum class Miner {
-        ORE,
-        CLAY,
-        OBSIDIAN,
-        GEODE
+    enum class Miner(val bit: Int) {
+        ORE(1),
+        CLAY(2),
+        OBSIDIAN(4),
+        GEODE(8)
     }
     data class Stock(
         val oreMiners: Int = 1,
@@ -15,27 +15,29 @@ class Day19 : AdventDay(2022, 19) {
         val obsidianMined: Int = 0,
         val geodesMined: Int = 0
     ) {
-        fun allPossibleNextStates(blueprint: Blueprint): List<Stock> {
+        fun allPossibleNextStates(blueprint: Blueprint, canBuyNext: Int = 15): List<Pair<Stock, Int>> {
             val maxOreCost = listOf(blueprint.oreRobotCost, blueprint.clayRobotCost, blueprint.obsidianRobotCost.first, blueprint.geodeRobotCost.first).max()
             val maxClayCost = blueprint.obsidianRobotCost.second
             val maxObsidianCost = blueprint.geodeRobotCost.second
             if (oresMined / blueprint.geodeRobotCost.first > 0 && obsidianMined / blueprint.geodeRobotCost.second > 0) {
-                return listOf(build(blueprint, Miner.GEODE))
+                return listOf(build(blueprint, Miner.GEODE) to 15)
             }
             val possibleBuilds = mutableListOf<Miner>()
-            if (maxObsidianCost > obsidianMiners &&
+            if (maxObsidianCost > obsidianMiners && canBuyNext and Miner.OBSIDIAN.bit != 0 &&
                 oresMined / blueprint.obsidianRobotCost.first > 0 &&
                 clayMined / blueprint.obsidianRobotCost.second > 0
             ) {
                 possibleBuilds += Miner.OBSIDIAN
             }
-            if (maxClayCost > clayMiners && oresMined / blueprint.clayRobotCost > 0) {
+            if (maxClayCost > clayMiners && oresMined / blueprint.clayRobotCost > 0 &&
+                canBuyNext and Miner.CLAY.bit != 0) {
                 possibleBuilds += Miner.CLAY
             }
-            if (maxOreCost > oreMiners && oresMined / blueprint.oreRobotCost > 0) {
+            if (maxOreCost > oreMiners && oresMined / blueprint.oreRobotCost > 0 && canBuyNext and Miner.ORE.bit != 0) {
                 possibleBuilds += Miner.ORE
             }
-            return listOf(build(blueprint)) + possibleBuilds.map { build(blueprint, it) }
+            val notAllowedToBuyAnymore = possibleBuilds.fold(canBuyNext) { cur, acc -> acc.bit xor cur }
+            return listOf(build(blueprint) to notAllowedToBuyAnymore) + possibleBuilds.map { build(blueprint, it) to 15 }
         }
 
         private fun build(
@@ -72,15 +74,10 @@ class Day19 : AdventDay(2022, 19) {
             geodesMined = geodesMined + geodeMiners
         )
 
-        fun maxMineGeodesIn(minutes: Int, blueprint: Blueprint): Int {
+        fun maxMineGeodesIn(minutes: Int, blueprint: Blueprint, canBuyNext: Int = 15): Int {
             if (minutes == 0) return geodesMined
-            val nextStates = allPossibleNextStates(blueprint)
-            if (nextStates.isEmpty()) {
-                println(blueprint)
-                println(minutes)
-                println(this)
-            }
-            return nextStates.maxOf { it.maxMineGeodesIn(minutes - 1, blueprint) }
+            val nextStates = allPossibleNextStates(blueprint, canBuyNext)
+            return nextStates.maxOf { (it, canBuy) -> it.maxMineGeodesIn(minutes - 1, blueprint, canBuy) }
         }
     }
 
@@ -120,8 +117,13 @@ class Day19 : AdventDay(2022, 19) {
             ((i + 1) * curRes) + acc
         }
     }
-    override fun part2(input: List<String>): Long =
-        TODO()
+    override fun part2(input: List<String>): Long {
+        val blueprints = input.take(3).map { Blueprint.from(it) }
+
+        return blueprints.fold(1L) { acc, cur ->
+            acc * Stock().maxMineGeodesIn(32, cur)
+        }
+    }
 }
 
 fun main() = Day19().run()
