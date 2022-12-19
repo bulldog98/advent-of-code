@@ -71,6 +71,17 @@ class Day19 : AdventDay(2022, 19) {
             obsidianMined = obsidianMined + obsidianMiners,
             geodesMined = geodesMined + geodeMiners
         )
+
+        fun maxMineGeodesIn(minutes: Int, blueprint: Blueprint): Int {
+            if (minutes == 0) return geodesMined
+            val nextStates = allPossibleNextStates(blueprint)
+            if (nextStates.isEmpty()) {
+                println(blueprint)
+                println(minutes)
+                println(this)
+            }
+            return nextStates.maxOf { it.maxMineGeodesIn(minutes - 1, blueprint) }
+        }
     }
 
     data class Blueprint(
@@ -99,24 +110,13 @@ class Day19 : AdventDay(2022, 19) {
                 )
             }
         }
-
-        fun maxMineGeodesIn(minutes: Int, currentStock: Stock = Stock()): Int {
-            if (minutes == 0) return currentStock.geodesMined
-            val nextStates = currentStock.allPossibleNextStates(this)
-            if (nextStates.isEmpty()) {
-                println(this)
-                println(minutes)
-                println(currentStock)
-            }
-            return nextStates.maxOf { maxMineGeodesIn(minutes - 1, it) }
-        }
     }
 
     override fun part1(input: List<String>): Int {
         val blueprints = input.map { Blueprint.from(it) }
 
         return blueprints.foldIndexed(0) { i, acc, cur ->
-            val curRes = cur.maxMineGeodesIn(24)
+            val curRes = Stock().maxMineGeodesIn(24, cur)
             ((i + 1) * curRes) + acc
         }
     }
