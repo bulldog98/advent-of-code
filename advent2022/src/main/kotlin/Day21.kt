@@ -10,8 +10,9 @@ class Day21 : AdventDay(2022, 21) {
     enum class MathOperation(
         val separator: String,
         val computation: (ValueNumber, ValueNumber) -> ValueNumber,
-        // how to compute first for x = first `op` second, x first param, second is second
+        // how to compute first for x = left `op` right, x first param, right is second
         val leftReverse: (ValueNumber, ValueNumber) -> ValueNumber,
+        // how to compute second for x = left `op` right, x first param, left is second
         val rightReverse: (ValueNumber, ValueNumber) -> ValueNumber = leftReverse
     ) {
         PLUS(" + ", ValueNumber::plus, ValueNumber::minus),
