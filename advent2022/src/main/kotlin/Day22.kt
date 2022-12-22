@@ -10,7 +10,9 @@ private fun List<String>.findAllWithChar(char: Char): Set<Point2D> = buildSet {
     }
 }
 
-private fun Point2D.moveInside(into: Set<Point2D>, direction: Day22.Direction): Point2D =
+private fun moveInsideAs2d(
+    into: Set<Point2D>
+): Point2D.(Day22.Direction) -> Point2D = { direction: Day22.Direction ->
     when (direction) {
         Day22.Direction.UP, Day22.Direction.DOWN -> {
             val possibleNextStep = into.filter { it.x == x }
@@ -21,6 +23,7 @@ private fun Point2D.moveInside(into: Set<Point2D>, direction: Day22.Direction): 
                 else -> possibleNextStep.maxBy { it.y }
             }
         }
+
         else -> {
             val possibleNextStep = into.filter { it.y == y }
             val next = this + direction.asPointDiff
@@ -31,14 +34,21 @@ private fun Point2D.moveInside(into: Set<Point2D>, direction: Day22.Direction): 
             }
         }
     }
+}
 
-private fun Point2D.move(length: Int, dir: Day22.Direction, field: Day22.FieldInformation): Point2D {
+inline fun Point2D.move(
+    length: Int,
+    dir: Day22.Direction,
+    field: Day22.FieldInformation,
+    moveInDir: Point2D.(Day22.Direction) -> Point2D
+): Point2D {
     var current = this
     repeat(length) {
-        val next = current.moveInside(field.field + field.walls, dir)
-        if (next !in field.walls) {
-            current = next
+        val next = current.moveInDir(dir)
+        if (next in field.walls) {
+            return current
         }
+        current = next
     }
     return current
 }
@@ -93,7 +103,7 @@ class Day22 : AdventDay(2022, 22) {
         val walls: Set<Point2D>,
         val instructions: List<Instruction>
     ) {
-        private data class State(val position: Point2D, val direction: Direction)
+        data class State(val position: Point2D, val direction: Direction)
         companion object {
             fun from(input: List<String>): FieldInformation {
                 val fieldInput = input.dropLast(2)
@@ -108,8 +118,8 @@ class Day22 : AdventDay(2022, 22) {
             }
         }
 
-        fun executeInstructions(
-            move: Point2D.(Int, Direction, FieldInformation) -> Point2D
+        inline fun executeInstructions(
+            wrap: Point2D.(Direction) -> Point2D
         ): Pair<Point2D, Direction> {
             val topRow = field.minOf { it.y }
             val topLeftOpen = field.filter { it.y == topRow }.minBy { it.x }
@@ -126,7 +136,8 @@ class Day22 : AdventDay(2022, 22) {
                         position = currentState.position.move(
                             it.length,
                             currentState.direction,
-                            this
+                            this,
+                            wrap
                         )
                     )
                 }
@@ -134,13 +145,23 @@ class Day22 : AdventDay(2022, 22) {
             return currentState.position to currentState.direction
         }
     }
-    override fun part1(input: List<String>): Long =
-        FieldInformation.from(input).executeInstructions(Point2D::move).let { (pos, dir) ->
-            (pos.y + 1) * 1000 + (pos.x + 1) * 4 + dir.facing
-        }
+    override fun part1(input: List<String>): Long {
+        val field = FieldInformation.from(input)
+        return field
+            .executeInstructions(moveInsideAs2d(field.field + field.walls))
+            .let { (pos, dir) ->
+                (pos.y + 1) * 1000 + (pos.x + 1) * 4 + dir.facing
+            }
+    }
 
-    override fun part2(input: List<String>): Long =
-        TODO()
+    override fun part2(input: List<String>): Long {
+        val field = FieldInformation.from(input)
+        return field // here has to be another function
+            .executeInstructions(moveInsideAs2d(field.field + field.walls))
+            .let { (pos, dir) ->
+                (pos.y + 1) * 1000 + (pos.x + 1) * 4 + dir.facing
+            }
+    }
 }
 
 fun main() = Day22().run()
