@@ -26,7 +26,7 @@ private fun String.parseMove(): Move {
     return Triple(a, b - 1, c - 1)
 }
 
-private fun List<String>.parseField(pickup: (List<Char>, Int) -> List<Char>): Field {
+private fun List<String>.parseOpenField(pickup: (List<Char>, Int) -> List<Char>): Field {
     val size = this.last().split(" ").mapNotNull { it.toIntOrNull() }.last() - 1
     val result = (0..size).map { mutableListOf<Char>() }.toMutableList()
     this.reversed().drop(1).map {
@@ -45,7 +45,7 @@ private fun List<String>.parseField(pickup: (List<Char>, Int) -> List<Char>): Fi
 
 private fun computeInstructions(input: List<String>, pickup: (List<Char>, Int) -> List<Char>): Field {
     val start = input.takeWhile { it.isNotBlank() }
-    val field = start.parseField(pickup)
+    val field = start.parseOpenField(pickup)
     val instructions = input.drop(start.size + 1).map { it.parseMove() }
     val result = instructions.fold(field) { f, m ->
         f.makeMove(m)
