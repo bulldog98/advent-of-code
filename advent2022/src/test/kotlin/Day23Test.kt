@@ -9,5 +9,5 @@ class Day23Test {
 
 
     @Test
-    fun part2() = assertEquals(1, day.testPart2())
+    fun part2() = assertEquals(20, day.testPart2())
 }

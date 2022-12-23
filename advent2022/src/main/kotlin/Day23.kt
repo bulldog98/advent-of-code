@@ -24,7 +24,7 @@ class Day23 : AdventDay(2022, 23) {
     private val eastNeighbor: PointComputation
         get() = { listOf(E, SE, NE).map { it.pointDiff + this }.toSet() }
 
-    private fun Point2D.checkInRound(round: Int): List<Pair<PointComputation, Direction>> = when (round % 4) {
+    private fun checkInRound(round: Int): List<Pair<PointComputation, Direction>> = when (round % 4) {
         0 -> listOf(northNeighbor to N, southNeighbor to S, westNeighbor to W, eastNeighbor to E)
         1 -> listOf(southNeighbor to S, westNeighbor to W, eastNeighbor to E, northNeighbor to N)
         2 -> listOf(westNeighbor to W, eastNeighbor to E, northNeighbor to N, southNeighbor to S)
@@ -49,10 +49,10 @@ class Day23 : AdventDay(2022, 23) {
         E(Point2D(1, 0))
     }
 
-    fun Set<Point2D>.simulateForXRounds(x: Int): Set<Point2D> {
+    fun Set<Point2D>.simulateForXRounds(x: Int, startRoundNumber: Int = 0): Set<Point2D> {
         var current = this
         repeat(x) { round ->
-            val proposed = current.map { it.proposeMove(current, round) }
+            val proposed = current.map { it.proposeMove(current, round + startRoundNumber) }
             val moves = current.zip(proposed)
             current = buildSet {
                 moves.forEach { (orig, next) ->
@@ -78,8 +78,17 @@ class Day23 : AdventDay(2022, 23) {
         return (lengthX * lengthY) - elfsAfter10Rounds.size
     }
 
-    override fun part2(input: List<String>): Int =
-        TODO("Not yet implemented")
+    override fun part2(input: List<String>): Int {
+        var curRound = 1
+        var prev = input.findAllPositionsOf()
+        var curr = prev.simulateForXRounds(1, 0)
+        while (prev != curr) {
+            prev = curr
+            curr = prev.simulateForXRounds(1, curRound)
+            curRound += 1
+        }
+        return curRound
+    }
 }
 
 fun main() = Day23().run()
