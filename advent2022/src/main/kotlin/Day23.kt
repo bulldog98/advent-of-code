@@ -3,15 +3,6 @@ import Day23.Direction.*
 typealias PointComputation = Point2D.() -> Set<Point2D>
 
 class Day23 : AdventDay(2022, 23) {
-    fun List<String>.findAllPositionsOf(char: Char = '#'): Set<Point2D> = buildSet {
-        forEachIndexed { y, line: String ->
-            line.forEachIndexed { x, c ->
-                if (c == char) {
-                    add(Point2D(x.toLong(), y.toLong()))
-                }
-            }
-        }
-    }
     private val Point2D.allNeighbors: Set<Point2D>
         get() = values().map { this + it.pointDiff }.toSet()
 

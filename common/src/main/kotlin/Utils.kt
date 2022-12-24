@@ -42,3 +42,13 @@ fun <T> exploreFrom(start: T, executeAction: ExploreParameter<T>.() -> Unit) {
         }
     }
 }
+
+fun List<String>.findAllPositionsOf(char: Char = '#'): Set<Point2D> = buildSet {
+    forEachIndexed { y, line: String ->
+        line.forEachIndexed { x, c ->
+            if (c == char) {
+                add(Point2D(x.toLong(), y.toLong()))
+            }
+        }
+    }
+}
