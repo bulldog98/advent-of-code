@@ -54,8 +54,8 @@ subprojects {
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
         }
 
-        testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+        testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
     }
 
     allOpen {
