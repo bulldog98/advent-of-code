@@ -1,3 +1,3 @@
-rootProject.name = "advent-of-code-2022"
+rootProject.name = "advent-of-code"
 include("common")
 include("advent2022")
