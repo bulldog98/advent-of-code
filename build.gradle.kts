@@ -1,5 +1,5 @@
 val ktorVersion by extra { "2.1.3" }
-val coroutinesVersion by extra { "1.6.4" }
+val coroutinesVersion by extra { "1.7.3" }
 
 plugins {
     kotlin("jvm") version "1.9.21"
