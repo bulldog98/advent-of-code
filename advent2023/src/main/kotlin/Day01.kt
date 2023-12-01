@@ -11,7 +11,7 @@ private val additionalDigitMapping = mapOf(
 )
 private val additionalDigits = additionalDigitMapping.keys
 
-class Day01 : AdventDay(2023, 1) {
+object Day01 : AdventDay(2023, 1) {
     override fun part1(input: List<String>): Int =
         input.sumOf {
             val onlyDigits = it.filter { c -> c.isDigit() }
@@ -33,4 +33,4 @@ class Day01 : AdventDay(2023, 1) {
     }
 }
 
-fun main() = Day01().run()
+fun main() = Day01.run()
