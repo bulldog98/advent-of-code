@@ -33,36 +33,35 @@ class Day16 : AdventDay(2022, 16) {
         }
     }
 
-    private fun List<ValveNode>.computeAllDistances() =
-        filter {
-            it.flowRate > 0
-        }.forEach { r ->
-            r.computeDistances { node ->
-                this.first { it.name == node }
-            }
+    private fun List<ValveNode>.computeAllDistances() = filter { it.flowRate > 0 }.forEach { r ->
+        r.computeDistances { node ->
+            this.first { it.name == node }
         }
+    }
+
+    private operator fun List<ValveNode>.minus(other: Set<String>) = filter { it.name !in other }
 
     private fun ValveNode.restOf(opened: Set<String>, timeLeft: Int) =
         distanceMap.filter { (key, timeNeeded) -> key !in opened && timeNeeded + 1 <= timeLeft }
 
-    private fun List<ValveNode>.maxPath(opened: Set<String>, node: ValveNode, timeLeft: Int, sum: Int, open: Int): Int = when {
-        timeLeft < 0 -> 0
-        timeLeft == 0 -> sum
-        timeLeft == 1 -> sum + open
-        node.distanceMap.all { (key, _) -> key in opened } -> sum + timeLeft * open
-        else -> node.restOf(opened, timeLeft)
-            .map { (nNode, distance) ->
-                val nextNode = first { it.name == nNode }
-                maxPath(
-                    opened + node.name,
-                    nextNode,
-                    timeLeft - (distance + 1),
-                    sum + (distance + 1) * open,
-                    open + nextNode.flowRate
-                )
-            }.plus(sum + timeLeft * open)
-            .max()
-    }
+    private fun List<ValveNode>.maxPath(opened: Set<String>, node: ValveNode, timeLeft: Int, sum: Int, open: Int): Int =
+        when {
+            timeLeft < 0 -> 0
+            timeLeft == 0 -> sum
+            node.restOf(opened, timeLeft).isEmpty() -> sum + timeLeft * open
+            else -> node.restOf(opened, timeLeft)
+                .map { (nNode, distance) ->
+                    val nextNode = first { it.name == nNode }
+                    maxPath(
+                        opened + node.name,
+                        nextNode,
+                        timeLeft - (distance + 1),
+                        sum + (distance + 1) * open,
+                        open + nextNode.flowRate
+                    )
+                }.plus(sum + timeLeft * open)
+                .max()
+        }
 
     private fun allSelections(maximum: Int): Sequence<List<Int>> = sequence {
         if (maximum == 0) {
@@ -97,7 +96,7 @@ class Day16 : AdventDay(2022, 16) {
         val startNodeYou = a.first { it.name == "AA" }
         val startNodeElephant = b.first { it.name == "AA" }
         val you = a.maxPath(emptySet(), startNodeYou, timeLeft, 0, 0)
-        val elephant =  b.maxPath(emptySet(), startNodeElephant, timeLeft, 0, 0)
+        val elephant = b.maxPath(emptySet(), startNodeElephant, timeLeft, 0, 0)
         you + elephant
     }.max()
 
@@ -110,7 +109,7 @@ class Day16 : AdventDay(2022, 16) {
 
     override fun part2(input: List<String>): Int {
         val nodes = input.map { ValveNode.of(it) }
-        return nodes.maxPathWithElephantHelp( 26)
+        return nodes.maxPathWithElephantHelp(26)
     }
 }
 
