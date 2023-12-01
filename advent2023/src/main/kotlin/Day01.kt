@@ -20,19 +20,15 @@ class Day01 : AdventDay(2023, 1) {
         }
 
     override fun part2(input: List<String>): Int = input.sumOf {
-        val onlyDigits = mutableListOf<String>()
-        var rest = it
-        while (rest.isNotEmpty()) {
-            if (rest.first().isDigit()) {
-                onlyDigits += rest.first().toString()
-            }
-            if (additionalDigits.any { digit -> rest.startsWith(digit) }) {
-                val digit = additionalDigits.first { d -> rest.startsWith(d) }
-                onlyDigits += additionalDigitMapping[digit] ?: error("must be digit")
-            }
-            rest = rest.drop(1)
-        }
-        val string = onlyDigits.first() + onlyDigits.last()
+        val onlyDigits = it.windowed(5, partialWindows = true).filter { window ->
+            window.first().isDigit() || additionalDigits.any { digit -> window.startsWith(digit) }
+        }.map {  window ->
+            if (window.first().isDigit())
+                window.first().toString()
+            else
+                additionalDigitMapping[additionalDigits.first { d -> window.startsWith(d) }]
+        }.joinToString(separator = "")
+        val string = onlyDigits.first().toString() + onlyDigits.last()
         string.toInt()
     }
 }
