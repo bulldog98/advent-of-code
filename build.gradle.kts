@@ -8,7 +8,6 @@ plugins {
     id("org.jetbrains.kotlinx.benchmark") version "0.4.9"
 }
 
-
 allprojects {
     repositories {
         mavenCentral()
@@ -27,32 +26,15 @@ subprojects {
     if (name != "common") {
         apply(plugin = "org.jetbrains.kotlin.plugin.serialization" )
 
-        val copyForTest = task<Copy>("copyDataForTests") {
-            from("$rootDir/data/**.txt")
-            into("$projectDir/data")
-        }
-
-        tasks.getByName<Test>("test") {
-            dependsOn.add(copyForTest)
-        }
-
-        sourceSets {
-            main {
-                resources {
-                    includes += "**.txt"
-                }
-            }
+        dependencies {
+            implementation(project(":common"))
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
         }
     }
 
     dependencies {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.21")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-
-        if (name != "common") {
-            implementation(project(":common"))
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
-        }
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
