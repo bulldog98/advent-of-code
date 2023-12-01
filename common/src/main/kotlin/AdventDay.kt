@@ -1,4 +1,4 @@
-abstract class  AdventDay(year: Int, day: Int) {
+abstract class AdventDay(year: Int, day: Int) {
     private val inputFiles: InputFiles = InputFiles(year, day)
 
     abstract fun part1(input: List<String>) : Any
