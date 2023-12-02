@@ -3,14 +3,6 @@ package year2023
 import AdventDay
 import year2023.day02.Game
 
-val Map<String, Int>.power: Int
-    get() {
-        val red = this["red"] ?: 0
-        val green = this["green"] ?: 0
-        val blue = this["blue"] ?: 0
-        return red * green * blue
-    }
-
 object Day02 : AdventDay(2023, 2) {
     private val allowedMax = mapOf(
         "red" to 12,
