@@ -1,18 +1,21 @@
-import day11.computeStep
+import day11.flashCount
 import day11.parseBoard
+import day11.simulateAllSteps
 
 object Day11 : AdventDay(2021, 11) {
-    override fun part1(input: List<String>): Int {
-        val board = input.parseBoard()
-        return (0..99).fold(board to 0) { old, _ ->
-            val (nextBoard, flashed) = old.first.computeStep()
-            nextBoard to flashed + old.second
-        }.second
-    }
+    override fun part1(input: List<String>): Int =
+        input.parseBoard()
+            .simulateAllSteps()
+            .take(100)
+            .sumOf { it.flashCount }
 
-    override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
-    }
+    override fun part2(input: List<String>): Int =
+        input.parseBoard()
+            .simulateAllSteps()
+            .indexOfFirst { board ->
+                board.entries
+                    .all { it.value == 0 }
+            } + 1
 }
 
 
