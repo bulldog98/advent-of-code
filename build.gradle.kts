@@ -25,7 +25,7 @@ subprojects {
         useJUnitPlatform()
     }
 
-    if (name != "common") {
+    if (name.startsWith("advent")) {
         apply(plugin = "org.jetbrains.kotlin.plugin.serialization" )
 
         dependencies {
