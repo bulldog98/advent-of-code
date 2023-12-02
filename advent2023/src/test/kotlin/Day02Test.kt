@@ -7,5 +7,5 @@ class Day02Test {
 
 
     @Test
-    fun part2() = assertEquals(1, Day02.testPart2())
+    fun part2() = assertEquals(2286, Day02.testPart2())
 }
