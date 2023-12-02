@@ -1,3 +1,7 @@
+package year2023
+
+import AdventDay
+
 private val additionalDigitMapping = mapOf(
     "one" to "1",
     "two" to "2",
