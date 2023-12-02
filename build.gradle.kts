@@ -3,6 +3,7 @@ val coroutinesVersion by extra { "1.7.3" }
 
 plugins {
     kotlin("jvm") version "1.9.21"
+    @Suppress("SpellCheckingInspection")
     id("org.jetbrains.kotlin.plugin.allopen") version "1.9.21"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.21"
     id("org.jetbrains.kotlinx.benchmark") version "0.4.9"
@@ -16,6 +17,7 @@ allprojects {
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
+    @Suppress("SpellCheckingInspection")
     apply(plugin = "org.jetbrains.kotlin.plugin.allopen")
     apply(plugin = "org.jetbrains.kotlinx.benchmark")
 

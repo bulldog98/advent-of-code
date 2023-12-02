@@ -17,7 +17,7 @@ infix fun IntRange.contains(other: IntRange): Boolean =
 
 /*
     5-7,7-9 overlaps in a single section, 7.
-    2-8,3-7 overlaps all of the sections 3 through 7.
+    2-8,3-7 overlaps all the sections 3 through 7.
     6-6,4-6 overlaps in a single section, 6.
     2-6,4-8
  */

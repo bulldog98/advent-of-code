@@ -45,7 +45,7 @@ class Day23 : AdventDay(2022, 23) {
         E(Point2D(1, 0))
     }
 
-    fun Set<Point2D>.simulateForXRounds(x: Int, startRoundNumber: Int = 0): Set<Point2D> {
+    private fun Set<Point2D>.simulateForXRounds(x: Int, startRoundNumber: Int = 0): Set<Point2D> {
         var current = this
         repeat(x) { round ->
             val proposed = current.map { it.proposeMove(current, round + startRoundNumber) }

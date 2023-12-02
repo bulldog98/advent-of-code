@@ -100,8 +100,8 @@ class Day22 : AdventDay(2022, 22) {
         }
     }
     data class Move(val length: Int) : Instruction
-    object LeftTurn: Instruction
-    object RightTurn: Instruction
+    data object LeftTurn: Instruction
+    data object RightTurn: Instruction
     data class FieldInformation(
         val field: Set<Point2D>,
         val walls: Set<Point2D>,

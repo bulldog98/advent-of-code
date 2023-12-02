@@ -25,9 +25,7 @@ class Day10 : AdventDay(2022, 10) {
             }
         }
     }
-    object Noop : Instruction(1) {
-        override fun toString(): String = "Noop"
-    }
+    data object Noop : Instruction(1)
     class AddX(val v: Int) : Instruction(2) {
         override fun toString(): String = "AddX($v)"
     }

@@ -45,7 +45,7 @@ class Day21 : AdventDay(2022, 21) {
             }
         }
     }
-    object Unknown : MonkeyEquation {
+    data object Unknown : MonkeyEquation {
         override val name: String = "humn"
         override fun containsHumanValue(lookup: (String) -> MonkeyEquation): HumanPosition = HumanPosition.LEFT
         override fun value(lookup: (String) -> MonkeyEquation): ValueNumber = ValueNumber.MAX_VALUE

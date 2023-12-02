@@ -3,7 +3,7 @@ package year2022
 import AdventDay
 
 class Day01 : AdventDay(2022, 1) {
-    fun List<String>.calculateCalories(): List<Int> =
+    private fun List<String>.calculateCalories(): List<Int> =
         map {
             it.toIntOrNull()
         }.

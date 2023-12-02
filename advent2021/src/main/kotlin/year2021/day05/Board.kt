@@ -24,6 +24,7 @@ class Board(private val lines: Collection<Line>) {
     /**
      * used to generate the visual representation
      */
+    @Suppress("unused")
     fun printBoard() {
         (0..maxY).map { y -> (0..maxX).map { Point(it, y) } }.forEach { line ->
             println(line.map { p -> map[p] ?: '.' }.joinToString("\t"))

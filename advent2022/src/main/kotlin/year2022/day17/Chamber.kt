@@ -46,6 +46,7 @@ data class Chamber(
         }
     }
 
+    @Suppress("unused")
     fun prettyPrint() {
         val maxY = rocks.maxOf { it.y }
         for (y in maxY downTo 0) {

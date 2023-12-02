@@ -24,6 +24,7 @@ class PriorityQueue<T, R : Comparable<R>> private constructor(
         get() = content.size
     constructor(elements: Collection<T>, cost: (T) -> R) : this(elements.toMutableSet(), cost)
     fun add(element: T) = content.add(element)
+    @Suppress("unused")
     fun addAll(elements: Collection<T>) = content.addAll(elements)
     fun removeFirst(): T {
         val elem = content.minBy(cost)
