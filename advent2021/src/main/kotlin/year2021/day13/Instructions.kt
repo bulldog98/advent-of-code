@@ -8,6 +8,13 @@ data class Instructions(
 ) {
     private constructor(dots: Set<Point2D>, folds: List<FoldInstruction>): this(FoldedInstruction(dots), folds)
 
+    fun folded() =
+        folds
+            .asSequence()
+            .runningFold(currentFolding) { cur, foldingRule ->
+                foldingRule.useOn(cur)
+            }
+
     companion object {
         operator fun invoke(input: List<String>) = Instructions(
             dots = input
