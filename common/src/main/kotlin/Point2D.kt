@@ -4,6 +4,10 @@ data class Point2D(val x: Long, val y: Long) {
     operator fun minus(other: Point2D) = Point2D(x - other.x, y - other.y)
     val cardinalNeighbors: List<Point2D>
         get() = listOf(UP, DOWN, LEFT, RIGHT).map { it + this }
+
+    val neighborHood: List<Point2D>
+        get() = cardinalNeighbors +
+                listOf(UP + LEFT, UP + RIGHT, DOWN + LEFT, DOWN + RIGHT).map { it + this }
     companion object {
         val UP = Point2D(0, -1)
         val DOWN = Point2D(0, 1)
