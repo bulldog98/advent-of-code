@@ -6,4 +6,6 @@ import org.junit.jupiter.api.Test
 class Day04Test {
     @Test
     fun part1() = Assertions.assertEquals(13, Day04.testPart1())
+    @Test
+    fun part2() = Assertions.assertEquals(30, Day04.testPart2())
 }
