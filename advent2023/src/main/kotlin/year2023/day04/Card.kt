@@ -1,5 +1,6 @@
 package year2023.day04
 
+import helper.numbers.NUMBERS_REGEX
 import kotlin.math.pow
 
 data class Card(val id: Int, val left: List<Int>, val right: List<Int>) {
@@ -9,12 +10,8 @@ data class Card(val id: Int, val left: List<Int>, val right: List<Int>) {
     )
     constructor(id: Int, restInput: List<String>): this(
         id,
-        restInput[0].chunked(3).filter { it.isNotBlank() }.map {
-            it.trim().toInt()
-        }.toList(),
-        restInput[1].chunked(3).filter { it.isNotBlank() }.map {
-            it.trim().toInt()
-        }.toList(),
+        NUMBERS_REGEX.findAll(restInput[0]).map { it.value.toInt() }.toList(),
+        NUMBERS_REGEX.findAll(restInput[1]).map { it.value.toInt() }.toList(),
     )
 
     val winningNumbersCount by lazy {
