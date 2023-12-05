@@ -4,8 +4,6 @@ import AdventDay
 import helper.numbers.NUMBERS_REGEX
 
 data class Mapping(
-    val from: String,
-    val to: String,
     val range: LongRange,
     val mapping: (Long) -> Long?
 ): (Long) -> Long? by mapping {
@@ -25,9 +23,7 @@ data class Mapping(
             return (start until start + size)
         }
 
-        fun of(from: String, to: String, line: String) = Mapping(
-            from,
-            to,
+        fun of(line: String) = Mapping(
             helper(line),
             helper(line).toMapFunction(NUMBERS_REGEX.find(line)?.value?.toLong()!!)
         )
@@ -56,9 +52,8 @@ object Day05 : AdventDay(2023, 5) {
             .drop(1)
             .map(String::lines)
             .map { lines ->
-                val (from, to) = lines.first().split("-to-", " map:")
                 lines.drop(1).map {
-                    Mapping.of(from, to, it)
+                    Mapping.of(it)
                 }
             }
 
