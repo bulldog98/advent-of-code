@@ -10,7 +10,7 @@ class Day05Test {
     @Test
     fun stupidCase() {
         val range = 57L..69L
-        val mapping = listOf(Mapping("fertilizer", "stuff", 53L..60L) { it })
+        val mapping = listOf(Mapping( 53L..60L) { it })
 
         val res = range.splitBy(mapping)
 
