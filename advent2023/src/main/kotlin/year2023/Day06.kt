@@ -2,6 +2,7 @@ package year2023
 
 import AdventDay
 import helper.numbers.NUMBERS_REGEX
+import helper.numbers.toAllLongs
 
 object Day06: AdventDay(2023, 6) {
     private fun Pair<Long, Long>.numberOfWaysToWin() =
@@ -12,8 +13,8 @@ object Day06: AdventDay(2023, 6) {
         }
 
     override fun part1(input: List<String>): Int {
-        val times = NUMBERS_REGEX.findAll(input[0]).map { it.value.toLong() }
-        val distance = NUMBERS_REGEX.findAll(input[1]).map { it.value.toLong() }
+        val times = input[0].toAllLongs()
+        val distance = input[1].toAllLongs()
         val games = times.zip(distance)
         return games.fold(1) { cur, game ->
             cur * game.numberOfWaysToWin()
