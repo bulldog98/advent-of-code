@@ -3,6 +3,7 @@ package year2023.day04
 import helper.numbers.NUMBERS_REGEX
 import kotlin.math.pow
 
+// maybe use left.intersect(right) ?
 data class Card(val id: Int, val left: List<Int>, val right: List<Int>) {
     constructor(input: String): this(
         input.substringAfter("Game ").split(":")[0].drop(4).trim().toInt(),
