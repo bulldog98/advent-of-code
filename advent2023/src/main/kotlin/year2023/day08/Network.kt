@@ -9,19 +9,17 @@ data class Network(val leftRightOrder: String, val instructions: Map<String, Pai
         }
     )
 
-    fun numberOfSteps(node: String, endCondition: (String) -> Boolean): Long {
-        var currentNode = node
-        var i = 0L
-        while (!endCondition(currentNode)) {
-            val (l, r) = instructions[currentNode]!!
+    fun numberOfSteps(node: String, endCondition: (String) -> Boolean): Long =
+        followingInstructionsFrom(node).first { endCondition(it.first) }.second
+
+    private fun followingInstructionsFrom(node: String) =
+        generateSequence(node to 0L) { (node, i) ->
             val inst = leftRightOrder[(i % leftRightOrder.length).toInt()]
-            i++
-            currentNode = when (inst) {
-                'R' -> r
-                'L' -> l
+            val (l, r) = instructions[node]!!
+            when (inst) {
+                'R' -> r to i +1
+                'L' -> l to i +1
                 else -> error("should not happen")
             }
         }
-        return i
-    }
 }
