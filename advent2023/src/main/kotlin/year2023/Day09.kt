@@ -13,12 +13,26 @@ object Day09: AdventDay(2023, 9) {
     private fun Sequence<Long>.extrapolateNextValue(): Long =
         computeHistory().sumOf { it.last() }
 
+
+    private fun Sequence<Long>.extrapolatePrevValue(): Long =
+        computeHistory()
+            .map { it.first() }
+            .toList()
+            .reversed()
+            .fold(0) { cur, next ->
+                next - cur
+            }
+
     override fun part1(input: List<String>): Long =
         input.sumOf { line -> line.split(" ").map { it.toLong() }.asSequence().extrapolateNextValue() }
 
-    override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
-    }
+    override fun part2(input: List<String>): Any =
+        input.sumOf { line ->
+            line.split(" ")
+                .map { it.toLong() }
+                .asSequence()
+                .extrapolatePrevValue()
+        }
 }
 
 fun main() = Day09.run()

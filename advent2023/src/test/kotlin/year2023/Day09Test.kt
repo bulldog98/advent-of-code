@@ -6,6 +6,6 @@ import org.junit.jupiter.api.Test
 class Day09Test {
     @Test
     fun part1() = Assertions.assertEquals(114L, Day09.testPart1())
-
-    // wrong answer 982489301
+    @Test
+    fun part2() = Assertions.assertEquals(2L, Day09.testPart2())
 }
