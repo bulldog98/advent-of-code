@@ -1,6 +1,7 @@
 package year2023
 
 import AdventDay
+import helper.numbers.toAllLongs
 
 object Day09: AdventDay(2023, 9) {
     private fun Sequence<Long>.computeHistory() =
@@ -11,28 +12,23 @@ object Day09: AdventDay(2023, 9) {
         }.takeWhile { it.any { n -> n != 0L } }
 
     private fun Sequence<Long>.extrapolateNextValue(): Long =
-        computeHistory().sumOf { it.last() }
-
+        computeHistory()
+            .sumOf { it.last() }
 
     private fun Sequence<Long>.extrapolatePrevValue(): Long =
         computeHistory()
             .map { it.first() }
             .toList()
             .reversed()
-            .fold(0) { cur, next ->
+            .fold(0L) { cur, next ->
                 next - cur
             }
 
     override fun part1(input: List<String>): Long =
-        input.sumOf { line -> line.split(" ").map { it.toLong() }.asSequence().extrapolateNextValue() }
+        input.sumOf { it.toAllLongs().extrapolateNextValue() }
 
-    override fun part2(input: List<String>): Any =
-        input.sumOf { line ->
-            line.split(" ")
-                .map { it.toLong() }
-                .asSequence()
-                .extrapolatePrevValue()
-        }
+    override fun part2(input: List<String>): Long =
+        input.sumOf { it.toAllLongs().extrapolatePrevValue() }
 }
 
 fun main() = Day09.run()
