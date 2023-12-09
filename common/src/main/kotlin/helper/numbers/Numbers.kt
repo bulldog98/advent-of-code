@@ -1,6 +1,6 @@
 package helper.numbers
 
-val NUMBERS_REGEX = """\d+""".toRegex()
+val NUMBERS_REGEX = """-?\d+""".toRegex()
 
 fun String.parseAllInts() =
     NUMBERS_REGEX.findAll(this).map { it.value.toInt() }
