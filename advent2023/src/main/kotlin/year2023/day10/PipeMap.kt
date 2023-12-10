@@ -4,20 +4,6 @@ import Point2D
 import graph.AdjacencyListGraph
 import graph.Graph
 
-private fun Char.isConnectedTo(point2D: Point2D): Boolean =
-    point2D in connectedTo()
-
-private fun Char.connectedTo(): Set<Point2D> = when (this) {
-    '|' -> setOf(Point2D.UP, Point2D.DOWN)
-    '-' -> setOf(Point2D.LEFT, Point2D.RIGHT)
-    'L' -> setOf(Point2D.UP, Point2D.RIGHT)
-    'J' -> setOf(Point2D.UP, Point2D.LEFT)
-    '7' -> setOf(Point2D.LEFT, Point2D.DOWN)
-    'F' -> setOf(Point2D.RIGHT, Point2D.DOWN)
-    'S' -> setOf(Point2D.UP, Point2D.DOWN, Point2D.LEFT, Point2D.RIGHT)
-    else -> emptySet()
-}
-
 data class PipeMap(
     val map: Map<Point2D, Char>,
     val start: Point2D
@@ -47,6 +33,20 @@ data class PipeMap(
     }
 
     companion object {
+        private fun Char.isConnectedTo(point2D: Point2D): Boolean =
+            point2D in connectedTo()
+
+        private fun Char.connectedTo(): Set<Point2D> = when (this) {
+            '|' -> setOf(Point2D.UP, Point2D.DOWN)
+            '-' -> setOf(Point2D.LEFT, Point2D.RIGHT)
+            'L' -> setOf(Point2D.UP, Point2D.RIGHT)
+            'J' -> setOf(Point2D.UP, Point2D.LEFT)
+            '7' -> setOf(Point2D.LEFT, Point2D.DOWN)
+            'F' -> setOf(Point2D.RIGHT, Point2D.DOWN)
+            'S' -> setOf(Point2D.UP, Point2D.DOWN, Point2D.LEFT, Point2D.RIGHT)
+            else -> emptySet()
+        }
+
         fun of(input: List<String>): PipeMap {
             val map = input.indices.flatMap { y ->
                 input[y].indices.map { x -> Point2D(x, y) to input[y][x] }
