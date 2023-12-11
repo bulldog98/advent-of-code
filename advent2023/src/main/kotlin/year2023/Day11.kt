@@ -2,6 +2,7 @@ package year2023
 
 import AdventDay
 import Point2D
+import findAllPositionsOf
 import kotlin.math.abs
 
 object Day11 : AdventDay(2023, 11) {
@@ -42,7 +43,24 @@ object Day11 : AdventDay(2023, 11) {
     }
 
     override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
+        val blankRows = input.indices.filter { input[it].all { c -> c == '.' } }.toSet()
+        val blankColumns = input[0].indices.filter { input.all { line -> line[it] == '.' } }.toSet()
+        val unadjustedGalaxies = input.findAllPositionsOf()
+        val galaxies = unadjustedGalaxies.map {
+            val newX = it.x + blankColumns.count { c -> c < it.x }.toLong() * (1_000_000 - 1).toLong()
+            val newY = it.y + blankRows.count { c -> c < it.y }.toLong() * (1_000_000 - 1).toLong()
+            Point2D(newX, newY)
+        }
+        val pairs = buildList {
+            galaxies.indices.forEach { x ->
+                (x..galaxies.indices.last).forEach { y ->
+                    if (x != y) {
+                        this += galaxies[x] to galaxies[y]
+                    }
+                }
+            }
+        }
+        return pairs.sumOf { (a, b) -> a.manhattenDistance(b) }
     }
 }
 
