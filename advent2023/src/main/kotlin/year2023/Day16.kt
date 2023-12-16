@@ -58,7 +58,7 @@ object Day16 : AdventDay(2023, 16) {
         fun withBeam(beam: Beam) = FloorPlanWithStartBeam(beam, this)
     }
     data class FloorPlanWithStartBeam(val startBeam: Beam, val floorMap: FloorMap) {
-        val fullySimulatedBeams by lazy {
+        private val fullySimulatedBeams by lazy {
             generateSequence(setOf(startBeam)) { last ->
                 last + last.flatMap { x ->
                     val p = floorMap[x.point] ?: error("${x.point} is outside the map")
@@ -70,6 +70,9 @@ object Day16 : AdventDay(2023, 16) {
                 .zipWithNext()
                 .first { (a, b) -> a == b }
                 .first
+        }
+        val energizedTiles by lazy {
+            fullySimulatedBeams.map { it.point }.distinct().size
         }
         fun prettyPrint() {
             floorMap.mapYBounds.forEach { y ->
@@ -107,11 +110,21 @@ object Day16 : AdventDay(2023, 16) {
         }.associate { it }
         val floorMap = FloorMap(map).withBeam(start)
         // floorMap.prettyPrint()
-        return floorMap.fullySimulatedBeams.map { it.point }.distinct().size
+        return floorMap.energizedTiles
     }
 
     override fun part2(input: List<String>): Any {
-        TODO()
+        val map = input.flatMapIndexed { y, line ->
+            line.mapIndexed { x, c -> Point2D(x, y) to c }
+        }.associate { it }
+        val floorMap = FloorMap(map)
+        val topStarts = floorMap.mapXBounds.map { Beam(Point2D(it, 0), Point2D.DOWN) }
+        val leftStarts = floorMap.mapYBounds.map { Beam(Point2D(0, it), Point2D.RIGHT) }
+        val rightStarts = floorMap.mapYBounds.map { Beam(Point2D(floorMap.mapXBounds.last, it), Point2D.LEFT) }
+        val bottomStarts = floorMap.mapXBounds.map { Beam(Point2D(it, floorMap.mapYBounds.last), Point2D.UP) }
+        return (topStarts + leftStarts + rightStarts + bottomStarts).maxOf { startBeam ->
+            floorMap.withBeam(startBeam).energizedTiles
+        }
     }
 }
 
