@@ -3,12 +3,8 @@ package year2023
 import AdventDay
 import Point2D
 import findAllPositionsOf
-import kotlin.math.abs
 
 object Day11 : AdventDay(2023, 11) {
-    private fun Point2D.manhattanDistance(other: Point2D): Long =
-        abs(x - other.x) + abs(y - other.y)
-
     private fun manhattanDistance(point2DPoint2DPair: Pair<Point2D, Point2D>) =
         point2DPoint2DPair.first.manhattanDistance(point2DPoint2DPair.second)
 
