@@ -2,95 +2,90 @@ package year2023
 
 import AdventDay
 import Point2D
-import graph.AdjacencyListGraph
-import graph.Graph
-import graph.dijkstra
+import java.util.*
 
 object Day17 : AdventDay(2023, 17) {
-    data class CityBlocks(val input: List<String>) {
-        private val nodes = input.indices.flatMap { y ->
-            input[y].indices.map { x -> Point2D(x, y) }
-        }.toSet()
 
-        fun buildGraph(min: Int, max: Int): Graph<CrucibleTmpPosition> {
-            val realNodes = this.nodes
-                .flatMap {
-                    listOf(Point2D.LEFT, Point2D.RIGHT, Point2D.UP, Point2D.DOWN).flatMap { direction ->
-                        (1 ..max).map { tilesMoved ->
-                            CrucibleTmpPosition(it, direction, tilesMoved)
-                        }
-                    }.filter { it.position in nodes }
-                }.toSet()
-            return AdjacencyListGraph(realNodes) { u ->
-                val leftRight = when (u.direction) {
-                    Point2D.UP, Point2D.DOWN -> listOf(Point2D.LEFT, Point2D.RIGHT)
-                    Point2D.LEFT, Point2D.RIGHT -> listOf(Point2D.UP, Point2D.DOWN)
-                    else -> error("not a valid direction ${u.direction}")
+    data class Field(val heatMap: Map<Point2D, Int>) {
+        val bottomRight = heatMap.keys.maxBy { it.manhattanDistance(Point2D.ORIGIN) }
+        companion object {
+            private fun List<String>.computeHeatMap() = buildMap {
+                forEachIndexed { y, row ->
+                    row.forEachIndexed { x, c ->
+                        this[Point2D(x, y)] = c.digitToInt()
+                    }
                 }
-                val turnAround = leftRight
-                    .map { CrucibleTmpPosition(u.position + it, it) }
-                when {
-                    u.tilesMovedInDirection == max -> turnAround
-                    u.tilesMovedInDirection < min ->
-                        listOf(
-                            CrucibleTmpPosition(
-                                position = u.position + u.direction,
-                                u.direction,
-                                u.tilesMovedInDirection + 1
-                            )
-                        )
-                    else ->
-                        turnAround +
-                            CrucibleTmpPosition(
-                                position = u.position + u.direction,
-                                u.direction,
-                                u.tilesMovedInDirection + 1
-                            )
-                }.filter { it.position in nodes }
+                this[Point2D.ORIGIN] = 0
             }
+            fun of(input: List<String>) = Field(input.computeHeatMap())
         }
     }
 
-    private operator fun List<String>.get(point: Point2D): Long? =
-        getOrNull(point.y.toInt())?.getOrNull(point.x.toInt())?.digitToInt()?.toLong()
-
-    data class CrucibleTmpPosition(
-        val position: Point2D,
+    data class CurrentCrucibleState(
+        val point: Point2D = Point2D.ORIGIN,
         val direction: Point2D,
-        val tilesMovedInDirection: Int = 1,
+        val moveMemory: Int = 1,
+        val totalHeatLoss: Int = 0
     )
 
-    override fun part1(input: List<String>): Any {
-        val cityBlocks = CityBlocks(input)
-        val graph = cityBlocks.buildGraph(1, 3)
-        val (distance) = graph.dijkstra(
-            CrucibleTmpPosition(Point2D(0, 0), Point2D.RIGHT)
-        ) { _, v ->
-            input[v.position]!!
-        }
-        val bottomRight = Point2D(input[0].indices.last, input.indices.last)
-        return (1..3).flatMap { tiles ->
-            listOf(Point2D.RIGHT, Point2D.DOWN).map { direction ->
-                CrucibleTmpPosition(bottomRight, direction, tiles)
-            }
-        }.minOf { distance(it) ?: Long.MAX_VALUE }
+    private fun Point2D.clockwise(): Point2D = when (this) {
+        Point2D.UP -> Point2D.RIGHT
+        Point2D.RIGHT -> Point2D.DOWN
+        Point2D.DOWN -> Point2D.LEFT
+        Point2D.LEFT -> Point2D.UP
+        else -> error("no direction")
     }
 
-    override fun part2(input: List<String>): Any {
-        val cityBlocks = CityBlocks(input)
-        val graph = cityBlocks.buildGraph(4, 10)
-        val (distance) = graph.dijkstra(
-            CrucibleTmpPosition(Point2D(0, 0), Point2D.RIGHT)
-        ) { _, v ->
-            input[v.position]!!
-        }
-        val bottomRight = Point2D(input[0].indices.last, input.indices.last)
-        return (4..10).flatMap { tiles ->
-            listOf(Point2D.RIGHT, Point2D.DOWN).map { direction ->
-                CrucibleTmpPosition(bottomRight, direction, tiles)
-            }
-        }.minOf { distance(it) ?: Long.MAX_VALUE }
+    private fun Point2D.counterClockwise(): Point2D = when (this) {
+        Point2D.UP -> Point2D.LEFT
+        Point2D.RIGHT -> Point2D.UP
+        Point2D.DOWN -> Point2D.RIGHT
+        Point2D.LEFT -> Point2D.DOWN
+        else -> error("no direction")
     }
+
+    private fun Field.solve(minimumStepsForward: Int, maximumStepsForward: Int): Int {
+        // point, direction, steps done
+        val visited = mutableSetOf(
+            Triple(Point2D.ORIGIN, Point2D.RIGHT, 1),
+            Triple(Point2D.ORIGIN, Point2D.DOWN, 1)
+        )
+        val queue = PriorityQueue(compareBy(CurrentCrucibleState::totalHeatLoss)).apply {
+            add(CurrentCrucibleState(Point2D.ORIGIN, Point2D.RIGHT, 1, 0))
+            add(CurrentCrucibleState(Point2D.ORIGIN, Point2D.DOWN, 1, 0))
+        }
+        fun add(currentCrucibleState: CurrentCrucibleState) {
+            if (visited.add(Triple(currentCrucibleState.point, currentCrucibleState.direction, currentCrucibleState.moveMemory))) {
+                queue.offer(currentCrucibleState)
+            }
+        }
+
+        while (queue.isNotEmpty()) {
+            val (point, direction, stepsInOneDirectionDone, totalHeatLoss) = queue.poll()
+            val nextPoint = point + direction
+            val nextScore = totalHeatLoss + (heatMap[nextPoint] ?: continue)
+            if (nextPoint == bottomRight) {
+                return nextScore
+            }
+
+            if (stepsInOneDirectionDone < maximumStepsForward) {
+                add(CurrentCrucibleState(nextPoint, direction, stepsInOneDirectionDone + 1, nextScore))
+            }
+
+            if (stepsInOneDirectionDone >= minimumStepsForward) {
+                listOf(direction.clockwise(), direction.counterClockwise()).forEach { nextDirection ->
+                    add(CurrentCrucibleState(nextPoint, nextDirection, 1, nextScore))
+                }
+            }
+        }
+        error("could not determine score at end")
+    }
+
+    override fun part1(input: List<String>) =
+        Field.of(input).solve(0, 3)
+
+    override fun part2(input: List<String>) =
+        Field.of(input).solve(4, 10)
 }
 
 fun main() = Day17.run()
