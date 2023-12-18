@@ -2,6 +2,7 @@ package year2023
 
 import AdventDay
 import Point2D
+import kotlin.math.abs
 
 object Day18 : AdventDay(2023, 18) {
     operator fun Point2D.times(times: Int): Point2D =
@@ -15,40 +16,39 @@ object Day18 : AdventDay(2023, 18) {
         else -> error("unknown direction")
     } to input.split(" ")[1].toInt()
 
-    private fun List<Pair<Point2D, Int>>.computeWall() =
-        fold(setOf(Point2D(0, 0)) to Point2D(0, 0)) { (visited, curr), (dir, times) ->
-            val newVisits = (0 until times).runningFold(curr) { cur, _ ->
-                cur + dir
-            }
-            visited + newVisits to newVisits.last()
-        }.first
-
-    private fun Set<Point2D>.countPointsNotFloodedFromOutside(): Int {
-        val topLeftOutside = Point2D(minOf { it.x } - 1, minOf { it.y } - 1)
-        val bottomRightOutside = Point2D(maxOf { it.x } + 1, maxOf { it.y } + 1)
-        val xRange = (topLeftOutside.x..bottomRightOutside.x)
-        val yRange = (topLeftOutside.y..bottomRightOutside.y)
-        val visited = toMutableSet()
-        val queue = mutableListOf(topLeftOutside)
-        while (queue.isNotEmpty()) {
-            val current = queue.removeFirst()
-            visited += current
-            queue += current.cardinalNeighbors.filter {
-                it.x in xRange && it.y in yRange && it !in visited && it !in queue
-            }
+    private fun parseInstructionPart2(input: String): Pair<Point2D, Int> = input.split("(#", ")")[1].let { hex ->
+        val count = hex.dropLast(1).toInt(16)
+        val direction = when (hex.last()) {
+            '0' -> Point2D.RIGHT
+            '1' -> Point2D.DOWN
+            '2' -> Point2D.LEFT
+            '3' -> Point2D.UP
+            else -> error("invalid direction")
         }
-        return xRange.count() * yRange.count() - visited.size
+        direction to count
     }
 
-    override fun part1(input: List<String>): Int {
+    private fun List<Point2D>.computePolygonSize(n: Int) =
+        abs((1 .. n).sumOf { i ->
+            this[i % n].x * (this[(i + 1) % n].y - this[(i - 1) % n].y)
+        }) / 2L
+
+    override fun part1(input: List<String>): Long {
         val instructions = input.map(::parseInstructionPart1)
-        val walls = instructions.computeWall()
-        val alreadyHollow = walls.size
-        return walls.countPointsNotFloodedFromOutside() + alreadyHollow
+        val edges = instructions.fold(listOf(Point2D(0, 0))) { cur, (dir, times) ->
+            cur + (cur.last() + dir * times)
+        }
+        return edges.computePolygonSize(edges.size - 1) +
+            edges.zipWithNext().sumOf { (a, b) -> abs(a.x - b.x) + abs(a.y - b.y) }/2 + 1
     }
 
-    override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
+    override fun part2(input: List<String>): Long {
+        val instructions = input.map(::parseInstructionPart2)
+        val edges = instructions.fold(listOf(Point2D(0, 0))) { cur, (dir, times) ->
+            cur + (cur.last() + dir * times)
+        }
+        return edges.computePolygonSize(edges.size - 1) +
+            edges.zipWithNext().sumOf { (a, b) -> abs(a.x - b.x) + abs(a.y - b.y) }/2 + 1
     }
 }
 

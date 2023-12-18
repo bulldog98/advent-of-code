@@ -2,6 +2,9 @@ data class Point2D(val x: Long, val y: Long) {
     constructor(x: Int, y: Int): this(x.toLong(), y.toLong())
     operator fun plus(other: Point2D) = Point2D(x + other.x, y + other.y)
     operator fun minus(other: Point2D) = Point2D(x - other.x, y - other.y)
+    operator fun times(other: Point2D) =
+        x * other.y - y * other.x
+
     fun reversed() = Point2D(x * -1, y * -1)
 
     val cardinalNeighbors: List<Point2D>
