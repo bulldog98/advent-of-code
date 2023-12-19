@@ -2,6 +2,8 @@ package year2023
 
 import AdventDay
 import helper.numbers.parseAllInts
+import kotlin.math.max
+import kotlin.math.min
 
 object Day19 : AdventDay(2023, 19) {
     enum class MetalPart(val symbol: Char) {
@@ -13,7 +15,17 @@ object Day19 : AdventDay(2023, 19) {
 
     enum class CompareOperation(val symbol: Char, val compare: (Int, Int) -> Boolean) {
         Greater('>', { a, b -> a > b }),
-        LessThan('<', { a, b -> a < b }),
+        LessThan('<', { a, b -> a < b });
+
+        fun nonAcceptedRange(compareTo: Int): IntRange = when (this) {
+            Greater -> (1..compareTo)
+            LessThan -> (compareTo..4000)
+        }
+
+        fun acceptedRange(compareTo: Int): IntRange = when (this) {
+            Greater -> compareTo + 1..4000
+            LessThan -> 1..<compareTo
+        }
     }
 
     data class Workflow(val name: String, val rules: List<Rule>, val defaultRule: String) {
@@ -68,15 +80,43 @@ object Day19 : AdventDay(2023, 19) {
         }
     }
 
+    private fun List<String>.parse(): Pair<Map<String, Workflow>, List<State>> =
+        Pair(
+            takeWhile { it.isNotEmpty() }
+                .map { Workflow.of(it) }
+                .groupBy { it.name }
+                .mapValues { it.value.single() },
+            takeLastWhile { it.isNotEmpty() }
+                .map { State.of(it) }
+        )
+
+    // we want to produce emptyRang
+    @Suppress("EmptyRange")
+    private fun IntRange.intersection(other: IntRange): IntRange = when {
+        this.last < other.first || other.last < this.first -> 1..-1
+        this.first <= other.first && other.last <= this.last -> other
+        other.first <= this.first && this.last <= other.last -> this
+        else -> max(this.first, other.first)..min(this.last, other.last)
+    }
+
+    private fun Workflow.computeSplitting(ranges: Map<MetalPart, IntRange>): List<Pair<String, Map<MetalPart, IntRange>>> =
+        buildList {
+            val currentRanges = ranges.toMutableMap()
+            rules.forEach { rule ->
+                this += rule.jumpTo to currentRanges.mapValues {
+                    if (it.key == rule.metalPart) {
+                        val acceptedRange = it.value.intersection(rule.compare.acceptedRange(rule.compareTo))
+                        currentRanges[it.key] = it.value.intersection(rule.compare.nonAcceptedRange(rule.compareTo))
+                        acceptedRange
+                    } else
+                        it.value
+                }
+            }
+            this += defaultRule to currentRanges
+        }
+
     override fun part1(input: List<String>): Int {
-        val workflows = input
-            .takeWhile { it.isNotEmpty() }
-            .map { Workflow.of(it) }
-            .groupBy { it.name }
-            .mapValues { it.value.single() }
-        val states = input
-            .takeLastWhile { it.isNotEmpty() }
-            .map { State.of(it) }
+        val (workflows, states) = input.parse()
         return states.sumOf {
             if (it.isAcceptedBy(workflows))
                 it.rating
@@ -85,9 +125,26 @@ object Day19 : AdventDay(2023, 19) {
         }
     }
 
-    override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
+    override fun part2(input: List<String>): Long {
+        val (workflows) = input.parse()
+        val acceptedStates =
+            generateSequence(listOf("in" to MetalPart.entries.associateWith { (1..4000) })) { currentPartition ->
+                currentPartition
+                    .filter { it.first != "R" }
+                    .flatMap { (state, ranges) ->
+                        if (state == "A")
+                            listOf(state to ranges)
+                        else
+                            workflows[state]?.computeSplitting(ranges) ?: error("workflow $state not found")
+                    }
+            }.first { it.all { (state) -> state == "A" } }
+        return acceptedStates.sumOf { (_, ranges) ->
+            ranges.entries.fold(1L) { acc, ent ->
+                acc * ent.value.map { it }.size
+            }
+        }
     }
 }
+
 
 fun main() = Day19.run()
