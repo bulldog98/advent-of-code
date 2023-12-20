@@ -3,6 +3,7 @@ package year2023
 import AdventDay
 import Point2D
 import findAllPositionsOf
+import kotlin.math.abs
 
 object Day14 : AdventDay(2023, 14) {
     private fun Point2D.setCountInDirection(count: Int, direction: Point2D): List<Point2D> =
@@ -25,38 +26,58 @@ object Day14 : AdventDay(2023, 14) {
             direction: Point2D,
             getRow: Point2D.() -> Long,
             getColumn: Point2D.() -> Long,
-            sortingFunction: List<Point2D>.(Point2D.() -> Long) -> List<Point2D>
+            sortingFunction: List<Point2D>.(Point2D.() -> Long) -> List<Point2D>,
+            computeRestingPoints: Pair<Point2D, Point2D>.(Map<Point2D, Int>) -> List<Point2D>
         ): Dish {
             val newRoundRockPositions: Set<Point2D> = this.flatMap { coord ->
                 val rocksInThisRow = roundRocks.filter { it.getRow() == coord }.sortedBy(getColumn)
-                val wallsInThisRow = (cubeRocks.filter { it.getRow() == coord }).sortedByDescending(getColumn)
+                val wallsInThisRow = (cubeRocks.filter { it.getRow() == coord }).sortingFunction(getColumn)
                 val lookup = wallsInThisRow
                     .associateWith { wall ->
                         rocksInThisRow.count { it.getColumn() > wall.getColumn() }
                     }
-                wallsInThisRow.zipWithNext().filter { (a, b) ->
-                    lookup[a] != lookup[b]
-                }.flatMap { (oldPoint, point) ->
-                    point.setCountInDirection(lookup[point]!! - lookup[oldPoint]!!, direction)
-                }
+                lookup.keys.toList().sortingFunction(getColumn)
+                    .zipWithNext()
+                    .associateWith { (a, b) -> abs(lookup[a]!! - lookup[b]!!) }
+                    .filterValues { it != 0 }
+                    .flatMap { (key, count) ->
+                        val basePoint = listOf(key.first, key.second).sortingFunction(getColumn).last()
+                        basePoint.setCountInDirection(count, direction)
+                    }
             }.toSet()
             return copy(roundRocks = newRoundRockPositions)
         }
 
 
-        fun tiltInDirection(direction: Point2D): Dish = when (direction) {
-            Point2D.UP, Point2D.DOWN -> xRange.tiltWithRow(direction, Point2D::x, Point2D::y) {
+        fun tiltWithDirectionAsTop(direction: Point2D): Dish = when (direction) {
+            Point2D.UP, Point2D.DOWN -> xRange.tiltWithRow(direction, Point2D::x, Point2D::y, {
                 if (direction == Point2D.DOWN) {
                     sortedByDescending(it)
                 } else
                     sortedBy(it)
+            }) {
+                val (pointA, pointB) = this
+                if (direction == Point2D.DOWN) {
+                    pointB.setCountInDirection(it[pointB]!! - it[pointA]!!, direction)
+                } else {
+                    pointA.setCountInDirection(it[pointA]!! - it[pointB]!!, direction)
+                }
             }
-            Point2D.LEFT, Point2D.RIGHT -> yRange.tiltWithRow(direction, Point2D::y, Point2D::x) {
+
+            Point2D.LEFT, Point2D.RIGHT -> yRange.tiltWithRow(direction, Point2D::y, Point2D::x, {
                 if (direction == Point2D.RIGHT) {
                     sortedByDescending(it)
                 } else
                     sortedBy(it)
+            }) {
+                val (pointA, pointB) = this
+                if (direction == Point2D.RIGHT) {
+                    pointB.setCountInDirection(it[pointB]!! - it[pointA]!!, direction)
+                } else {
+                    pointA.setCountInDirection(it[pointA]!! - it[pointB]!!, direction)
+                }
             }
+
             else -> error("that is not one of cardinal directions")
         }
 
@@ -94,13 +115,38 @@ object Day14 : AdventDay(2023, 14) {
 
     override fun part1(input: List<String>): Long =
         Dish.of(input)
-            .tiltInDirection(Point2D.DOWN)
-            .also { it.prettyPrint().forEach(::println) }
+            .tiltWithDirectionAsTop(Point2D.DOWN)
+//            .also { it.prettyPrint().forEach(::println) }
             .load
 
-    override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
-    }
+    override fun part2(input: List<String>): Long =
+        generateSequence(Dish.of(input)) { dish ->
+            dish
+                .tiltWithDirectionAsTop(Point2D.DOWN)
+                .tiltWithDirectionAsTop(Point2D.RIGHT)
+                .tiltWithDirectionAsTop(Point2D.UP)
+                .tiltWithDirectionAsTop(Point2D.LEFT)
+        }
+//            .also {
+//                it.drop(1).take(3).forEach {
+//                    it.prettyPrint().forEach(::println)
+//                    println()
+//                }
+//            }
+            .withIndex()
+            .runningFold(emptyMap<Dish, List<Int>>()) { acc, cur ->
+                acc + (cur.value to ((acc[cur.value] ?: emptyList()) + cur.index))
+            }.first {
+                it.any { (_, value) -> value.size > 2 }
+            }.let { dishesToCycles ->
+                val dishesAfterCycle = dishesToCycles.filterValues { it.size >= 2 }
+                val cycleStart = dishesToCycles.values.first { it.size > 2 }.first()
+                val cycleLength = dishesToCycles.values.first { it.size > 2 }.let { (a, b) ->
+                    b - a
+                }
+                val firstEncounteredDishForOneBillion = ((1_000_000_000L - cycleStart) % cycleLength).toInt() + cycleStart
+                dishesAfterCycle.entries.first { (_, value) -> value.any { it == firstEncounteredDishForOneBillion } }.key.load
+            }
 }
 
 fun main() = Day14.run()
