@@ -11,8 +11,6 @@ object Day14 : AdventDay(2023, 14) {
             cur + direction
         }.drop(1)
 
-    data object RoundRock
-    data object CubeRock
     data class Dish(
         val xRange: LongRange,
         val yRange: LongRange,
@@ -26,8 +24,7 @@ object Day14 : AdventDay(2023, 14) {
             direction: Point2D,
             getRow: Point2D.() -> Long,
             getColumn: Point2D.() -> Long,
-            sortingFunction: List<Point2D>.(Point2D.() -> Long) -> List<Point2D>,
-            computeRestingPoints: Pair<Point2D, Point2D>.(Map<Point2D, Int>) -> List<Point2D>
+            sortingFunction: List<Point2D>.(Point2D.() -> Long) -> List<Point2D>
         ): Dish {
             val newRoundRockPositions: Set<Point2D> = this.flatMap { coord ->
                 val rocksInThisRow = roundRocks.filter { it.getRow() == coord }.sortedBy(getColumn)
@@ -50,37 +47,22 @@ object Day14 : AdventDay(2023, 14) {
 
 
         fun tiltWithDirectionAsTop(direction: Point2D): Dish = when (direction) {
-            Point2D.UP, Point2D.DOWN -> xRange.tiltWithRow(direction, Point2D::x, Point2D::y, {
+            Point2D.UP, Point2D.DOWN -> xRange.tiltWithRow(direction, Point2D::x, Point2D::y) {
                 if (direction == Point2D.DOWN) {
                     sortedByDescending(it)
                 } else
                     sortedBy(it)
-            }) {
-                val (pointA, pointB) = this
-                if (direction == Point2D.DOWN) {
-                    pointB.setCountInDirection(it[pointB]!! - it[pointA]!!, direction)
-                } else {
-                    pointA.setCountInDirection(it[pointA]!! - it[pointB]!!, direction)
-                }
             }
-
-            Point2D.LEFT, Point2D.RIGHT -> yRange.tiltWithRow(direction, Point2D::y, Point2D::x, {
+            Point2D.LEFT, Point2D.RIGHT -> yRange.tiltWithRow(direction, Point2D::y, Point2D::x) {
                 if (direction == Point2D.RIGHT) {
                     sortedByDescending(it)
                 } else
                     sortedBy(it)
-            }) {
-                val (pointA, pointB) = this
-                if (direction == Point2D.RIGHT) {
-                    pointB.setCountInDirection(it[pointB]!! - it[pointA]!!, direction)
-                } else {
-                    pointA.setCountInDirection(it[pointA]!! - it[pointB]!!, direction)
-                }
             }
-
             else -> error("that is not one of cardinal directions")
         }
 
+        @Suppress("Unused")
         fun prettyPrint(): List<String> = yRange.map { y ->
             xRange.joinToString("") { x ->
                 when (Point2D(x, y)) {
@@ -140,9 +122,8 @@ object Day14 : AdventDay(2023, 14) {
                 it.any { (_, value) -> value.size > 2 }
             }.let { dishesToCycles ->
                 val dishesAfterCycle = dishesToCycles.filterValues { it.size >= 2 }
-                val cycleStart = dishesToCycles.values.first { it.size > 2 }.first()
-                val cycleLength = dishesToCycles.values.first { it.size > 2 }.let { (a, b) ->
-                    b - a
+                val (cycleStart, cycleLength) = dishesToCycles.values.first { it.size > 2 }.let { (a, b) ->
+                    a to b - a
                 }
                 val firstEncounteredDishForOneBillion = ((1_000_000_000L - cycleStart) % cycleLength).toInt() + cycleStart
                 dishesAfterCycle.entries.first { (_, value) -> value.any { it == firstEncounteredDishForOneBillion } }.key.load
