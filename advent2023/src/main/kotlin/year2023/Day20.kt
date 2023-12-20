@@ -1,6 +1,7 @@
 package year2023
 
 import AdventDay
+import lcm
 
 object Day20 : AdventDay(2023, 20) {
     private sealed interface Pulse {
@@ -32,6 +33,7 @@ object Day20 : AdventDay(2023, 20) {
                         val mod = of(it)
                         this[mod.name] = mod
                     }
+                    this["rx"] = RxModule()
                     this.forEach { moduleEntry ->
                         val module = moduleEntry.value
                         if (module is ConjunctionModule) {
@@ -45,6 +47,7 @@ object Day20 : AdventDay(2023, 20) {
                     }
                 }
         }
+
         data class FlipFlopModule(
             override val name: String,
             override val destinationModules: List<String>,
@@ -79,41 +82,50 @@ object Day20 : AdventDay(2023, 20) {
 
         data class BroadCasterModule(
             override val destinationModules: List<String>
-        ): Module {
+        ) : Module {
             override val name = "broadcaster"
             override fun acceptPulseFrom(from: String, pulse: Pulse): Module = this
 
             override fun sendPulse(from: String, pulse: Pulse): Pulse = pulse
         }
+
+        data class RxModule(val lowReceived: Boolean = false) : Module {
+            override val name: String = "rx"
+            override val destinationModules: List<String> = listOf()
+            override fun acceptPulseFrom(from: String, pulse: Pulse): Module =
+                copy(lowReceived = lowReceived || pulse == Pulse.LowPulse)
+
+            override fun sendPulse(from: String, pulse: Pulse): Pulse? = null
+        }
     }
 
-    private fun Map<String, Module>.simulateOneButtonPush(): Pair<Map<String, Module>, Pair<Long, Long>> {
+    private fun Map<String, Module>.simulateOneButtonPush(doSomethingWithPulses: (Triple<String, String, Pulse>) -> Unit): Map<String, Module> {
         val result = this.toMutableMap()
-        var lowPulsesSent = 0L // button push itself
-        var highPulsesSent = 0L
-        val pulsesToProcess: MutableList<Triple<String, String, Pulse>> = mutableListOf(Triple("button", "broadcaster", Pulse.LowPulse))
+        val pulsesToProcess: MutableList<Triple<String, String, Pulse>> =
+            mutableListOf(Triple("button", "broadcaster", Pulse.LowPulse))
         while (pulsesToProcess.isNotEmpty()) {
-            val (from, to, pulse) = pulsesToProcess.removeFirst()
-            if (pulse == Pulse.LowPulse) {
-                lowPulsesSent++
-            } else {
-                highPulsesSent++
-            }
+            val pulseTriple = pulsesToProcess.removeFirst()
+            doSomethingWithPulses(pulseTriple)
+            val (from, to, pulse) = pulseTriple
             val module = result[to] ?: continue
             val pulseToSend = module.sendPulse(from, pulse)
             result[to] = module.acceptPulseFrom(from, pulse)
             if (pulseToSend == null) continue
             pulsesToProcess += module.destinationModules.map { Triple(module.name, it, pulseToSend) }
         }
-        return result to (lowPulsesSent to highPulsesSent)
+        return result
     }
 
     private operator fun Pair<Long, Long>.plus(other: Pair<Long, Long>) = first + other.first to second + other.second
 
     override fun part1(input: List<String>): Long =
         generateSequence(Module.of(input) to (0L to 0L)) { (currentState, count) ->
-            val (nextState, pulsesSent) = currentState.simulateOneButtonPush()
-            nextState to pulsesSent + count
+            var lowCount = 0L
+            var highCount = 0L
+            val nextState = currentState.simulateOneButtonPush { (_, _, pulse) ->
+                if (pulse is Pulse.LowPulse) lowCount++ else highCount++
+            }
+            nextState to (lowCount to highCount) + count
         }.drop(1)
             .take(1000)
             .last()
@@ -122,8 +134,24 @@ object Day20 : AdventDay(2023, 20) {
                 lowPulses * highPulses
             }
 
-    override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
+    override fun part2(input: List<String>): Long {
+        val modules = Module.of(input)
+        val rxInputConjunctionModule = modules.filterValues { "rx" in it.destinationModules }.values.single()
+        // my input had lv as conjunction module that outputs into rx. Might not work if your input does not have the same
+        if (rxInputConjunctionModule !is Module.ConjunctionModule) error("input of rx must be conjunction module otherwise computation fails")
+        val rxInputModules = modules.filterValues { rxInputConjunctionModule.name in it.destinationModules }.map { it.key }
+        val history = generateSequence(Triple(modules, mapOf<String, List<Int>>(), 1)) { (state, history, round) ->
+            val nextHistory = history.toMutableMap()
+            Triple(state.simulateOneButtonPush { (from, _, pulse) ->
+                if (from in rxInputModules && pulse is Pulse.HighPulse) {
+                    nextHistory[from] = (nextHistory[from] ?: emptyList()) + round
+                }
+            }, nextHistory, round + 1)
+        }.first { (_, history) ->
+            history.size == rxInputModules.size && history.values.all { it.size >= 2 }
+        }.second
+        // in my input the first ping was cycle length
+        return lcm(history.map { it.value.first().toLong() })
     }
 }
 
