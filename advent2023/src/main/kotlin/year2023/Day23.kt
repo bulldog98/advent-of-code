@@ -53,26 +53,31 @@ object Day23 : AdventDay(2023, 23) {
             }
         }
 
+    private fun Graph<Point2D>.computeHelperMap(
+        splits: List<Point2D>,
+        start: Point2D,
+        destination: Point2D,
+        newNodes: List<Point2D>
+    ) = (splits + start).associateWith { previous ->
+        neighborsOf(previous).map {
+            var cur = it
+            val visited = mutableSetOf(cur, previous)
+            do {
+                val neighbors = neighborsOf(cur)
+                cur = neighbors.single { n -> n !in visited || n == destination }
+                visited += cur
+            } while (cur !in newNodes)
+            it to cur to visited.size - 1
+        }
+    }
+
     override fun part1(input: List<String>): Int {
         val destination = Point2D(input[0].length - 2, input.size - 1)
         val start = Point2D(1, 0)
         val graph = input.buildGraph()
 
         val splits = graph.nodes.filter { graph.neighborsOf(it).filter { p -> input[p] in "^v<>" }.size == 2 }
-        val newNodes = splits + start + destination
-        val help = (splits + start).associateWith { previous ->
-            graph.neighborsOf(previous).map {
-                var cur = it
-                val visited = mutableSetOf(cur, previous)
-                do {
-                    val neighbors = graph.neighborsOf(cur)
-                    if (neighbors == listOf(destination)) break
-                    cur = neighbors.single { n -> n !in visited || n == destination }
-                    visited += cur
-                } while (cur !in newNodes)
-                it to cur to visited.size - 1
-            }
-        }
+        val help = graph.computeHelperMap(splits, start, destination, splits + start + destination)
 
         return help.pathsFrom(start, destination).max()
     }
@@ -83,19 +88,7 @@ object Day23 : AdventDay(2023, 23) {
         val graph = input.buildGraph(true)
 
         val splits = graph.nodes.filter { graph.neighborsOf(it).filter { p -> input[p] in "^v<>" }.size >= 2 }
-        val newNodes = splits + start + destination
-        val help = (splits + start).associateWith { previous ->
-            graph.neighborsOf(previous).map {
-                var cur = it
-                val visited = mutableSetOf(cur, previous)
-                do {
-                    val neighbors = graph.neighborsOf(cur)
-                    cur = neighbors.single { n -> n !in visited || n == destination }
-                    visited += cur
-                } while (cur !in newNodes)
-                it to cur to visited.size - 1
-            }
-        }
+        val help = graph.computeHelperMap(splits, start, destination, splits + start + destination)
 
         return help.pathsFrom(start, destination).max()
     }
