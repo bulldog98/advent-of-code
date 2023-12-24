@@ -2,6 +2,15 @@ package year2023
 
 import AdventDay
 import Point3D
+import io.ksmt.KContext
+import io.ksmt.expr.KBitVec64Value
+import io.ksmt.expr.KExpr
+import io.ksmt.solver.KSolverStatus
+import io.ksmt.solver.z3.KZ3Solver
+import io.ksmt.sort.KBvSort
+import io.ksmt.utils.getValue
+import io.ksmt.utils.mkConst
+import kotlin.time.Duration.Companion.seconds
 
 object Day24: AdventDay(2023, 24) {
     data class Line(val m: Double, val c: Double) {
@@ -54,7 +63,38 @@ object Day24: AdventDay(2023, 24) {
     }
 
     override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
+
+        val pairs = input.map { HailStone.of(it) }
+        return with(KContext()) {
+            operator fun <T: KBvSort> KExpr<T>.times(other: KExpr<T>): KExpr<T> = mkBvMulExpr(this, other)
+            operator fun <T: KBvSort> KExpr<T>.plus(other: KExpr<T>): KExpr<T> = mkBvAddExpr(this, other)
+            operator fun <T: KBvSort> KExpr<T>.times(other: Long): KExpr<T> = times(mkBv(other, sort))
+            operator fun <T: KBvSort> KExpr<T>.plus(other: Long): KExpr<T> = plus(mkBv(other, sort))
+
+            val x by bv64Sort
+            val y by bv64Sort
+            val z by bv64Sort
+            val vX by bv64Sort
+            val vY by bv64Sort
+            val vZ by bv64Sort
+
+            fun KZ3Solver.addConstrainsFor(hailStoneNumber: Int, hailStone: HailStone) {
+                val t = bv64Sort.mkConst("t${hailStoneNumber}")
+                assert(mkBvSignedGreaterOrEqualExpr(t, mkBv(0L)))
+                assert((x + (vX * t)) eq (t * hailStone.velocity.x) + hailStone.initialPosition.x)
+                assert((y + (vY * t)) eq (t * hailStone.velocity.y) + hailStone.initialPosition.y)
+                assert((z + (vZ * t)) eq (t * hailStone.velocity.z) + hailStone.initialPosition.z)
+            }
+
+            KZ3Solver(this).use { solver ->
+                // for my input the first 3 were not enough
+                pairs.take(4).forEachIndexed(solver::addConstrainsFor)
+                solver.check(timeout = 15.seconds).let {
+                    require(it == KSolverStatus.SAT) { "$it" }
+                }
+                (solver.model().eval(x + y + z) as KBitVec64Value).longValue
+            }
+        }
     }
 }
 
