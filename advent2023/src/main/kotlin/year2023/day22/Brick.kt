@@ -1,14 +1,14 @@
 package year2023.day22
 
 import Point3D
-import helper.numbers.parseAllInts
+import helper.numbers.toAllLongs
 
 data class Brick(val points: List<Point3D>, val supportedBy: List<Brick> = emptyList()) {
     val supported: Boolean
-        get() = supportedBy.isNotEmpty() || points.first().z == 1
+        get() = supportedBy.isNotEmpty() || points.first().z == 1L
 
     fun isSupportedWithOutBricks(other: Brick): Boolean =
-        points.first().z == 1 || (supportedBy - other).isNotEmpty()
+        points.first().z == 1L || (supportedBy - other).isNotEmpty()
 
     companion object {
         private val down = Point3D(0, 0, -1)
@@ -16,7 +16,7 @@ data class Brick(val points: List<Point3D>, val supportedBy: List<Brick> = empty
         private fun String.parseBrickPieces(): Brick {
             val (left, right) = split("~")
                 .map {
-                    it.parseAllInts()
+                    it.toAllLongs()
                         .toList()
                         .let { (x, y, z) -> Point3D(x, y, z) }
                 }
