@@ -53,9 +53,7 @@ object Day25 : AdventDay(2023, 25) {
         error("found no solution")
     }
 
-    override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
-    }
+    override fun part2(input: List<String>): Int = 1 // nothing to do only click on button
 }
 
 fun main() = Day25.run()
