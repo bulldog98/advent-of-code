@@ -30,7 +30,7 @@ subprojects {
 
         dependencies {
             implementation(project(":common"))
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
         }
     }
 
