@@ -1,4 +1,4 @@
-val ktorVersion by extra { "2.3.6" }
+val ktorVersion by extra { "3.0.1" }
 val coroutinesVersion by extra { "1.7.3" }
 
 plugins {
