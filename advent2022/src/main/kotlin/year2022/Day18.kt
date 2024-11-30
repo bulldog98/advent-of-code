@@ -42,7 +42,7 @@ class Day18 : AdventDay(2022, 18) {
     override fun part1(input: List<String>): Int {
         val lavaDroplets = input.map {
             it.split(",").let { (x, y, z) ->
-                Point3D(x.toInt(), y.toInt(), z.toInt())
+                Point3D(x.toLong(), y.toLong(), z.toLong())
             }
         }.toSet()
         return lavaDroplets.sumOf { it.neighbors.count { n -> n !in lavaDroplets } }
