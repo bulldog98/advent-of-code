@@ -2,10 +2,10 @@ val ktorVersion by extra { "2.3.6" }
 val coroutinesVersion by extra { "1.7.3" }
 
 plugins {
-    kotlin("jvm") version "1.9.21"
+    kotlin("jvm") version "2.1.0"
     @Suppress("SpellCheckingInspection")
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.9.21"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.21"
+    id("org.jetbrains.kotlin.plugin.allopen") version "2.1.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.0"
     id("org.jetbrains.kotlinx.benchmark") version "0.4.9"
 }
 
@@ -35,7 +35,7 @@ subprojects {
     }
 
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.21")
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
