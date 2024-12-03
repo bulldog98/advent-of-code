@@ -11,12 +11,13 @@ object Day03 : AdventDay(2024, 3) {
         PARSE_MULTIPLICATIONS.toRegex()
             .findAll(input.joinToString(""))
             .sumOf {
-                it.groupValues[1].toLong() * it.groupValues[2].toLong()
+                val (x, y) = it.destructured
+                x.toLong() * y.toLong()
             }
 
     override fun part2(input: List<String>): Long {
         val allInstructions = input.joinToString("")
-        val instructionsToComplete = buildList<String> {
+        val instructionsToComplete = buildList {
             var rest = allInstructions
             while (rest.isNotEmpty()) {
                 val newInstructions = rest.split(DO_NOT_INSTRUCTION)[0]
@@ -29,7 +30,8 @@ object Day03 : AdventDay(2024, 3) {
         return PARSE_MULTIPLICATIONS.toRegex()
             .findAll(instructionsToComplete.joinToString(""))
             .sumOf {
-                it.groupValues[1].toLong() * it.groupValues[2].toLong()
+                val (x, y) = it.destructured
+                x.toLong() * y.toLong()
             }
     }
 }
