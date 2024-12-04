@@ -43,8 +43,30 @@ object Day04 : AdventDay(2024, 4) {
         }
     }
 
-    override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
+    override fun part2(input: List<String>): Long {
+        val field = buildMap {
+            input.forEachIndexed { y, it ->
+                it.forEachIndexed { x, c ->
+                    if (c in xmasChars) {
+                        put(Point2D(x, y), c)
+                    }
+                }
+            }
+        }
+
+        val missingLetters = setOf('M', 'S')
+        return field.entries.sumOf { (p, c) ->
+            if (c == 'A') {
+                val upperLeft = field[p + Point2D.LEFT + Point2D.UP]
+                val downLeft = field[p + Point2D.LEFT + Point2D.DOWN]
+                val upperRight = field[p + Point2D.RIGHT + Point2D.UP]
+                val downRight = field[p + Point2D.RIGHT + Point2D.DOWN]
+                if (setOf(upperRight, downLeft) == missingLetters && setOf(upperLeft, downRight) == missingLetters) {
+                    return@sumOf 1L
+                }
+            }
+            return@sumOf 0L
+        }
     }
 }
 
