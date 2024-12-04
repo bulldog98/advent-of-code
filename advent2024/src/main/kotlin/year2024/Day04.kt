@@ -11,61 +11,47 @@ fun Point2D.moveInDirection(direction: Point2D, times: Int) = (0..<times).map {
     this + (it * direction)
 }
 
-fun Point2D.computeWordDirections(): Set<List<Point2D>> = buildSet {
-    add(moveInDirection(Point2D.RIGHT, 4))
-    add(moveInDirection(Point2D.LEFT, 4))
-    add(moveInDirection(Point2D.UP, 4))
-    add(moveInDirection(Point2D.DOWN, 4))
-    add(moveInDirection(Point2D.UP + Point2D.LEFT, 4))
-    add(moveInDirection(Point2D.UP + Point2D.RIGHT, 4))
-    add(moveInDirection(Point2D.DOWN + Point2D.LEFT, 4))
-    add(moveInDirection(Point2D.DOWN + Point2D.RIGHT, 4))
+fun Point2D.computeWordDirections(): Set<List<Point2D>> = setOf(
+    moveInDirection(Point2D.RIGHT, 4),
+    moveInDirection(Point2D.LEFT, 4),
+    moveInDirection(Point2D.UP, 4),
+    moveInDirection(Point2D.DOWN, 4),
+    moveInDirection(Point2D.UP + Point2D.LEFT, 4),
+    moveInDirection(Point2D.UP + Point2D.RIGHT, 4),
+    moveInDirection(Point2D.DOWN + Point2D.LEFT, 4),
+    moveInDirection(Point2D.DOWN + Point2D.RIGHT, 4),
+)
+
+fun List<String>.buildXMasField() = buildMap {
+    forEachIndexed { y, it ->
+        it.forEachIndexed { x, c ->
+            if (c in xmasChars) {
+                put(Point2D(x, y), c)
+            }
+        }
+    }
 }
 
 object Day04 : AdventDay(2024, 4) {
-    override fun part1(input: List<String>): Long {
-        val field = buildMap {
-            input.forEachIndexed { y, it ->
-                it.forEachIndexed { x, c ->
-                    if (c in xmasChars) {
-                        put(Point2D(x, y), c)
-                    }
-                }
+    override fun part1(input: List<String>): Int {
+        val field = input.buildXMasField()
+        return field.entries.filter { (_, c) -> c == 'X' }.sumOf { (p, _) ->
+            p.computeWordDirections().count {
+                it.map { p -> field[p] } == "XMAS".toList()
             }
-        }
-        return field.entries.sumOf { (p, c) ->
-            if (c == 'X') {
-                return@sumOf p.computeWordDirections().count {
-                    it.map { p -> field[p] } == "XMAS".toList()
-                }.toLong()
-            }
-            return@sumOf 0L
         }
     }
 
-    override fun part2(input: List<String>): Long {
-        val field = buildMap {
-            input.forEachIndexed { y, it ->
-                it.forEachIndexed { x, c ->
-                    if (c in xmasChars) {
-                        put(Point2D(x, y), c)
-                    }
-                }
-            }
-        }
+    override fun part2(input: List<String>): Int {
+        val field = input.buildXMasField()
 
         val missingLetters = setOf('M', 'S')
-        return field.entries.sumOf { (p, c) ->
-            if (c == 'A') {
-                val upperLeft = field[p + Point2D.LEFT + Point2D.UP]
-                val downLeft = field[p + Point2D.LEFT + Point2D.DOWN]
-                val upperRight = field[p + Point2D.RIGHT + Point2D.UP]
-                val downRight = field[p + Point2D.RIGHT + Point2D.DOWN]
-                if (setOf(upperRight, downLeft) == missingLetters && setOf(upperLeft, downRight) == missingLetters) {
-                    return@sumOf 1L
-                }
-            }
-            return@sumOf 0L
+        return field.entries.filter { (_, c) -> c == 'A' }.count { (p, _) ->
+            val upperLeft = field[p + Point2D.LEFT + Point2D.UP]
+            val downLeft = field[p + Point2D.LEFT + Point2D.DOWN]
+            val upperRight = field[p + Point2D.RIGHT + Point2D.UP]
+            val downRight = field[p + Point2D.RIGHT + Point2D.DOWN]
+            setOf(upperRight, downLeft) == missingLetters && setOf(upperLeft, downRight) == missingLetters
         }
     }
 }
