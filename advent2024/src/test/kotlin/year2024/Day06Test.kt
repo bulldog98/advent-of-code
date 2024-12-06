@@ -8,4 +8,7 @@ class Day06Test {
 
     @Test
     fun part1() = assertEquals(41, day.testPart1())
+
+    @Test
+    fun part2() = assertEquals(6, day.testPart2())
 }
