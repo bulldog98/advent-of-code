@@ -35,16 +35,17 @@ object Day06 : AdventDay(2024, 6) {
     override fun part2(input: List<String>): Int {
         val barriers = input.findAllPositionsOf('#')
         val startPosition = input.findAllPositionsOf('^').first()
-        val maxX = input[0].length - 1
-        val maxY = input.size - 1
+        val maxX = input[0].length.toLong() - 1
+        val maxY = input.size.toLong() - 1
 
-        return (0..maxX).sumOf { x ->
-            (0..maxY).count { y ->
-                if (Point2D(x, y) in barriers)
-                    return@count false
+        // only points that would be visited anyway are can result in a hit barrier
+        return (startPosition to Point2D.UP).explore(maxX, maxY, barriers)
+            .map { (pos, _) -> pos }
+            .toSet()
+            .count { additionalBarrier ->
                 val visited = mutableSetOf(startPosition to Point2D.UP)
-                (startPosition to Point2D.UP).explore(maxX.toLong(), maxY.toLong(), barriers + Point2D(x, y))
-                    .take(maxX * maxY).drop(1).forEach {
+                (startPosition to Point2D.UP).explore(maxX, maxY, barriers + additionalBarrier)
+                    .take((maxX * maxY).toInt()).drop(1).forEach {
                         if (it in visited) {
                             return@count true
                         }
@@ -52,7 +53,6 @@ object Day06 : AdventDay(2024, 6) {
                     }
                 return@count false
             }
-        }
     }
 }
 
