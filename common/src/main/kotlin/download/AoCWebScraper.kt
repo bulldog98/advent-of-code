@@ -10,7 +10,11 @@ import io.ktor.http.*
 import io.ktor.utils.io.core.*
 
 // https://github.com/CognitiveGear/AdventOfCode-Kotlin/blob/main/common/src/main/kotlin/Utils.kt
-class AoCWebScraper(private val sessionToken: String) : Closeable {
+class AoCWebScraper(
+    private val sessionToken: String,
+    private val repository: String,
+    private val email: String,
+) : Closeable {
 
     private val client = HttpClient(OkHttp) {
         install(ContentEncoding) {
@@ -26,7 +30,7 @@ class AoCWebScraper(private val sessionToken: String) : Closeable {
             headers {
                 append(
                     "User-Agent",
-                    "github.com/CognitiveGear/AdventOfCode-Kotlin by cogntive.gear@gmail.com"
+                    "$repository by $email"
                 )
                 append(
                     "cookie",

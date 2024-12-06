@@ -14,6 +14,20 @@ fun inputFile(year: Int, day: Int, location: File, suffix: String = ""): File =
 
 private operator fun File.plus(s: String): File = File(this, s)
 
+private fun readFile(location: File, fileName: String): String {
+    val tokenFile = location + fileName
+    if (!tokenFile.exists()) {
+        throw FileNotFoundException("You don't have a day input, but you don't have a $fileName either.")
+    }
+    return tokenFile.readText()
+}
+
+private fun createScraper(location: File) = AoCWebScraper(
+    readFile(location, "sessionToken.txt"),
+    readFile(location, "repository.txt"),
+    readFile(location, "contactEmail.txt")
+)
+
 suspend fun ensureInputExists(year: Int, day: Int, location: File, suffix: String = ""): File {
     val yearFolder = File(location, year.asDoubleDigit)
     if (!yearFolder.exists()) yearFolder.mkdir()
@@ -21,13 +35,8 @@ suspend fun ensureInputExists(year: Int, day: Int, location: File, suffix: Strin
     if (inputFile.exists()) {
         return inputFile
     }
-    val tokenFile = location + "sessionToken.txt"
-    if (!tokenFile.exists()) {
-        throw FileNotFoundException("You don't have a day input, but you don't have a sessionToken.txt either.")
-    }
-    val token = tokenFile.readText()
 
-    val scraper = AoCWebScraper(token)
+    val scraper = createScraper(location)
     val data = scraper.use {
         it.grabInput(year, day)
     }
