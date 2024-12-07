@@ -11,16 +11,16 @@ data class Equation(val result: Long, val numbers: List<Long>) {
     }
 }
 
-fun Equation.isFeasible(allOperatorsApplied: (Pair<Long, Long>) -> List<Long>): Boolean {
-    if (numbers.size == 2) return allOperatorsApplied(numbers[0] to numbers[1]).any { it == result }
-    return allOperatorsApplied(numbers[0] to numbers[1]).map { Equation(result, listOf(it) + numbers.drop(2)) }
+fun Equation.isFeasible(allOperatorsApplied: (Long, Long) -> List<Long>): Boolean {
+    if (numbers.size == 2) return allOperatorsApplied(numbers[0], numbers[1]).any { it == result }
+    return allOperatorsApplied(numbers[0], numbers[1]).map { Equation(result, listOf(it) + numbers.drop(2)) }
         .any { it.isFeasible(allOperatorsApplied) }
 }
 
 object Day07 : AdventDay(2024, 7) {
     override fun part1(input: List<String>): Long {
         val equations = input.map(Equation::parse)
-        return equations.filter { it.isFeasible { (a, b) ->
+        return equations.filter { it.isFeasible { a, b ->
             listOf(
                 a + b,
                 a * b,
@@ -32,7 +32,7 @@ object Day07 : AdventDay(2024, 7) {
 
     override fun part2(input: List<String>): Long {
         val equations = input.map(Equation::parse)
-        return equations.filter { it.isFeasible { (a, b) ->
+        return equations.filter { it.isFeasible { a, b ->
             listOf(
                 a + b,
                 a * b,
