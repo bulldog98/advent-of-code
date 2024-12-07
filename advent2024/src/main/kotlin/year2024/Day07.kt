@@ -13,6 +13,8 @@ data class Equation(val result: Long, val numbers: List<Long>) {
 
 fun Equation.isFeasible(allOperatorsApplied: (Long, Long) -> List<Long>): Boolean {
     if (numbers.size == 2) return allOperatorsApplied(numbers[0], numbers[1]).any { it == result }
+    // there are no negative numbers
+    if (numbers[0] > result) return false
     return allOperatorsApplied(numbers[0], numbers[1]).map { Equation(result, listOf(it) + numbers.drop(2)) }
         .any { it.isFeasible(allOperatorsApplied) }
 }
