@@ -10,7 +10,7 @@ class Day08Test {
     @Test
     fun helper() = assertEquals(
         listOf(Point2D(7, 7), Point2D(10, 10)),
-        computeAntinodes(Point2D(8, 8), Point2D(9,9))
+        computeAntinodes(Point2D(8, 8), Point2D(9,9), 0..12, 0..12)
     )
 
     @Test

@@ -7,8 +7,20 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-fun computeAntinodes(antennaA: Point2D, antennaB: Point2D): List<Point2D> {
-    if (antennaA.x > antennaB.x) return computeAntinodes(antennaB, antennaA)
+fun pairings(list: List<Point2D>) = buildList {
+    if (list.isEmpty() || list.size == 1)
+        return@buildList
+    list.forEachIndexed { index, a ->
+        list.forEachIndexed { index2, b ->
+            if (index2 > index) {
+                add(a to b)
+            }
+        }
+    }
+}
+
+fun computeAntinodes(antennaA: Point2D, antennaB: Point2D, xRange: IntRange, yRange: IntRange): List<Point2D> {
+    if (antennaA.x > antennaB.x) return computeAntinodes(antennaB, antennaA, xRange, yRange)
     // antennaA is left
     val minY = min(antennaA.y, antennaB.y)
     val maxY = max(antennaA.y, antennaB.y)
@@ -26,27 +38,12 @@ fun computeAntinodes(antennaA: Point2D, antennaB: Point2D): List<Point2D> {
             Point2D(antennaB.x + xDistance, antennaB.y + yDistance)
         )
         else -> error("should not happen")
-    }
+    }.filter { (x, y) -> x in xRange && y in yRange }
 }
 
-fun pairings(list: List<Point2D>) = buildList {
-    if (list.isEmpty() || list.size == 1)
-        return@buildList
-    list.forEachIndexed { index, a ->
-        list.forEachIndexed { index2, b ->
-            if (index2 > index) {
-                add(a to b)
-            }
-        }
-    }
-}
-
-fun Point2D.isInLine(b: Point2D): Boolean =
-    (b.y - y) % (b.x - x) == 0L && (x * b.y - b.x * y) % (b.x - x) == 0L
-
-fun computeAntinodesWithHarmonies(antennaA: Point2D, antennaB: Point2D, xRange: IntRange): List<Point2D> =
+fun computeAntinodesWithHarmonies(antennaA: Point2D, antennaB: Point2D, xRange: IntRange, yRange: IntRange): List<Point2D> =
     if (antennaA.x > antennaB.x)
-        computeAntinodesWithHarmonies(antennaB, antennaA, xRange)
+        computeAntinodesWithHarmonies(antennaB, antennaA, xRange, yRange)
     else buildList {
         val mTop = antennaB.y - antennaA.y
         val cTop = antennaB.x * antennaA.y - antennaA.x * antennaB.y
@@ -57,43 +54,32 @@ fun computeAntinodesWithHarmonies(antennaA: Point2D, antennaB: Point2D, xRange: 
                     (x * mTop + cTop) % mBottom == 0L
                 }
                 .map { x -> Point2D(x, ((x*mTop + cTop) / mBottom).toInt()) }
+                .filter { (_, y) -> y in yRange }
         )
     }
 
-object Day08 : AdventDay(2024, 8) {
-    override fun part1(input: List<String>): Int {
-        val frequencies = input.flatMap { it.toSet() }.toSet() - '.'
-        val xRange = input[0].indices
-        val yRange = input.indices
-        val antinodes = buildSet {
-            frequencies.forEach { c ->
-                val antennas = input.findAllPositionsOf(c)
-                if (antennas.size > 1) {
-                    pairings(antennas.toList()).forEach { (a, b) ->
-                        addAll(computeAntinodes(a, b).filter { (x, y) -> x in xRange && y in yRange })
-                    }
+fun List<String>.findAntinodeWithAntinodeComputation(
+    computation: (antennaA: Point2D, antennaB: Point2D, xRange: IntRange, yRange: IntRange) -> Collection<Point2D>
+): Int {
+    val frequencies = flatMap { it.toSet() }.toSet() - '.'
+    val xRange = this[0].indices
+    val yRange = indices
+    return buildSet {
+        frequencies.forEach { c ->
+            val antennas = findAllPositionsOf(c)
+            if (antennas.size > 1) {
+                pairings(antennas.toList()).forEach { (a, b) ->
+                    this.addAll(computation(a, b, xRange, yRange))
                 }
             }
         }
-        return antinodes.size
-    }
+    }.size
+}
 
-    override fun part2(input: List<String>): Int {
-        val frequencies = input.flatMap { it.toSet() }.toSet() - '.'
-        val xRange = input[0].indices
-        val yRange = input.indices
-        val antinodes = buildSet {
-            frequencies.forEach { c ->
-                val antennas = input.findAllPositionsOf(c)
-                if (antennas.size > 1) {
-                    pairings(antennas.toList()).forEach { (a, b) ->
-                        addAll(computeAntinodesWithHarmonies(a, b, xRange).filter { (_, y) -> y in yRange })
-                    }
-                }
-            }
-        }
-        return antinodes.size
-    }
+object Day08 : AdventDay(2024, 8) {
+    override fun part1(input: List<String>) = input.findAntinodeWithAntinodeComputation(::computeAntinodes)
+
+    override fun part2(input: List<String>) = input.findAntinodeWithAntinodeComputation(::computeAntinodesWithHarmonies)
 }
 
 fun main() = Day08.run()
