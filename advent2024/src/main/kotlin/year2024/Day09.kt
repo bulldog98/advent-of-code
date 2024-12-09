@@ -25,15 +25,26 @@ fun List<Block>.initialMemory(): Array<Block?> = arrayOfNulls<Block?>(sumOf { it
     }
 }
 
+fun Array<Block?>.checkSum() = foldIndexed(0L) { index, acc, block ->
+    if (block is OccupiedBlock)
+        acc + index * block.id
+    else
+        acc
+}
+
+fun List<Block>.checkSum() = initialMemory().checkSum()
+
+fun String.toMemory() = chunked(2)
+    .map { it.toCharArray() }
+    .flatMapIndexed { id, oneOrTwoDigits ->
+        listOf(
+            OccupiedBlock(id, oneOrTwoDigits[0].digitToInt()),
+            FreeBlock(oneOrTwoDigits.getOrElse(1) { '0' }.digitToInt())
+        ) }
+
 object Day09 : AdventDay(2024, 9){
     override fun part1(input: List<String>): Long {
-        val blocks = input[0].chunked(2)
-            .map { it.toCharArray() }
-            .flatMapIndexed { id, oneOrTwoDigits ->
-                listOf(
-                    OccupiedBlock(id, oneOrTwoDigits[0].digitToInt()),
-                    FreeBlock(oneOrTwoDigits.getOrElse(1) { '0' }.digitToInt())
-                ) }
+        val blocks = input[0].toMemory()
         val memory = blocks.initialMemory()
 
         while (true) {
@@ -44,20 +55,11 @@ object Day09 : AdventDay(2024, 9){
             memory[firstFreeBlock] = memory[blockToMove]
             memory[blockToMove] = freeBlock
         }
-        println("endloop")
-        return memory.filterIsInstance<OccupiedBlock>().foldIndexed(0L) { index, acc, block ->
-            acc + index * block.id
-        }
+        return memory.checkSum()
     }
 
     override fun part2(input: List<String>): Long {
-        val blocks = input[0].chunked(2)
-            .map { it.toCharArray() }
-            .flatMapIndexed { id, oneOrTwoDigits ->
-                listOf(
-                    OccupiedBlock(id, oneOrTwoDigits[0].digitToInt()),
-                    FreeBlock(oneOrTwoDigits.getOrElse(1) { '0' }.digitToInt())
-                ) }
+        val blocks = input[0].toMemory()
         val maxId = blocks.filterIsInstance<OccupiedBlock>().maxOf { it.id }
         return (maxId downTo 0).fold(blocks) { currentBlocks, id ->
             val blockToMove = currentBlocks.filterIsInstance<OccupiedBlock>().first { it.id == id }
@@ -75,12 +77,7 @@ object Day09 : AdventDay(2024, 9){
                     currentBlocks.subList(firstFreeStoragePosition + 1, blockToMovePosition) +
                     FreeBlock(blockToMove.size) +
                     currentBlocks.subList(blockToMovePosition + 1, currentBlocks.size)
-        }.initialMemory().foldIndexed(0L) { index, acc, block ->
-            if (block is OccupiedBlock)
-                acc + index * block.id
-            else
-                acc
-        }
+        }.checkSum()
     }
 }
 
