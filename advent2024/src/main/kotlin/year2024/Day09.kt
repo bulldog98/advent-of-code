@@ -50,8 +50,37 @@ object Day09 : AdventDay(2024, 9){
         }
     }
 
-    override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
+    override fun part2(input: List<String>): Long {
+        val blocks = input[0].chunked(2)
+            .map { it.toCharArray() }
+            .flatMapIndexed { id, oneOrTwoDigits ->
+                listOf(
+                    OccupiedBlock(id, oneOrTwoDigits[0].digitToInt()),
+                    FreeBlock(oneOrTwoDigits.getOrElse(1) { '0' }.digitToInt())
+                ) }
+        val maxId = blocks.filterIsInstance<OccupiedBlock>().maxOf { it.id }
+        return (maxId downTo 0).fold(blocks) { currentBlocks, id ->
+            val blockToMove = currentBlocks.filterIsInstance<OccupiedBlock>().first { it.id == id }
+            val blockToMovePosition = currentBlocks.indexOf(blockToMove)
+            val firstFreeStorage = currentBlocks.filterIsInstance<FreeBlock>().firstOrNull {
+                it.size >= blockToMove.size
+            } ?: return@fold currentBlocks
+
+            val firstFreeStoragePosition = currentBlocks.indexOf(firstFreeStorage)
+            if (firstFreeStoragePosition > blockToMovePosition)
+                currentBlocks
+            else
+                currentBlocks.subList(0, firstFreeStoragePosition) +
+                    blockToMove + FreeBlock(firstFreeStorage.size - blockToMove.size) +
+                    currentBlocks.subList(firstFreeStoragePosition + 1, blockToMovePosition) +
+                    FreeBlock(blockToMove.size) +
+                    currentBlocks.subList(blockToMovePosition + 1, currentBlocks.size)
+        }.initialMemory().foldIndexed(0L) { index, acc, block ->
+            if (block is OccupiedBlock)
+                acc + index * block.id
+            else
+                acc
+        }
     }
 }
 
