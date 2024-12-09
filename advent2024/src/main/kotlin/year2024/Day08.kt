@@ -4,7 +4,6 @@ import AdventDay
 import Point2D
 import collections.pairings
 import findAllPositionsOf
-import kotlin.math.abs
 
 // use typealias so that the parameters have names
 typealias Computation = (antennaA: Point2D, antennaB: Point2D, xRange: IntRange, yRange: IntRange) -> Collection<Point2D>
@@ -27,23 +26,10 @@ sealed interface AntiNodeComputation : Computation {
 
 data object WithoutHarmonies : AntiNodeComputation {
     override fun invoke(antennaA: Point2D, antennaB: Point2D, xRange: IntRange, yRange: IntRange): Collection<Point2D> {
-        if (antennaA.x > antennaB.x) return invoke(antennaB, antennaA, xRange, yRange)
-        val xDistance = abs(antennaB.x - antennaA.x)
-        val yDistance = abs(antennaB.y - antennaA.y)
-        return when {
-            // line goes down
-            antennaA.y > antennaB.y -> listOf(
-                Point2D(antennaA.x - xDistance, antennaA.y + yDistance),
-                Point2D(antennaB.x + xDistance, antennaB.y - yDistance)
-            )
-            // line goes up
-            else -> listOf(
-                Point2D(antennaA.x - xDistance, antennaA.y - yDistance),
-                Point2D(antennaB.x + xDistance, antennaB.y + yDistance)
-            )
-        }.filter { (x, y) ->
-            x in xRange && y in yRange
-        }
+        return listOf(
+            antennaA + 2 * (antennaB - antennaA),
+            antennaB + 2 * (antennaA - antennaB),
+        ).filter { it.x in xRange && it.y in yRange }
     }
 }
 
