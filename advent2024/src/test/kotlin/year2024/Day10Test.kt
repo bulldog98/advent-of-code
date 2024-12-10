@@ -7,4 +7,7 @@ class Day10Test {
     private val day = Day10
     @Test
     fun part1() = assertEquals(36L, day.testPart1())
+
+    @Test
+    fun part2() = assertEquals(81L, day.testPart2())
 }
