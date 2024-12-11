@@ -15,19 +15,26 @@ fun Long.oneStep(): List<Long> = when {
     else -> listOf(this * 2024)
 }
 
+data class CacheEntry(val stone: Long, val step: Int, val limit: Int)
+
 object Day11 : AdventDay(2024, 11) {
-    override fun part1(input: List<String>): Int {
-        val startingStones = input[0].toAllLongs().toList()
-        return generateSequence(startingStones) {
-            it.flatMap { stone -> stone.oneStep() }
-        }
-            .drop(25)
-            .first()
-            .size
+    private val cache = mutableMapOf<CacheEntry, Long>()
+    private fun countStones(stone: Long, round: Int, limit: Int): Long = cache.getOrPut(CacheEntry(stone, round, limit)) {
+        if (round == limit) 1 else stone.oneStep().sumOf { countStones(it, round + 1, limit) }
     }
 
-    override fun part2(input: List<String>): Any {
-        TODO("Not yet implemented")
+    override fun part1(input: List<String>): Long {
+        val startingStones = input[0].toAllLongs()
+        return startingStones.sumOf {
+            countStones(it, 0, 25)
+        }
+    }
+
+    override fun part2(input: List<String>): Long {
+        val startingStones = input[0].toAllLongs()
+        return startingStones.sumOf {
+            countStones(it, 0, 75)
+        }
     }
 }
 
