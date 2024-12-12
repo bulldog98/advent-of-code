@@ -4,22 +4,24 @@ import AdventDay
 import Point2D
 import findAllPositionsOf
 
-fun List<Point2D>.splitInContinuousXParts() = buildList {
-    val base = this@splitInContinuousXParts.sortedBy { it.x }.toMutableList()
-    while (base.isNotEmpty()) {
-        val firstPart = mutableListOf(base.removeFirst())
-        while (firstPart.last().x + 1 == base.firstOrNull()?.x) {
-            firstPart += base.removeFirst()
-        }
-        add(firstPart)
-    }
+sealed interface Axis : (Point2D) -> Long
+data object XAxis : Axis {
+    override fun invoke(point: Point2D) = point.x
+}
+data object YAxis : Axis {
+    override fun invoke(point: Point2D) = point.y
 }
 
-fun List<Point2D>.splitInContinuousYParts() = buildList {
-    val base = this@splitInContinuousYParts.sortedBy { it.y }.toMutableList()
+fun Axis.rotate90Degrees() = when (this) {
+    XAxis -> YAxis
+    YAxis -> XAxis
+}
+
+fun List<Point2D>.splitInContinuousParts(axis: Axis) = buildList {
+    val base = this@splitInContinuousParts.sortedBy(axis::invoke).toMutableList()
     while (base.isNotEmpty()) {
         val firstPart = mutableListOf(base.removeFirst())
-        while (firstPart.last().y + 1 == base.firstOrNull()?.y) {
+        while (axis(firstPart.last()) + 1 == base.firstOrNull()?.let(axis::invoke)) {
             firstPart += base.removeFirst()
         }
         add(firstPart)
@@ -28,35 +30,24 @@ fun List<Point2D>.splitInContinuousYParts() = buildList {
 
 object Day12 : AdventDay(2024, 12) {
     data class Region(val plant: Char, val points: List<Point2D>) {
-        val area by lazy {
-            points.size.toLong()
-        }
+        val area = points.size.toLong()
         val perimeter by lazy {
             points.flatMap { it.cardinalNeighbors.filter { neighbor -> neighbor !in points } }.size.toLong()
         }
         val numberOfSides by lazy {
             val neighborHood = points.flatMap { it.cardinalNeighbors.filter { neighbor -> neighbor !in points } }.toSet()
-            val leftSides = neighborHood.filter { it + Point2D.RIGHT in points }
-                .groupBy { it.x }
-                .mapValues { it.value.splitInContinuousYParts() }
-                .values
-                .sumOf { it.size.toLong() }
-            val rightSides = neighborHood.filter { it + Point2D.LEFT in points }
-                .groupBy { it.x }
-                .mapValues { it.value.splitInContinuousYParts() }
-                .values
-                .sumOf { it.size.toLong() }
-            val upSides = neighborHood.filter { it + Point2D.DOWN in points }
-                .groupBy { it.y }
-                .mapValues { it.value.splitInContinuousXParts() }
-                .values
-                .sumOf { it.size.toLong() }
-            val downSides = neighborHood.filter { it + Point2D.UP in points }
-                .groupBy { it.y }
-                .mapValues { it.value.splitInContinuousXParts() }
-                .values
-                .sumOf { it.size.toLong() }
-            leftSides + rightSides + upSides + downSides
+            listOf(
+                Point2D.RIGHT   to XAxis,
+                Point2D.LEFT    to XAxis,
+                Point2D.UP      to YAxis,
+                Point2D.DOWN    to YAxis,
+            ).sumOf { (dir, axis) ->
+                neighborHood.filter { it + dir in points }
+                    .groupBy(axis)
+                    .mapValues { it.value.splitInContinuousParts(axis.rotate90Degrees()) }
+                    .values
+                    .sumOf { it.size.toLong() }
+            }
         }
     }
 
@@ -91,7 +82,7 @@ object Day12 : AdventDay(2024, 12) {
     }
 
     override fun part2(input: List<String>): Long = input.parseToRegions().sumOf {
-        println("${it.plant}: ${it.area} * ${it.numberOfSides}")
+        // println("${it.plant}: ${it.area} * ${it.numberOfSides}")
         it.area * it.numberOfSides
     }
 }
