@@ -10,5 +10,5 @@ class Day13Test {
     fun part1() = assertEquals(480L, day.testPart1())
 
     @Test
-    fun part2() = assertEquals((875318608908L).toBigInteger(), day.testPart2())
+    fun part2() = assertEquals((875318608908L), day.testPart2())
 }
