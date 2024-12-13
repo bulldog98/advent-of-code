@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     // core
-    implementation("io.ksmt:ksmt-core:0.5.6")
+    implementation("io.ksmt:ksmt-core:0.5.26")
     // z3 solver
-    implementation("io.ksmt:ksmt-z3:0.5.6")
+    implementation("io.ksmt:ksmt-z3:0.5.26")
 }
