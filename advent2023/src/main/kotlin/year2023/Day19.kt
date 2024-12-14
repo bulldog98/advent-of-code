@@ -3,6 +3,8 @@ package year2023
 import adventday.AdventDay
 import adventday.InputRepresentation
 import helper.numbers.parseAllInts
+import helper.pair.mapFirst
+import helper.pair.mapSecond
 import kotlin.math.max
 import kotlin.math.min
 
@@ -81,15 +83,13 @@ object Day19 : AdventDay(2023, 19) {
         }
     }
 
-    private fun List<String>.parse(): Pair<Map<String, Workflow>, List<State>> =
-        Pair(
-            takeWhile { it.isNotEmpty() }
-                .map { Workflow.of(it) }
+    private fun Pair<List<String>, List<String>>.parse(): Pair<Map<String, Workflow>, List<State>> =
+        mapFirst { lines ->
+            lines.map(Workflow::of)
                 .groupBy { it.name }
-                .mapValues { it.value.single() },
-            takeLastWhile { it.isNotEmpty() }
-                .map { State.of(it) }
-        )
+                .mapValues { it.value.single() }
+        }
+            .mapSecond { it.map(State::of) }
 
     // we want to produce emptyRang
     @Suppress("EmptyRange")
@@ -117,7 +117,7 @@ object Day19 : AdventDay(2023, 19) {
         }
 
     override fun part1(input: InputRepresentation): Int {
-        val (workflows, states) = input.parse()
+        val (workflows, states) = input.asTwoBlocks().parse()
         return states.sumOf {
             if (it.isAcceptedBy(workflows))
                 it.rating
@@ -127,7 +127,7 @@ object Day19 : AdventDay(2023, 19) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        val (workflows) = input.parse()
+        val (workflows) = input.asTwoBlocks().parse()
         val acceptedStates =
             generateSequence(listOf("in" to MetalPart.entries.associateWith { (1..4000) })) { currentPartition ->
                 currentPartition

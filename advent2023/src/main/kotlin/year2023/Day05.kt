@@ -48,10 +48,7 @@ fun LongRange.splitBy(mappings: List<Mapping>): List<LongRange> = when {
 
 object Day05 : AdventDay(2023, 5) {
     private fun List<String>.computeMappings() =
-        joinToString("\n")
-            .split("\n\n")
-            .drop(1)
-            .map(String::lines)
+        map(String::lines)
             .map { lines ->
                 lines.drop(1).map {
                     Mapping.of(it)
@@ -61,7 +58,7 @@ object Day05 : AdventDay(2023, 5) {
     override fun part1(input: InputRepresentation): Any {
         val seeds = NUMBERS_REGEX.findAll(input[0]).map { it.value.toLong() }.toList()
 
-        val mappings = input.computeMappings()
+        val mappings = input.asSplitByEmptyLine().drop(1).computeMappings()
         val res = mappings.fold(seeds) { last, mapping ->
             last.map { lastTypeNumber ->
                 mapping.firstNotNullOfOrNull { mapping ->
@@ -79,7 +76,7 @@ object Day05 : AdventDay(2023, 5) {
             .map { (start, size) -> (start until start + size) }
             .toList()
 
-        val mappings = input.computeMappings()
+        val mappings = input.asSplitByEmptyLine().drop(1).computeMappings()
 
         val res = mappings.fold(seedRanges) { last, mapping ->
             last.flatMap { range ->

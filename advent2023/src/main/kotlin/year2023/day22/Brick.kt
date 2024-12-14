@@ -45,9 +45,8 @@ data class Brick(val points: List<Point3D>, val supportedBy: List<Brick> = empty
         fun of(input: List<String>): List<Brick> =
             input
                 .map { it.parseBrickPieces() }
+                .sortedBy { it.points.first().z }
                 .let { bricks ->
-                    bricks.sortedBy { it.points.first().z }
-                }.let { bricks ->
                     recomputeSupports(bricks)
                 }
 

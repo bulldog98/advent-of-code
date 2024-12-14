@@ -1,9 +1,9 @@
 package year2023.day08
 
 data class Network(val leftRightOrder: String, val instructions: Map<String, Pair<String, String>>) {
-    constructor(input: List<String>): this(
-        input[0],
-        input.drop(2).associate { line ->
+    constructor(leftRightOrder: String, instructionLines: List<String>): this(
+        leftRightOrder,
+        instructionLines.associate { line ->
             val (node, left, right) = line.split("=", "(", ")", ",").filter { it.isNotBlank() }.map { it.trim() }
             node to (left to right)
         }
