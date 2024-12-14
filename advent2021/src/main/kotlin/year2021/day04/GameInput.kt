@@ -1,11 +1,15 @@
 package year2021.day04
 
+import adventday.InputRepresentation
+
 data class GameInput(
     val drawnNumbers: Sequence<Int>,
     val boards: List<Board>
 )
 
-fun List<String>.toGameInput() = GameInput(
-    drawnNumbers = this[0].splitToSequence(',').map { it.toInt() },
-    boards = this.drop(1).filter { it.isNotBlank() }.windowed(5, 5).map { it.toBoard() }
-)
+fun InputRepresentation.toGameInput() = asSplitByEmptyLine().let { blocks ->
+    GameInput(
+        drawnNumbers = blocks[0].splitToSequence(',').map { it.toInt() },
+        boards = blocks.drop(1).map(String::lines).map { it.toBoard() }
+    )
+}
