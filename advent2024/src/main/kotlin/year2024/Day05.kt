@@ -3,16 +3,15 @@ package year2024
 import adventday.AdventDay
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
+import helper.pair.mapFirst
+import helper.pair.mapSecond
 
-fun List<String>.getPageOrderRules(): List<Pair<Long, Long>> = takeWhile { it.isNotEmpty() }
-    .map { orderRule ->
+fun List<String>.getPageOrderRules(): List<Pair<Long, Long>> = map { orderRule ->
         val (a, b) = orderRule.split("|").map { it.toLong() }
         a to b
     }
 
-fun List<String>.getPageOrderings(): List<List<Long>> = dropWhile { it.isNotEmpty() }
-    .drop(1)
-    .map { it.toAllLongs().toList() }
+fun List<String>.getPageOrderings(): List<List<Long>> =map { it.toAllLongs().toList() }
 
 class PageOrderRuleComparator(private val pageOrderRules: List<Pair<Long, Long>>) : Comparator<Long> {
     override fun compare(x: Long?, y: Long?): Int = when {
@@ -30,10 +29,13 @@ private fun List<Long>.orderByRules(orderRules: List<Pair<Long, Long>>): List<Lo
     return this.sortedWith(pageOrderRuleComparator)
 }
 
+fun InputRepresentation.getPageOrderRulesAndOrdering() = asTwoBlocks()
+    .mapFirst { it.getPageOrderRules() }
+    .mapSecond { it.getPageOrderings() }
+
 object Day05 : AdventDay(2024, 5) {
     override fun part1(input: InputRepresentation): Long {
-        val orderRules = input.getPageOrderRules()
-        val orderings = input.getPageOrderings()
+        val (orderRules, orderings) = input.getPageOrderRulesAndOrdering()
 
         return orderings.filter {
             it.windowed(2).all { (a, b) ->
@@ -44,9 +46,8 @@ object Day05 : AdventDay(2024, 5) {
         }
     }
 
-    override fun part2(input: InputRepresentation): Any {
-        val orderRules = input.getPageOrderRules()
-        val orderings = input.getPageOrderings()
+    override fun part2(input: InputRepresentation): Long {
+        val (orderRules, orderings) = input.getPageOrderRulesAndOrdering()
 
         return orderings.filter {
             it.windowed(2).any { (a, b) ->

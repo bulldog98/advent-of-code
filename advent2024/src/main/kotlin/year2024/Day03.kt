@@ -10,14 +10,14 @@ private const val DO_INSTRUCTION = """do()"""
 object Day03 : AdventDay(2024, 3) {
     override fun part1(input: InputRepresentation): Long =
         PARSE_MULTIPLICATIONS.toRegex()
-            .findAll(input.joinToString(""))
+            .findAll(input.asText())
             .sumOf {
                 val (x, y) = it.destructured
                 x.toLong() * y.toLong()
             }
 
     override fun part2(input: InputRepresentation): Long {
-        val allInstructions = input.joinToString("")
+        val allInstructions = input.asText()
         val instructionsToComplete = buildList {
             var rest = allInstructions
             while (rest.isNotEmpty()) {
