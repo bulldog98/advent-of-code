@@ -1,42 +1,27 @@
 package year2021.day11
 
-import kotlin.collections.ArrayDeque
+import Point2D
 
-private typealias Coordinate = Pair<Int, Int>
-private typealias Board = Map<Coordinate, Int>
+private typealias Board = Map<Point2D, Int>
 
-private operator fun Coordinate.plus(other: Coordinate): Coordinate =
-    first + other.first to second + other.second
+private val directions = Point2D.ORIGIN.neighborHood
 
-private val directions = listOf(
-    -1 to -1, 0 to -1, 1 to -1,
-    -1 to  0,          1 to  0,
-    -1 to  1, 0 to  1, 1 to  1,
-)
+private val Board.maxX: Long
+    get() = keys.maxOf { it.x }
 
-private val Board.maxX: Int
-    get() = keys.maxOf { it.first }
-
-private val Board.maxY: Int
-    get() = keys.maxOf { it.second }
+private val Board.maxY: Long
+    get() = keys.maxOf { it.y }
 
 val Board.flashCount: Int
     get() = entries.count { it.value == 0 }
 
-private val Coordinate.surrounding: Collection<Coordinate>
+private val Point2D.surrounding: Collection<Point2D>
     get() = directions
         .map { this + it }
-        .filter { it.first >= 0 && it.second >= 0 }
-
-fun List<String>.parseBoard(): Board =
-    flatMapIndexed { y, row ->
-        row.mapIndexed { x, char ->
-            x to y to char.digitToInt()
-        }
-    }.associate { it }
+        .filter { it.x >= 0 && it.y >= 0 }
 
 fun Board.computeStep(): Board {
-    val flashed = mutableSetOf<Coordinate>()
+    val flashed = mutableSetOf<Point2D>()
     val workList = ArrayDeque(keys)
     val next = toMutableMap()
     while (workList.isNotEmpty()) {
@@ -48,7 +33,7 @@ fun Board.computeStep(): Board {
             flashed.add(coord)
             workList.addAll(
                 coord.surrounding
-                    .filter { it.first <= maxX && it.second <= maxY }
+                    .filter { it.x <= maxX && it.y <= maxY }
             )
         } else
             next[coord] = next[coord]!! + 1

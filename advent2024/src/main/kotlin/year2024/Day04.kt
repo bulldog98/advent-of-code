@@ -23,19 +23,9 @@ fun Point2D.computeWordDirections(): Set<List<Point2D>> = setOf(
     moveInDirection(Point2D.DOWN + Point2D.RIGHT, 4),
 )
 
-fun List<String>.buildXMasField() = buildMap {
-    forEachIndexed { y, it ->
-        it.forEachIndexed { x, c ->
-            if (c in xmasChars) {
-                put(Point2D(x, y), c)
-            }
-        }
-    }
-}
-
 object Day04 : AdventDay(2024, 4) {
     override fun part1(input: InputRepresentation): Int {
-        val field = input.buildXMasField()
+        val field = input.asCharMap { it in xmasChars }
         return field.entries.filter { (_, c) -> c == 'X' }.sumOf { (p, _) ->
             p.computeWordDirections().count {
                 it.map { p -> field[p] } == "XMAS".toList()
@@ -44,7 +34,7 @@ object Day04 : AdventDay(2024, 4) {
     }
 
     override fun part2(input: InputRepresentation): Int {
-        val field = input.buildXMasField()
+        val field = input.asCharMap { it in xmasChars }
 
         val missingLetters = setOf('M', 'S')
         return field.entries.filter { (_, c) -> c == 'A' }.count { (p, _) ->

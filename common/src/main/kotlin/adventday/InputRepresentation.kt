@@ -1,5 +1,6 @@
 package adventday
 
+import Point2D
 import helper.numbers.toAllLongs
 import helper.pair.mapFirst
 import helper.pair.mapSecond
@@ -31,6 +32,16 @@ class InputRepresentation(private val backingFile: BackingOperations): List<Stri
         .first()
         .mapFirst { it.lines() }
         .mapSecond { it.lines() }
+
+    fun asCharMap(validChar: (Char) -> Boolean = { true }) = buildMap {
+        forEachIndexed { y, it ->
+            it.forEachIndexed { x, c ->
+                if (validChar(c)) {
+                    put(Point2D(x, y), c)
+                }
+            }
+        }
+    }
 
     sealed interface BackingOperations {
         fun readText(): String

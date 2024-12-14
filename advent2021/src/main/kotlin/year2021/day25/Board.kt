@@ -1,6 +1,7 @@
 package year2021.day25
 
 import Point2D
+import adventday.InputRepresentation
 import helper.pair.mapFirst
 import helper.pair.mapSecond
 
@@ -54,18 +55,12 @@ data class Board(
         .simulateStepOf<FieldContent.SouthMovingSeaCucumberHerd>()
 
     companion object {
-        operator fun invoke(input: List<String>): Board {
+        operator fun invoke(input: InputRepresentation): Board {
             val maxY = input.size
             val maxX = input.maxOf { it.length }
             val map = input
-                .flatMapIndexed { y, row ->
-                    row.mapIndexedNotNull { x, char ->
-                        FieldContent(char)?.let { content ->
-                            Point2D(x = x, y = y) to content
-                        }
-                    }
-                }
-                .toMap()
+                .asCharMap { FieldContent(it) != null}
+                .mapValues { FieldContent(it.value) ?: error("should not happen") }
             return Board(map, Point2D(x = maxX, y = maxY))
         }
     }

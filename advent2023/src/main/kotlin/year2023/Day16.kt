@@ -106,18 +106,15 @@ object Day16 : AdventDay(2023, 16) {
 
     override fun part1(input: InputRepresentation): Any {
         val start = Beam(Point2D(0, 0), Point2D.RIGHT)
-        val map = input.flatMapIndexed { y, line ->
-            line.mapIndexed { x, c -> Point2D(x, y) to c }
-        }.associate { it }
+        val map = input.asCharMap()
         val floorMap = FloorMap(map).withBeam(start)
         // floorMap.prettyPrint()
         return floorMap.energizedTiles
     }
 
+    // Performance: takes ages
     override fun part2(input: InputRepresentation): Any {
-        val map = input.flatMapIndexed { y, line ->
-            line.mapIndexed { x, c -> Point2D(x, y) to c }
-        }.associate { it }
+        val map = input.asCharMap()
         val floorMap = FloorMap(map)
         val topStarts = floorMap.mapXBounds.map { Beam(Point2D(it, 0), Point2D.DOWN) }
         val leftStarts = floorMap.mapYBounds.map { Beam(Point2D(0, it), Point2D.RIGHT) }
