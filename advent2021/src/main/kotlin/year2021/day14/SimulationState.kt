@@ -7,7 +7,7 @@ data class SimulationState(
     val rules: List<Rule>,
     val afterStep: Int = 0
 ): () -> SimulationState, CharSequence by start {
-    constructor(input: List<String>) : this(input[0], input.drop(2).map(::Rule))
+    constructor(input: Pair<List<String>, List<String>>) : this(input.first.single(), input.second.map(::Rule))
 
     override operator fun invoke() = copy(
         start = rules

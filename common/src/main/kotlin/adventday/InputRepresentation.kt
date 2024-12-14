@@ -22,6 +22,10 @@ class InputRepresentation(private val backingFile: BackingOperations): List<Stri
     fun asText() = backingFile.readText()
     fun asSplitByEmptyLine() = asText().split("\n\n")
     fun asNumbers() = asText().toAllLongs()
+
+    /**
+     * split by empty line take exactly 2
+     */
     fun asTwoBlocks(): Pair<List<String>, List<String>> = asSplitByEmptyLine()
         .zipWithNext()
         .first()

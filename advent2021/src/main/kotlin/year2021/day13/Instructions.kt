@@ -16,16 +16,15 @@ data class Instructions(
             }
 
     companion object {
-        operator fun invoke(input: List<String>) = Instructions(
+        operator fun invoke(input: Pair<List<String>, List<String>>) = Instructions(
             dots = input
-                .takeWhile { it.isNotBlank() }
+                .first
                 .map {
                     val (x, y) = it.split(",")
                     Point2D(x.toInt(), y.toInt())
                 }.toSet(),
             folds = input
-                .dropWhile { it.isNotBlank() }
-                .drop(1)
+                .second
                 .map(::FoldInstruction)
         )
     }

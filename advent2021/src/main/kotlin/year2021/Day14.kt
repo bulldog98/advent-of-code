@@ -6,7 +6,7 @@ import year2021.day14.SimulationState
 
 object Day14 : AdventDay(2021, 14) {
     override fun part1(input: InputRepresentation) =
-        SimulationState(input)
+        SimulationState(input.asTwoBlocks())
             .simulate()
             .first { it.afterStep == 10 }
             .let { finalPolymer ->

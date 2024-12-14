@@ -6,7 +6,7 @@ import year2021.day13.Instructions
 
 object Day13 : AdventDay(2021, 13) {
     override fun part1(input: InputRepresentation) =
-        Instructions(input)
+        Instructions(input.asTwoBlocks())
             .folded()
             .drop(1)
             .first()
@@ -14,7 +14,8 @@ object Day13 : AdventDay(2021, 13) {
 
     // only prints out the board, you have to read the letters yourself
     override fun part2(input: InputRepresentation) =
-        Instructions(input)
+        Instructions(input.asTwoBlocks())
+            .also { println(it) }
             .folded()
             .last()
             .fancyPrint()
