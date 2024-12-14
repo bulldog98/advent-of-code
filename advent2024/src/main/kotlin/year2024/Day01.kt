@@ -1,13 +1,13 @@
 package year2024
 
 import AdventDay
+import helper.numbers.toAllLongs
 import kotlin.math.abs
 
 object Day01 : AdventDay(2024, 1) {
     override fun part1(input: List<String>): Long {
         val (leftList, right) = input.map {
-            it.substringBefore(" ").toLong() to
-                it.substringAfterLast(" ").toLong()
+            it.toAllLongs().zipWithNext().first()
         }.unzip()
 
         return leftList.sorted().zip(right.sorted()).sumOf { (left, right) -> abs(left - right) }
