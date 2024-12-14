@@ -12,16 +12,16 @@ class Day14(
     private val height: Long
 ) : AdventDay(2024, 14) {
     data class RobotState(val position: Point2D, val velocity: Point2D) {
-        fun move(steps: Long, xSize: Long, ySize: Long): RobotState {
-            val xCycleLength = xSize / gcd(velocity.x.absoluteValue, xSize)
-            val yCycleLength = ySize / gcd(velocity.y.absoluteValue, ySize)
+        fun move(xBound: Long, yBound: Long, steps: Long = 1L): RobotState {
+            val xCycleLength = xBound / gcd(velocity.x.absoluteValue, xBound)
+            val yCycleLength = yBound / gcd(velocity.y.absoluteValue, yBound)
             val cycleLength = lcm(xCycleLength, yCycleLength)
             val stepsToDo = steps % cycleLength
             // println("detected cycle length $cycleLength, only do $stepsToDo")
             return copy(
                 position = Point2D(
-                    (stepsToDo * xSize + position.x + stepsToDo * velocity.x) % xSize,
-                    (stepsToDo * ySize + position.y + stepsToDo * velocity.y) % ySize,
+                    (stepsToDo * xBound + position.x + stepsToDo * velocity.x) % xBound,
+                    (stepsToDo * yBound + position.y + stepsToDo * velocity.y) % yBound,
                 )
             )
         }
@@ -40,6 +40,9 @@ class Day14(
         offsets.map { it + pos }.all { searchPosition -> this.any { it.position == searchPosition } }
     }
 
+    /**
+     * helper function to print the robots in the room
+     */
     private fun generateField(
         robots: List<RobotState>,
         display: (Int) -> Char = { if (it == 0) '0' else it.digitToChar() }
@@ -54,26 +57,31 @@ class Day14(
     override fun part1(input: List<String>): Long {
         // 0, 0 is top left corner
         val initialRobots = input.map { RobotState.parse(it) }
-        val after100 = initialRobots.map { it.move(100, width, height) }
-        val q1 = after100.groupBy { it.position.x in 0..<width / 2 && it.position.y in 0..<height / 2 }
-            .getOrDefault(true, emptyList()).size
-        val q2 = after100.groupBy { it.position.x in width / 2 + 1..<width && it.position.y in 0..<height / 2 }
-            .getOrDefault(true, emptyList()).size
-        val q3 = after100.groupBy { it.position.x in 0..<width / 2 && it.position.y in height / 2 + 1..<height }
-            .getOrDefault(true, emptyList()).size
-        val q4 = after100.groupBy { it.position.x in width / 2 + 1..<width && it.position.y in height / 2 + 1..<height }
-            .getOrDefault(true, emptyList()).size
-        return q1.toLong() * q2 * q3 * q4
+        val after100 = initialRobots.map { it.move(width, height, 100) }
+        val quadrants = listOf(
+            Point2D.ORIGIN ..< Point2D(width / 2, height / 2),
+            Point2D(width / 2 + 1, 0) ..< Point2D(width, height / 2),
+            Point2D(0, height / 2 + 1) ..< Point2D(width / 2, height),
+            Point2D(width / 2 + 1, height / 2 + 1) ..< Point2D(width, height)
+        )
+        return quadrants.fold(1L) { acc, quadrant ->
+            acc * after100.count { it.position in quadrant }
+        }
     }
 
     override fun part2(input: List<String>): Int {
         val initialRobots = input.map { RobotState.parse(it) }
-        val result = generateSequence(initialRobots) { robots -> robots.map { robot -> robot.move(1, width, height) }}
-            .take(height.toInt() * width.toInt())
+        val theoreticalMaxRounds = initialRobots.maxOf { lcm(listOf(height, width, it.velocity.x.absoluteValue, it.velocity.y.absoluteValue)) }
+            .toInt()
+        val (index, result) = generateSequence(initialRobots) { robots -> robots.map { robot -> robot.move(
+            width,
+            height,
+        ) }}
+            .take(theoreticalMaxRounds)
             .withIndex()
-            .first { it.value.isDisplayingChristmasTree() }
-        println(generateField(result.value) { if (it == 0) '.' else '*' })
-        return result.index
+            .first { (_, robots) -> robots.isDisplayingChristmasTree() }
+        println(generateField(result) { if (it == 0) '.' else '*' })
+        return index
     }
 }
 
