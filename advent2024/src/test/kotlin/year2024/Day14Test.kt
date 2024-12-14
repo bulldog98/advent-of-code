@@ -8,4 +8,6 @@ class Day14Test {
 
     @Test
     fun part1() = assertEquals(12L, day.testPart1())
+
+    // the example does not generate the wished image for part 2
 }
