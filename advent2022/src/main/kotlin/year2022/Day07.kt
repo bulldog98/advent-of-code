@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 
 sealed interface Node {
     val name: String

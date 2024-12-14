@@ -1,6 +1,6 @@
 package year2021
 
-import AdventDay
+import adventday.AdventDay
 import year2021.day09.HeightMap
 import year2021.day09.computeBasin
 

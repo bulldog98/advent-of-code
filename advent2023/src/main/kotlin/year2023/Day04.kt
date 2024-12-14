@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import year2023.day04.Card
 
 object Day04 : AdventDay(2023, 4) {

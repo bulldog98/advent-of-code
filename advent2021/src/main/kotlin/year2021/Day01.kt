@@ -1,6 +1,6 @@
 package year2021
 
-import AdventDay
+import adventday.AdventDay
 
 object Day01 : AdventDay(2021, 1) {
     override fun part1(input: List<String>): Int {

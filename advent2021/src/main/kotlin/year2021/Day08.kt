@@ -1,6 +1,6 @@
 package year2021
 
-import AdventDay
+import adventday.AdventDay
 import year2021.day08.Encoder
 
 val uniqueCountOfSignals = listOf(2, 3, 4, 7)

@@ -1,6 +1,6 @@
 package year2021
 
-import AdventDay
+import adventday.AdventDay
 
 private typealias Direction = Pair<String, Int>
 

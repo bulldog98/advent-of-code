@@ -1,6 +1,6 @@
 package year2024
 
-import AdventDay
+import adventday.AdventDay
 
 sealed interface Block {
     val size: Int

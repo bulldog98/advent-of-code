@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import helper.numbers.parseAllInts
 
 object Day12 : AdventDay(2023, 12) {

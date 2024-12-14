@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import helper.numbers.toAllLongs
 
 object Day09: AdventDay(2023, 9) {

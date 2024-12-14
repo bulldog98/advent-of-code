@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 
 object Day15: AdventDay(2023, 15) {
     private fun String.hashWithAppendix1A(): Int {

@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import Point3D
 import io.ksmt.KContext
 import io.ksmt.expr.KBitVec64Value

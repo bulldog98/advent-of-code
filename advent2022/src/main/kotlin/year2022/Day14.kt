@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 
 class Day14 : AdventDay(2022, 14) {
     private val startPoint = 500 to 0

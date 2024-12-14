@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 import lcm
 
 class Day11 : AdventDay(2022, 11) {

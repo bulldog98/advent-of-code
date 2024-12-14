@@ -1,6 +1,6 @@
 package year2021
 
-import AdventDay
+import adventday.AdventDay
 import year2021.day25.Board
 
 object Day25 : AdventDay(2021, 25) {

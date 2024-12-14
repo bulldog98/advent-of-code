@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import year2023.day07.Hand
 
 fun Char.cardTypeValue(jokerBad: Boolean = false) = when (this) {

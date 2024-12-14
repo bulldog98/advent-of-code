@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 
 class Day19 : AdventDay(2022, 19) {
     enum class Miner(val bit: Int) {

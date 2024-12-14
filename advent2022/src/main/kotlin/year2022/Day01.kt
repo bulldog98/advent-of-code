@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 
 class Day01 : AdventDay(2022, 1) {
     private fun List<String>.calculateCalories(): List<Int> =

@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 import Point2D
 import findAllPositionsOf
 import year2022.Day23.Direction.*

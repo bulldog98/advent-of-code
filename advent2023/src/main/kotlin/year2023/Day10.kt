@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import graph.dijkstra
 import year2023.day10.PipeMap
 import year2023.day10.PipeMapWithSqueezingBetweenPipes

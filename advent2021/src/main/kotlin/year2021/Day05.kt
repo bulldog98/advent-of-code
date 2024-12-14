@@ -1,6 +1,6 @@
 package year2021
 
-import AdventDay
+import adventday.AdventDay
 import year2021.day05.Board
 import year2021.day05.ComplexLine
 import year2021.day05.SimpleLine

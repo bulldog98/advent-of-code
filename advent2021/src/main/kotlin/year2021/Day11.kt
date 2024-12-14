@@ -1,6 +1,6 @@
 package year2021
 
-import AdventDay
+import adventday.AdventDay
 import year2021.day11.flashCount
 import year2021.day11.parseBoard
 import year2021.day11.simulateAllSteps

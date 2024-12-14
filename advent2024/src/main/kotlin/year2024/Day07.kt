@@ -1,6 +1,6 @@
 package year2024
 
-import AdventDay
+import adventday.AdventDay
 import helper.numbers.toAllLongs
 
 data class Equation(val result: Long, val numbers: List<Long>) {

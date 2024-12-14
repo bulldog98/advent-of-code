@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 import kotlin.math.pow
 
 private fun Char.parseSnafuDigit() = when (this) {

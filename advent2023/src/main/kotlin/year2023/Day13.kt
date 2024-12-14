@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import Point2D
 
 object Day13: AdventDay(2023, 13) {

@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import Point2D
 import findAllPositionsOf
 import java.lang.Math.floorMod

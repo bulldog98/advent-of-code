@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 import year2022.day17.Chamber
 import year2022.day17.CycleInfo
 import year2022.day17.dirFrom

@@ -1,6 +1,6 @@
 package year2021
 
-import AdventDay
+import adventday.AdventDay
 import kotlin.math.pow
 
 private operator fun UInt.get(index: Int) = (this shr (UInt.SIZE_BITS - 1 - index)) % 2u

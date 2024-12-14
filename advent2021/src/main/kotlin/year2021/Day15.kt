@@ -1,6 +1,6 @@
 package year2021
 
-import AdventDay
+import adventday.AdventDay
 import Point2D
 import graph.AdjacencyListGraph
 import graph.dijkstra

@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 
 fun String.findXUniqueChars(x: Int) = windowedSequence(x)
     .indexOfFirst { it.toSet().size == x } + x

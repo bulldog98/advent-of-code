@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import helper.numbers.parseAllInts
 import kotlin.math.max
 import kotlin.math.min

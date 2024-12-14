@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 import year2022.Shape.*
 import year2022.Outcome.*
 

@@ -1,6 +1,6 @@
 package year2021
 
-import AdventDay
+import adventday.AdventDay
 import year2021.day06.stepXDays
 import year2021.day06.toFishSwarm
 

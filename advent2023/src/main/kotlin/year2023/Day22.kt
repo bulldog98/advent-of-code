@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import year2023.day22.Brick
 import year2023.day22.Brick.Companion.settle
 

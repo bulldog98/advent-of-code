@@ -1,6 +1,6 @@
 package year2021
 
-import AdventDay
+import adventday.AdventDay
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min

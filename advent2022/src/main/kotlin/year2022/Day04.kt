@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 
 fun parseAssignment(input: String): Pair<IntRange, IntRange> {
     val (a, b) = input.split(",")

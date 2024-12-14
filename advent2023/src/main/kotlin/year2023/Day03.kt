@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import year2023.day03.Board
 import year2023.day03.FieldContentNumber
 import year2023.day03.allSymbols

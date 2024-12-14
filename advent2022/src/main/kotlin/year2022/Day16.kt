@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 
 class Day16 : AdventDay(2022, 16) {
     data class ValveNode(

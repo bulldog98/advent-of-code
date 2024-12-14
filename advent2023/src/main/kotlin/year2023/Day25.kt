@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import graph.AdjacencyListGraph
 import graph.dijkstra
 import java.nio.file.Files

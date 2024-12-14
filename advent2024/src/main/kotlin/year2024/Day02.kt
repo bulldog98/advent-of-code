@@ -1,6 +1,6 @@
 package year2024
 
-import AdventDay
+import adventday.AdventDay
 
 fun List<Long>.allIncreasingMax3() = windowed(2).fold(true) { acc, (a, b) ->
     acc && a < b && b - a <= 3

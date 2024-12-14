@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 
 typealias ValueNumber = Long
 private fun String.toValueNumber(): ValueNumber = toLong()

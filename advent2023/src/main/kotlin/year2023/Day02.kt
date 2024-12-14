@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 import year2023.day02.Game
 
 object Day02 : AdventDay(2023, 2) {

@@ -1,6 +1,6 @@
 package year2024
 
-import AdventDay
+import adventday.AdventDay
 import helper.numbers.toAllLongs
 
 fun List<String>.getPageOrderRules(): List<Pair<Long, Long>> = takeWhile { it.isNotEmpty() }

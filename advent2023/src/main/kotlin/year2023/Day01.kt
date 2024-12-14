@@ -1,6 +1,6 @@
 package year2023
 
-import AdventDay
+import adventday.AdventDay
 
 private val additionalDigitMapping = mapOf(
     "one" to "1",

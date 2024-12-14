@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 import kotlin.math.absoluteValue
 
 private fun manhattenDistance(x: Long, y: Long, foundX: Long, foundY: Long) =

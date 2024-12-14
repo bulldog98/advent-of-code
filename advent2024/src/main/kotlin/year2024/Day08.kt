@@ -1,6 +1,6 @@
 package year2024
 
-import AdventDay
+import adventday.AdventDay
 import Point2D
 import collections.pairings
 import findAllPositionsOf

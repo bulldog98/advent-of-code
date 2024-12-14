@@ -1,6 +1,6 @@
 package year2024
 
-import AdventDay
+import adventday.AdventDay
 
 private const val PARSE_MULTIPLICATIONS = """mul\((\d+),(\d+)\)"""
 private const val DO_NOT_INSTRUCTION = """don't()"""

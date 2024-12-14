@@ -1,6 +1,6 @@
 package year2022
 
-import AdventDay
+import adventday.AdventDay
 import kotlin.math.sign
 
 class Day09 : AdventDay(2022, 9) {
