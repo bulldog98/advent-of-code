@@ -110,15 +110,15 @@ class Day22 : AdventDay(2022, 22) {
     ) {
         data class State(val position: Point2D, val direction: Direction)
         companion object {
-            fun from(input: List<String>): FieldInformation {
-                val fieldInput = input.dropLast(2)
+            fun from(input: Pair<List<String>, List<String>>): FieldInformation {
+                val fieldInput = input.first
                 val freeTiles = fieldInput.findAllWithChar('.')
                 val wallTiles = fieldInput.findAllWithChar('#')
                 val regionSize = sqrt((freeTiles.size + wallTiles.size).toFloat() / 6).toInt()
                 return FieldInformation(
-                    input.dropLast(2).findAllWithChar('.'),
-                    input.dropLast(2).findAllWithChar('#'),
-                    Instruction.parseAll(input.last())
+                    input.first.findAllWithChar('.'),
+                    input.first.findAllWithChar('#'),
+                    Instruction.parseAll(input.second.first())
                 )
             }
         }
@@ -151,7 +151,7 @@ class Day22 : AdventDay(2022, 22) {
         }
     }
     override fun part1(input: InputRepresentation): Long {
-        val field = FieldInformation.from(input)
+        val field = FieldInformation.from(input.asTwoBlocks())
         return field
             .executeInstructions(moveInsideAs2d(field.field + field.walls))
             .let { (pos, dir) ->
@@ -160,7 +160,7 @@ class Day22 : AdventDay(2022, 22) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        val field = FieldInformation.from(input)
+        val field = FieldInformation.from(input.asTwoBlocks())
         return field // TODO: here has to be another function
             .executeInstructions(moveInsideAs2d(field.field + field.walls))
             .let { (pos, dir) ->

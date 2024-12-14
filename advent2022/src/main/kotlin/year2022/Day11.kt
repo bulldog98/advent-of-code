@@ -69,9 +69,8 @@ class Day11 : AdventDay(2022, 11) {
     }
 
     override fun part1(input: InputRepresentation): Int {
-        val monkeys = input.joinToString("\n")
-            .split("\n\n")
-            .map { it.split("\n").parseSingleMonkey() }
+        val monkeys = input.asSplitByEmptyLine()
+            .map { it.lines().parseSingleMonkey() }
             .toTypedArray()
         val monkeyInspects = monkeys.simulateFor(20) { i -> (i / 3).toInt() }
 
@@ -80,9 +79,8 @@ class Day11 : AdventDay(2022, 11) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        val monkeys = input.joinToString("\n")
-            .split("\n\n")
-            .map { it.split("\n").parseSingleMonkey() }
+        val monkeys = input.asSplitByEmptyLine()
+            .map { it.lines().parseSingleMonkey() }
             .toTypedArray()
         val divisors = input
             .filter { it.contains("  Test: divisible by ") }

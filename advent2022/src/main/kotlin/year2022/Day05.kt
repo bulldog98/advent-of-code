@@ -48,26 +48,29 @@ private fun List<String>.parseOpenField(pickup: (List<Char>, Int) -> List<Char>)
     return Field(result.map { it.reversed() }, pickup)
 }
 
-private fun computeInstructions(input: List<String>, pickup: (List<Char>, Int) -> List<Char>): Field {
-    val start = input.takeWhile { it.isNotBlank() }
+private fun computeInstructions(
+    start: List<String>,
+    instructions: List<String>,
+    pickup: (List<Char>, Int) -> List<Char>
+): Field {
     val field = start.parseOpenField(pickup)
-    val instructions = input.drop(start.size + 1).map { it.parseMove() }
-    val result = instructions.fold(field) { f, m ->
+    return instructions.map { it.parseMove() }.fold(field) { f, m ->
         f.makeMove(m)
     }
-    return result
 }
 
 class Day05 : AdventDay(2022, 5) {
     override fun part1(input: InputRepresentation): String {
-        val result = computeInstructions(input) { column, i ->
+        val (start, instructions) = input.asTwoBlocks()
+        val result = computeInstructions(start, instructions) { column, i ->
             column.take(i).reversed()
         }
         return result.result
     }
 
     override fun part2(input: InputRepresentation): String {
-        val result = computeInstructions(input) { column, i ->
+        val (start, instructions) = input.asTwoBlocks()
+        val result = computeInstructions(start, instructions) { column, i ->
             column.take(i)
         }
         return result.result

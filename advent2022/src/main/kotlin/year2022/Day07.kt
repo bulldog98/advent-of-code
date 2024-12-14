@@ -35,8 +35,8 @@ fun List<String>.computeFolderContent(parent: Node): List<Node> = drop(1).map {
     }
 }
 
-fun List<String>.parseInput(): Directory {
-    val realInput = drop(1).joinToString("\n").split("$ ")
+fun String.parseInput(): Directory {
+    val realInput = split("$ ").drop(1)
     var cur = Directory("/", null)
     val root = cur
     for (i in realInput.drop(1).map { it.lines().filter { l -> l.isNotBlank() } }) {
@@ -60,11 +60,11 @@ fun List<String>.parseInput(): Directory {
 
 class Day07 : AdventDay(2022, 7) {
     override fun part1(input: InputRepresentation): Int {
-        val root = input.parseInput()
+        val root = input.asText().parseInput()
         return root.filterInTree { it.fileSize <= 100_000 }.sumOf { it.fileSize }
     }
     override fun part2(input: InputRepresentation): Int {
-        val root = input.parseInput()
+        val root = input.asText().parseInput()
         val currentSize = root.fileSize
         return root.filterInTree {
             70_000_000 - (currentSize - it.fileSize)  >= 30_000_000

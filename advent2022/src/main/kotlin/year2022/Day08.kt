@@ -15,7 +15,7 @@ fun Forest.isVisible(x: Int, y: Int): Boolean {
             x == 0 || y == 0 || x == this[y].size - 1 || y == this.size - 1
 }
 
-fun List<String>.parseForest(): Forest = map { it.toList().map { c -> c.toString().toInt() }}
+fun List<String>.parseForest(): Forest = map { it.toList().map { c -> c.digitToInt() }}
 
 fun Iterable<Int>.countUnless(pred: (Int) -> Boolean): Int {
     var res = 0
