@@ -1,6 +1,7 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 private val additionalDigitMapping = mapOf(
     "one" to "1",
@@ -16,14 +17,14 @@ private val additionalDigitMapping = mapOf(
 private val additionalDigits = additionalDigitMapping.keys
 
 object Day01 : AdventDay(2023, 1) {
-    override fun part1(input: List<String>): Int =
+    override fun part1(input: InputRepresentation): Int =
         input.sumOf {
             val onlyDigits = it.filter { c -> c.isDigit() }
             val string = onlyDigits.first().toString() + onlyDigits.last()
             string.toInt()
         }
 
-    override fun part2(input: List<String>): Int = input.sumOf {
+    override fun part2(input: InputRepresentation): Int = input.sumOf {
         val onlyDigits = it.windowed(5, partialWindows = true).filter { window ->
             window.first().isDigit() || additionalDigits.any { digit -> window.startsWith(digit) }
         }.map {  window ->

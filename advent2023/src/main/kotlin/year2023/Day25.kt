@@ -1,13 +1,14 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import graph.AdjacencyListGraph
 import graph.dijkstra
 import java.nio.file.Files
 import java.nio.file.Path
 
 object Day25 : AdventDay(2023, 25) {
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val nodes = input.flatMap { it.split(" ", ": ") }.toSet()
         val connections = nodes.associateWith { n ->
             input.filter { n in it }.flatMap {
@@ -53,7 +54,7 @@ object Day25 : AdventDay(2023, 25) {
         error("found no solution")
     }
 
-    override fun part2(input: List<String>): Int = 1 // nothing to do only click on button
+    override fun part2(input: InputRepresentation): Int = 1 // nothing to do only click on button
 }
 
 fun main() = Day25.run()

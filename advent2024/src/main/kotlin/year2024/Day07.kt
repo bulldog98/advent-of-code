@@ -1,6 +1,7 @@
 package year2024
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 
 data class Equation(val result: Long, val numbers: List<Long>) {
@@ -20,7 +21,7 @@ fun Equation.isFeasible(allOperatorsApplied: (Long, Long) -> List<Long>): Boolea
 }
 
 object Day07 : AdventDay(2024, 7) {
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         val equations = input.map(Equation::parse)
         return equations.filter { it.isFeasible { a, b ->
             listOf(
@@ -32,7 +33,7 @@ object Day07 : AdventDay(2024, 7) {
         }
     }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val equations = input.map(Equation::parse)
         return equations.filter { it.isFeasible { a, b ->
             listOf(

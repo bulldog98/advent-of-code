@@ -1,7 +1,8 @@
 package year2024
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import findAllPositionsOf
 import graph.AdjacencyListGraph
 import graph.Graph
@@ -46,9 +47,9 @@ data class HikeMap(private val input: List<String>) {
 
 
 object Day10 : AdventDay(2024, 10) {
-    override fun part1(input: List<String>) = HikeMap(input).computeScore()
+    override fun part1(input: InputRepresentation) = HikeMap(input).computeScore()
 
-    override fun part2(input: List<String>) = HikeMap(input).computeRating()
+    override fun part2(input: InputRepresentation) = HikeMap(input).computeRating()
 }
 
 fun main() = Day10.run()

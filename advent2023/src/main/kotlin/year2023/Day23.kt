@@ -1,7 +1,8 @@
 package year2023
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import findAllPositionsOf
 import graph.AdjacencyListGraph
 import graph.Graph
@@ -71,7 +72,7 @@ object Day23 : AdventDay(2023, 23) {
         }
     }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val destination = Point2D(input[0].length - 2, input.size - 1)
         val start = Point2D(1, 0)
         val graph = input.buildGraph()
@@ -82,7 +83,7 @@ object Day23 : AdventDay(2023, 23) {
         return help.pathsFrom(start, destination).max()
     }
 
-    override fun part2(input: List<String>): Any {
+    override fun part2(input: InputRepresentation): Any {
         val destination = Point2D(input[0].length - 2, input.size - 1)
         val start = Point2D(1, 0)
         val graph = input.buildGraph(true)

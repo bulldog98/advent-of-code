@@ -1,10 +1,11 @@
 package year2021
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import year2021.day14.SimulationState
 
 object Day14 : AdventDay(2021, 14) {
-    override fun part1(input: List<String>) =
+    override fun part1(input: InputRepresentation) =
         SimulationState(input)
             .simulate()
             .first { it.afterStep == 10 }
@@ -16,7 +17,7 @@ object Day14 : AdventDay(2021, 14) {
                 occurrences.max() - occurrences.min()
             }
 
-    override fun part2(input: List<String>): Any {
+    override fun part2(input: InputRepresentation): Any {
         TODO("Not yet implemented")
     }
 }

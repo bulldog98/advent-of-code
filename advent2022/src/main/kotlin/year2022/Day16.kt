@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 class Day16 : AdventDay(2022, 16) {
     data class ValveNode(
@@ -104,14 +105,14 @@ class Day16 : AdventDay(2022, 16) {
         you + elephant
     }.max()
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val nodes = input.map { ValveNode.of(it) }
         nodes.computeAllDistances()
         val startNode = nodes.find { it.name == "AA" }!!
         return nodes.maxPath(emptySet(), startNode, 30, 0, 0)
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val nodes = input.map { ValveNode.of(it) }
         return nodes.maxPathWithElephantHelp(26)
     }

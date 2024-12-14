@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 class Day14 : AdventDay(2022, 14) {
     private val startPoint = 500 to 0
@@ -68,7 +69,7 @@ class Day14 : AdventDay(2022, 14) {
         }
     }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         var area = Area.of(input)
         while (true) {
             val next = area.simulateSandFall(startPoint)
@@ -77,7 +78,7 @@ class Day14 : AdventDay(2022, 14) {
         }
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         var area = Area.of(input)
         val leftX = area.blockedByRock.minOf { (a) -> a }
         val rightX = area.blockedByRock.maxOf { (a) -> a }

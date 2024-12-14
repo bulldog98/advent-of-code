@@ -1,5 +1,6 @@
 package year2023
 
+import adventday.InputRepresentation
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -10,7 +11,7 @@ class Day20Test {
     // it seems like rx has a conjunction module as input with multiple inputs
     @Test
     fun part2() = Assertions.assertEquals(512L, Day20.part2(
-        """
+        InputRepresentation("""
             broadcaster -> a
             %a -> b
             %b -> c
@@ -23,6 +24,6 @@ class Day20Test {
             %i -> j
             %j -> k
             &k -> rx
-        """.trimIndent().lines()
+        """.trimIndent())
     ))
 }

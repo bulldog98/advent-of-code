@@ -1,7 +1,8 @@
 package year2024
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import gcd
 import helper.numbers.toAllLongs
 import lcm
@@ -54,7 +55,7 @@ class Day14(
             }.joinToString("")
         }
 
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         // 0, 0 is top left corner
         val initialRobots = input.map { RobotState.parse(it) }
         val after100 = initialRobots.map { it.move(width, height, 100) }
@@ -69,7 +70,7 @@ class Day14(
         }
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val initialRobots = input.map { RobotState.parse(it) }
         val theoreticalMaxRounds = initialRobots.maxOf { lcm(listOf(height, width, it.velocity.x.absoluteValue, it.velocity.y.absoluteValue)) }
             .toInt()

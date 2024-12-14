@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 typealias Forest = List<List<Int>>
 
@@ -47,10 +48,10 @@ fun Forest.sceniceMeasure(x: Int, y: Int): Int {
 }
 
 class Day08 : AdventDay(2022, 8) {
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         return input.parseForest().getVisibleCoords().size
     }
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val forest = input.parseForest()
         val visible = forest.getVisibleCoords().maxBy { (x,y) -> forest.sceniceMeasure(x, y)}
         return forest.sceniceMeasure(visible.first, visible.second)

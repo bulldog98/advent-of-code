@@ -1,7 +1,8 @@
 package year2023
 
-import adventday.AdventDay
 import Point3D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import io.ksmt.KContext
 import io.ksmt.expr.KBitVec64Value
 import io.ksmt.expr.KExpr
@@ -53,7 +54,7 @@ object Day24: AdventDay(2023, 24) {
         return x to other(x)
     }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val pairs = input.map {HailStone.of(it) }
         val xYRange = 200000000000000.0..400000000000000.0
         return pairs.allPairs().count { (a, b) ->
@@ -62,7 +63,7 @@ object Day24: AdventDay(2023, 24) {
         }
     }
 
-    override fun part2(input: List<String>): Any {
+    override fun part2(input: InputRepresentation): Any {
 
         val pairs = input.map { HailStone.of(it) }
         return with(KContext()) {

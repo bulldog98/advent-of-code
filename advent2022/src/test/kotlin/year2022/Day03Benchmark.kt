@@ -1,10 +1,11 @@
 package year2022
 
+import adventday.InputRepresentation
 import download.ensureInputExists
 import kotlinx.coroutines.runBlocking
 import org.openjdk.jmh.annotations.*
-import java.util.concurrent.*
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 @State(Scope.Benchmark)
 @Fork(1)
@@ -16,7 +17,7 @@ class Day03Benchmark {
         val origin = runBlocking {
             ensureInputExists(2022, 3, File("data")).readLines()
         }
-        (1..3000).map { origin }.reduce { a, b -> a + b }
+        InputRepresentation((1..3000).map { origin }.reduce { a, b -> a + b })
     }
 
     @Setup

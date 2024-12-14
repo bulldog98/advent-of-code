@@ -1,16 +1,17 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import year2023.day04.Card
 
 object Day04 : AdventDay(2023, 4) {
-    override fun part1(input: List<String>) =
+    override fun part1(input: InputRepresentation) =
         input.map(::Card)
             .sumOf {
                 it.score
             }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val cards = input.map(::Card).map { it to 1 }.toMutableList()
         for (i in cards.indices) {
             val numOfMore = cards[i].first.winningNumbersCount

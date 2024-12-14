@@ -1,6 +1,7 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import helper.numbers.NUMBERS_REGEX
 import helper.numbers.toAllLongs
 
@@ -12,7 +13,7 @@ object Day06: AdventDay(2023, 6) {
             speedPerMilliSecond * millisecondsRemaining > second
         }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val times = input[0].toAllLongs()
         val distance = input[1].toAllLongs()
         val games = times.zip(distance)
@@ -21,7 +22,7 @@ object Day06: AdventDay(2023, 6) {
         }
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val time = NUMBERS_REGEX.findAll(input[0]).joinToString("") { it.value }.toLong()
         val distance = NUMBERS_REGEX.findAll(input[1]).joinToString("") { it.value }.toLong()
         val game = time to distance

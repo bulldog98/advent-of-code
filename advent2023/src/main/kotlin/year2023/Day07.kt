@@ -1,6 +1,7 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import year2023.day07.Hand
 
 fun Char.cardTypeValue(jokerBad: Boolean = false) = when (this) {
@@ -24,7 +25,7 @@ fun String.asCardTypeValues(jokerBad: Boolean = false) =
     map { c -> c.cardTypeValue(jokerBad) }.joinToString("")
 
 object Day07 : AdventDay(2023, 7) {
-    override fun part1(input: List<String>): Int =
+    override fun part1(input: InputRepresentation): Int =
         input
             .asSequence()
             .map {
@@ -34,7 +35,7 @@ object Day07 : AdventDay(2023, 7) {
             .mapIndexed { i, it -> it to i + 1 }
             .sumOf { it.first.bid * it.second }
 
-    override fun part2(input: List<String>): Any =
+    override fun part2(input: InputRepresentation): Any =
         input
             .asSequence()
             .map {

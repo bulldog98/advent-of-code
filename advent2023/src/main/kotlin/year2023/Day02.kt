@@ -1,6 +1,7 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import year2023.day02.Game
 
 object Day02 : AdventDay(2023, 2) {
@@ -9,7 +10,7 @@ object Day02 : AdventDay(2023, 2) {
         "green" to 13,
         "blue" to 14
     )
-    override fun part1(input: List<String>): Int =
+    override fun part1(input: InputRepresentation): Int =
         input.sumOf {
             Game(it).let { game ->
                 if (game.isPossibleWith(allowedMax))
@@ -19,7 +20,7 @@ object Day02 : AdventDay(2023, 2) {
             }
         }
 
-    override fun part2(input: List<String>): Int =
+    override fun part2(input: InputRepresentation): Int =
         input.map { Game(it) }
             .sumOf { it.fewestPossible().power }
 }

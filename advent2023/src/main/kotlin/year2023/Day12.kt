@@ -1,6 +1,7 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import helper.numbers.parseAllInts
 
 object Day12 : AdventDay(2023, 12) {
@@ -103,13 +104,13 @@ object Day12 : AdventDay(2023, 12) {
         }
     }
 
-    override fun part1(input: List<String>): Long =
+    override fun part1(input: InputRepresentation): Long =
         input
             .map(Line::of)
             .sumOf { it.computeNumberOfArrangements() }
 
 
-    override fun part2(input: List<String>): Long =
+    override fun part2(input: InputRepresentation): Long =
         input
             .map { line ->
                 val (pattern, nums) = line.split(" ")

@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 class Day01 : AdventDay(2022, 1) {
     private fun List<String>.calculateCalories(): List<Int> =
@@ -16,10 +17,10 @@ class Day01 : AdventDay(2022, 1) {
             }
         }.toList()
 
-    override fun part1(input: List<String>): Int =
+    override fun part1(input: InputRepresentation): Int =
         input.calculateCalories().maxOrNull() ?: 0
 
-    override fun part2(input: List<String>): Int =
+    override fun part2(input: InputRepresentation): Int =
         input.calculateCalories().sortedDescending().take(3).sum()
 }
 

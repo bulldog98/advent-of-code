@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 typealias ValueNumber = Long
 private fun String.toValueNumber(): ValueNumber = toLong()
@@ -128,11 +129,11 @@ class Day21 : AdventDay(2022, 21) {
         else -> error("unable to evaluate")
     }
 
-    override fun part1(input: List<String>): ValueNumber {
+    override fun part1(input: InputRepresentation): ValueNumber {
         val lookupOperation = computeOperationMap(input)
         return lookupOperation["root"]!!.value(lookupOperation::getValue)
     }
-    override fun part2(input: List<String>): ValueNumber {
+    override fun part2(input: InputRepresentation): ValueNumber {
         val (a, b) = input.find { it.startsWith("root: ") }!!.drop(6).split(" + ")
         val lookupEquation = computeOperationMap(input.filter { "root: " !in it && "humn: " !in it }) +
                 mapOf("humn" to Unknown)

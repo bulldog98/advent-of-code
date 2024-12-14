@@ -1,7 +1,8 @@
 package year2023
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import findAllPositionsOf
 import java.lang.Math.floorMod
 
@@ -94,7 +95,7 @@ object Day21 : AdventDay(2023, 21) {
         }
     }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val start = input.findAllPositionsOf('S').single()
         val nodes = input.findAllPositionsOf('.') + start
         val possiblePositions = generateSequence(setOf(start)) {
@@ -103,7 +104,7 @@ object Day21 : AdventDay(2023, 21) {
         return possiblePositions.drop(1).take(64).last().size
     }
 
-    override fun part2(input: List<String>) =
+    override fun part2(input: InputRepresentation) =
         StateSequence
             .of(input)
             .solveGeneric(26501365)

@@ -1,6 +1,7 @@
 package year2024
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 sealed interface Block {
     val size: Int
@@ -43,7 +44,7 @@ fun String.toMemory() = chunked(2)
         ) }
 
 object Day09 : AdventDay(2024, 9){
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         val blocks = input[0].toMemory()
         val memory = blocks.initialMemory()
 
@@ -58,7 +59,7 @@ object Day09 : AdventDay(2024, 9){
         return memory.checkSum()
     }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val blocks = input[0].toMemory()
         val maxId = blocks.filterIsInstance<OccupiedBlock>().maxOf { it.id }
         return (maxId downTo 0).fold(blocks) { currentBlocks, id ->

@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import year2022.day17.Chamber
 import year2022.day17.CycleInfo
 import year2022.day17.dirFrom
@@ -13,7 +14,7 @@ class Day17 : AdventDay(2022, 17) {
     private val lShape              = setOf(0 xy 0, 1 xy 0, 2 xy 0, 2 xy 1, 2 xy 2)
     private val blockShape          = setOf(0 xy 0, 0 xy 1, 1 xy 0, 1 xy 1)
     private val shapes = listOf(lineHorizontalShape, plusShape, lShape, lineVerticalShape, blockShape)
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         val dirs = input[0].map { dirFrom(it) }
         var chamber = Chamber(dirs = dirs, shapes = shapes)
         for (step in 0 until 2022) {
@@ -22,7 +23,7 @@ class Day17 : AdventDay(2022, 17) {
         return chamber.rocks.maxOf { it.y } + 1
     }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val dirs = input[0].map { dirFrom(it) }
         val cycleInfo = CycleInfo.findFor(Chamber(dirs = dirs, shapes = shapes))
 

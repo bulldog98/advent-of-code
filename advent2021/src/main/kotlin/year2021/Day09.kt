@@ -1,16 +1,17 @@
 package year2021
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import year2021.day09.HeightMap
 import year2021.day09.computeBasin
 
 object Day09 : AdventDay(2021, 9) {
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val heightMap = HeightMap(input)
         return heightMap.lowPoints.sumOf { heightMap[it] + 1 }
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val heightMap = HeightMap(input)
         return heightMap.lowPoints
             .map { it.computeBasin(heightMap).size }

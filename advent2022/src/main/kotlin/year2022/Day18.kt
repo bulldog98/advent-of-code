@@ -1,7 +1,8 @@
 package year2022
 
-import adventday.AdventDay
 import Point3D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import exploreFrom
 
 class Day18 : AdventDay(2022, 18) {
@@ -39,7 +40,7 @@ class Day18 : AdventDay(2022, 18) {
         }
     }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val lavaDroplets = input.map {
             it.split(",").let { (x, y, z) ->
                 Point3D(x.toLong(), y.toLong(), z.toLong())
@@ -48,7 +49,7 @@ class Day18 : AdventDay(2022, 18) {
         return lavaDroplets.sumOf { it.neighbors.count { n -> n !in lavaDroplets } }
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val lavaDroplets = input.map(Point3D.Companion::parse)
         val potentiallyExposedToAir = lavaDroplets.flatMap { it.faces }.toSet()
 

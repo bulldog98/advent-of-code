@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import kotlin.math.absoluteValue
 
 /**
@@ -87,13 +88,13 @@ class Day20 : AdventDay(2022, 20) {
         }
     }
 
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         val list = CyclicLinkedList.from(input.map { it.toLong() })
         list.mixing()
         return list.groveCoordinates().sumOf { list[it].data }
     }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val key = 811589153L
         val list = CyclicLinkedList.from(input.map { it.toLong() }, key)
         // mix 10 times

@@ -1,11 +1,12 @@
 package year2024
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 import kotlin.math.abs
 
 object Day01 : AdventDay(2024, 1) {
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         val (leftList, right) = input.map {
             it.toAllLongs().zipWithNext().first()
         }.unzip()
@@ -13,7 +14,7 @@ object Day01 : AdventDay(2024, 1) {
         return leftList.sorted().zip(right.sorted()).sumOf { (left, right) -> abs(left - right) }
     }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val firstList = input.map { it.substringBefore(" ").toLong() }
         val secondCounts = buildMap<Long, Long> {
             input.forEach { line ->

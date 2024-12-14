@@ -1,7 +1,8 @@
 package year2024
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import collections.pairings
 import findAllPositionsOf
 
@@ -50,9 +51,9 @@ data object WithHarmonies : AntiNodeComputation {
 }
 
 object Day08 : AdventDay(2024, 8) {
-    override fun part1(input: List<String>) = WithoutHarmonies.countAntiNodes(input)
+    override fun part1(input: InputRepresentation) = WithoutHarmonies.countAntiNodes(input)
 
-    override fun part2(input: List<String>) = WithHarmonies.countAntiNodes(input)
+    override fun part2(input: InputRepresentation) = WithHarmonies.countAntiNodes(input)
 }
 
 fun main() = Day08.run()

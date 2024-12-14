@@ -1,7 +1,8 @@
 package year2024
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import findAllPositionsOf
 
 fun Point2D.rotateRight(): Point2D = when (this) {
@@ -21,7 +22,7 @@ fun Pair<Point2D, Point2D>.explore(maxX: Long, maxY: Long, barriers: Collection<
 }.takeWhile { (pos, _) -> (pos.x in 0..maxX) && pos.y in 0..maxY }
 
 object Day06 : AdventDay(2024, 6) {
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val barriers = input.findAllPositionsOf('#')
         val startPosition = input.findAllPositionsOf('^').first()
         val maxX = input[0].length - 1
@@ -32,7 +33,7 @@ object Day06 : AdventDay(2024, 6) {
             .toSet().size
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val barriers = input.findAllPositionsOf('#')
         val startPosition = input.findAllPositionsOf('^').first()
         val maxX = input[0].length.toLong() - 1

@@ -1,6 +1,7 @@
 package year2021
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import year2021.day04.Board
 import year2021.day04.toGameInput
 
@@ -14,7 +15,7 @@ private fun Board.score(lastNumber: Int, drawn: Collection<Int>) =
     lastNumber * cells.filter { !drawn.contains(it) }.sum()
 
 object Day04 : AdventDay(2021, 4) {
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val gameInput = input.toGameInput()
         val (drawn, last) = gameInput.drawnNumbers
             .scan(setOf<Int>() to -1) { (acc, _), curr ->
@@ -27,7 +28,7 @@ object Day04 : AdventDay(2021, 4) {
         return winningBoard.score(last, drawn)
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val gameInput = input.toGameInput()
         val (drawn, _, last) = gameInput.drawnNumbers
             .scan(Triple(setOf<Int>(),-1, -1)) { (acc, _, last), curr ->

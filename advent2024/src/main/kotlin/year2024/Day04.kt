@@ -1,7 +1,8 @@
 package year2024
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 
 val xmasChars = "XMAS".toSet()
 
@@ -33,7 +34,7 @@ fun List<String>.buildXMasField() = buildMap {
 }
 
 object Day04 : AdventDay(2024, 4) {
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val field = input.buildXMasField()
         return field.entries.filter { (_, c) -> c == 'X' }.sumOf { (p, _) ->
             p.computeWordDirections().count {
@@ -42,7 +43,7 @@ object Day04 : AdventDay(2024, 4) {
         }
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val field = input.buildXMasField()
 
         val missingLetters = setOf('M', 'S')

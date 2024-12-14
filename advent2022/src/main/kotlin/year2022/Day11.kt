@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import lcm
 
 class Day11 : AdventDay(2022, 11) {
@@ -67,7 +68,7 @@ class Day11 : AdventDay(2022, 11) {
         return monkeyInspects
     }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val monkeys = input.joinToString("\n")
             .split("\n\n")
             .map { it.split("\n").parseSingleMonkey() }
@@ -78,7 +79,7 @@ class Day11 : AdventDay(2022, 11) {
         return order[0] * order[1]
     }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val monkeys = input.joinToString("\n")
             .split("\n\n")
             .map { it.split("\n").parseSingleMonkey() }

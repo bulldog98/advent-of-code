@@ -1,7 +1,8 @@
 package year2023
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import findAllPositionsOf
 
 object Day11 : AdventDay(2023, 11) {
@@ -35,13 +36,13 @@ object Day11 : AdventDay(2023, 11) {
         }
     }
 
-    override fun part1(input: List<String>): Any {
+    override fun part1(input: InputRepresentation): Any {
         val galaxies = input.computeGalaxiesWithWithAdjustment(2)
         val pairs = galaxies.allPairs()
         return pairs.sumOf(::manhattanDistance)
     }
 
-    override fun part2(input: List<String>): Any {
+    override fun part2(input: InputRepresentation): Any {
         val galaxies = input.computeGalaxiesWithWithAdjustment(1_000_000L)
         val pairs = galaxies.allPairs()
         return pairs.sumOf(::manhattanDistance)

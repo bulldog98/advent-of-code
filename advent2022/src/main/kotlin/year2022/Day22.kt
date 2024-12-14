@@ -1,7 +1,8 @@
 package year2022
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import kotlin.math.sqrt
 
 private fun List<String>.findAllWithChar(char: Char): Set<Point2D> = buildSet {
@@ -149,7 +150,7 @@ class Day22 : AdventDay(2022, 22) {
             return currentState.position to currentState.direction
         }
     }
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         val field = FieldInformation.from(input)
         return field
             .executeInstructions(moveInsideAs2d(field.field + field.walls))
@@ -158,7 +159,7 @@ class Day22 : AdventDay(2022, 22) {
             }
     }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val field = FieldInformation.from(input)
         return field // TODO: here has to be another function
             .executeInstructions(moveInsideAs2d(field.field + field.walls))

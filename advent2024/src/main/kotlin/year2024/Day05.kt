@@ -1,6 +1,7 @@
 package year2024
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 
 fun List<String>.getPageOrderRules(): List<Pair<Long, Long>> = takeWhile { it.isNotEmpty() }
@@ -30,7 +31,7 @@ private fun List<Long>.orderByRules(orderRules: List<Pair<Long, Long>>): List<Lo
 }
 
 object Day05 : AdventDay(2024, 5) {
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         val orderRules = input.getPageOrderRules()
         val orderings = input.getPageOrderings()
 
@@ -43,7 +44,7 @@ object Day05 : AdventDay(2024, 5) {
         }
     }
 
-    override fun part2(input: List<String>): Any {
+    override fun part2(input: InputRepresentation): Any {
         val orderRules = input.getPageOrderRules()
         val orderings = input.getPageOrderings()
 

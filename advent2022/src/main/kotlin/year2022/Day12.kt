@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import graph.AdjacencyListGraph
 import graph.Graph
 import graph.dijkstra
@@ -38,7 +39,7 @@ class Day12 : AdventDay(2022, 12) {
         return { u, v -> if (input.atPoint(u) + 1 >= input.atPoint(v)) 1 else Long.MAX_VALUE }
     }
 
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         val graph = Terrain(input)
         var from = -1 to -1
         var to = -1 to -1
@@ -57,7 +58,7 @@ class Day12 : AdventDay(2022, 12) {
         return dist(to) ?: Long.MAX_VALUE
     }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val graph = Terrain(input)
         var to = -1 to -1
         val startingPoints = mutableListOf<Pair<Int, Int>>()

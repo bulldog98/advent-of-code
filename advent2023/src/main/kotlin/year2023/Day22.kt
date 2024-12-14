@@ -1,11 +1,12 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import year2023.day22.Brick
 import year2023.day22.Brick.Companion.settle
 
 object Day22 : AdventDay(2023, 22) {
-    override fun part1(input: List<String>): Any {
+    override fun part1(input: InputRepresentation): Any {
         val settledBricks = Brick.of(input).settle()
         return settledBricks.count { brick ->
             val otherBricks = settledBricks.filter { it != brick }
@@ -13,7 +14,7 @@ object Day22 : AdventDay(2023, 22) {
         }
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val settledBricks = Brick.of(input).settle().sortedBy { it.points.first().z }
         return settledBricks.filter {brick ->
             val otherBricks = settledBricks.filter { it != brick }

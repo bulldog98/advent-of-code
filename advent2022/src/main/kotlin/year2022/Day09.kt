@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import kotlin.math.sign
 
 class Day09 : AdventDay(2022, 9) {
@@ -54,12 +55,12 @@ class Day09 : AdventDay(2022, 9) {
             visited
         }.size
 
-    override fun part1(input: List<String>): Int = simulate(
+    override fun part1(input: InputRepresentation): Int = simulate(
         input.map { RopeMove.from(it) },
         MutableList(2) { 0 to 0}
     )
 
-    override fun part2(input: List<String>): Int = simulate(
+    override fun part2(input: InputRepresentation): Int = simulate(
         input.map { RopeMove.from(it) },
         MutableList(10) { 0 to 0}
     )

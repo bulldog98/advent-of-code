@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 class Day19 : AdventDay(2022, 19) {
     enum class Miner(val bit: Int) {
@@ -113,7 +114,7 @@ class Day19 : AdventDay(2022, 19) {
         }
     }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val blueprints = input.map { Blueprint.from(it) }
 
         return blueprints.foldIndexed(0) { i, acc, cur ->
@@ -121,7 +122,7 @@ class Day19 : AdventDay(2022, 19) {
             ((i + 1) * curRes) + acc
         }
     }
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val blueprints = input.take(3).map { Blueprint.from(it) }
 
         return blueprints.fold(1L) { acc, cur ->

@@ -1,7 +1,8 @@
 package year2023
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 
 object Day13: AdventDay(2023, 13) {
     sealed interface Reflection {
@@ -79,7 +80,7 @@ object Day13: AdventDay(2023, 13) {
         it.size > 1 || (it.isNotEmpty() && findReflections() != it)
     } ?: findReflections()
 
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         val parsed = input.joinToString("\n").split("\n\n").asSequence().map { it.lines() }
         return parsed.sumOf {
             val reflection = it.findReflections()
@@ -87,7 +88,7 @@ object Day13: AdventDay(2023, 13) {
         }
     }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val parsed = input.joinToString("\n").split("\n\n").asSequence().map { it.lines() }
         return parsed.sumOf {
             val reflection = it.reflectionAfterReplacingSmudge()

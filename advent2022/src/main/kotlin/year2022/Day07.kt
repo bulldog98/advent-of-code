@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 sealed interface Node {
     val name: String
@@ -58,11 +59,11 @@ fun List<String>.parseInput(): Directory {
 }
 
 class Day07 : AdventDay(2022, 7) {
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val root = input.parseInput()
         return root.filterInTree { it.fileSize <= 100_000 }.sumOf { it.fileSize }
     }
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val root = input.parseInput()
         val currentSize = root.fileSize
         return root.filterInTree {

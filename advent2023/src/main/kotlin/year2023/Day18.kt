@@ -1,7 +1,8 @@
 package year2023
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import kotlin.math.abs
 
 object Day18 : AdventDay(2023, 18) {
@@ -33,7 +34,7 @@ object Day18 : AdventDay(2023, 18) {
             this[i % n].x * (this[(i + 1) % n].y - this[(i - 1) % n].y)
         }) / 2L
 
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         val instructions = input.map(::parseInstructionPart1)
         val edges = instructions.fold(listOf(Point2D(0, 0))) { cur, (dir, times) ->
             cur + (cur.last() + dir * times)
@@ -42,7 +43,7 @@ object Day18 : AdventDay(2023, 18) {
             edges.zipWithNext().sumOf { (a, b) -> abs(a.x - b.x) + abs(a.y - b.y) }/2 + 1
     }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val instructions = input.map(::parseInstructionPart2)
         val edges = instructions.fold(listOf(Point2D(0, 0))) { cur, (dir, times) ->
             cur + (cur.last() + dir * times)

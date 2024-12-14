@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 typealias Bucket = Set<Char>
 
@@ -18,12 +19,12 @@ private fun splitToCompartments(input: String): List<Bucket> =
     listOf(input.take(input.length / 2).toSet(), input.drop(input.length / 2).toSet())
 
 class Day03 : AdventDay(2022, 3) {
-    override fun part1(input: List<String>) = input.sumOf {
+    override fun part1(input: InputRepresentation) = input.sumOf {
         splitToCompartments(it)
             .intersectAll().first().priority
     }
 
-    override fun part2(input: List<String>) = input.chunked(3).map { it.map { i -> i.toSet()} }.sumOf {
+    override fun part2(input: InputRepresentation) = input.chunked(3).map { it.map { i -> i.toSet()} }.sumOf {
         it[0].intersect(it[1]).intersect(it[2]).first().priority
     }
 }

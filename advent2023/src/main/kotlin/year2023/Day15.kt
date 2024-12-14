@@ -1,6 +1,7 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 object Day15: AdventDay(2023, 15) {
     private fun String.hashWithAppendix1A(): Int {
@@ -25,11 +26,11 @@ object Day15: AdventDay(2023, 15) {
         }
     }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         return input[0].split(",").sumOf { it.hashWithAppendix1A() }
     }
 
-    override fun part2(input: List<String>): Any {
+    override fun part2(input: InputRepresentation): Any {
         val instructions = input[0].split(",").map {
             Instruction.of(it)
         }

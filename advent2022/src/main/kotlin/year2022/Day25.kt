@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import kotlin.math.pow
 
 private fun Char.parseSnafuDigit() = when (this) {
@@ -35,10 +36,10 @@ fun Long.toSnafuNumber(): String {
 }
 
 class Day25 : AdventDay(2022, 25) {
-    override fun part1(input: List<String>): Long =
+    override fun part1(input: InputRepresentation): Long =
         input.sumOf { it.parseSnafuNumber() }
 
-    override fun part2(input: List<String>): String =
+    override fun part2(input: InputRepresentation): String =
         part1(input).toSnafuNumber()
 }
 

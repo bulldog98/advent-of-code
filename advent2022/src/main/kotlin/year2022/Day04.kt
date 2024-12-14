@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 fun parseAssignment(input: String): Pair<IntRange, IntRange> {
     val (a, b) = input.split(",")
@@ -26,12 +27,12 @@ infix fun IntRange.overlap(other: IntRange): Boolean =
             || first in other || last in other
 
 class Day04 : AdventDay(2022, 4) {
-    override fun part1(input: List<String>) = input.count {
+    override fun part1(input: InputRepresentation) = input.count {
         val (a, b) = parseAssignment(it)
         a contains b || b contains a
     }
 
-    override fun part2(input: List<String>) =
+    override fun part2(input: InputRepresentation) =
         input.count {
             val (a, b) = parseAssignment(it)
             a overlap b

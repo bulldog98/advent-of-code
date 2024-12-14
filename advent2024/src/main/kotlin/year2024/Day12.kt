@@ -1,7 +1,8 @@
 package year2024
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import findAllPositionsOf
 
 sealed interface Axis : (Point2D) -> Long
@@ -76,12 +77,12 @@ object Day12 : AdventDay(2024, 12) {
         }
     }
 
-    override fun part1(input: List<String>): Long = input.parseToRegions().sumOf {
+    override fun part1(input: InputRepresentation): Long = input.parseToRegions().sumOf {
         // println("${it.plant}: ${it.area} * ${it.perimeter}")
         it.area * it.perimeter
     }
 
-    override fun part2(input: List<String>): Long = input.parseToRegions().sumOf {
+    override fun part2(input: InputRepresentation): Long = input.parseToRegions().sumOf {
         // println("${it.plant}: ${it.area} * ${it.numberOfSides}")
         it.area * it.numberOfSides
     }

@@ -1,6 +1,7 @@
 package year2021
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import kotlin.math.pow
 
 private operator fun UInt.get(index: Int) = (this shr (UInt.SIZE_BITS - 1 - index)) % 2u
@@ -8,7 +9,7 @@ private operator fun UInt.get(index: Int) = (this shr (UInt.SIZE_BITS - 1 - inde
 private fun UInt.invert(bits: Int) = inv() % 2.0.pow(bits).toUInt()
 
 object Day03 : AdventDay(2021, 3) {
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val parsed = input.map { it.toUInt(2) }
         val gamma = (0 until UInt.SIZE_BITS).toList().map { pos ->
             if (parsed.count { it[pos] == 1u } > (input.size / 2)) {
@@ -21,7 +22,7 @@ object Day03 : AdventDay(2021, 3) {
         return gamma.toInt() * epsilon.toInt()
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val parsed = input.map { it.toUInt(2) }
         val bitSize = parsed.minOf { it.countLeadingZeroBits() }
         fun List<UInt>.mostCommonBitAtPos(pos: Int) = if (count { it[pos] == 0u } > count { it[pos] == 1u }) 0u else 1u

@@ -1,6 +1,7 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 
 object Day09: AdventDay(2023, 9) {
@@ -24,10 +25,10 @@ object Day09: AdventDay(2023, 9) {
                 next - cur
             }
 
-    override fun part1(input: List<String>): Long =
+    override fun part1(input: InputRepresentation): Long =
         input.sumOf { it.toAllLongs().extrapolateNextValue() }
 
-    override fun part2(input: List<String>): Long =
+    override fun part2(input: InputRepresentation): Long =
         input.sumOf { it.toAllLongs().extrapolatePrevValue() }
 }
 

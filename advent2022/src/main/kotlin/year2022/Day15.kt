@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import kotlin.math.absoluteValue
 
 private fun manhattenDistance(x: Long, y: Long, foundX: Long, foundY: Long) =
@@ -57,11 +58,11 @@ class Day15(private val row: Long, private val maxCoordinate: Int) : AdventDay(2
         }
     }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val area = Area.of(input)
         return area.countNonDistressSignalInRow(row)
     }
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val area = Area.of(input)
         val safeRangesPerLine = Array<List<LongRange>>(maxCoordinate + 1) { mutableListOf() }
 

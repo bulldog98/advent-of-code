@@ -1,7 +1,8 @@
 package year2022
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import findAllPositionsOf
 import year2022.Day23.Direction.*
 
@@ -63,7 +64,7 @@ class Day23 : AdventDay(2022, 23) {
         return current
     }
 
-    override fun part1(input: List<String>): Long {
+    override fun part1(input: InputRepresentation): Long {
         val elfsAfter10Rounds = input.findAllPositionsOf().simulateForXRounds(10)
         val minX = elfsAfter10Rounds.minOf { it.x }
         val minY = elfsAfter10Rounds.minOf { it.y }
@@ -74,7 +75,7 @@ class Day23 : AdventDay(2022, 23) {
         return (lengthX * lengthY) - elfsAfter10Rounds.size
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         var curRound = 1
         var prev = input.findAllPositionsOf()
         var curr = prev.simulateForXRounds(1, 0)

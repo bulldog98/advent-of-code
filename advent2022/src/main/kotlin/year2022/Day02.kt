@@ -1,8 +1,9 @@
 package year2022
 
 import adventday.AdventDay
-import year2022.Shape.*
+import adventday.InputRepresentation
 import year2022.Outcome.*
+import year2022.Shape.*
 
 private typealias Strategy = (String, String) -> Shape
 
@@ -59,9 +60,9 @@ private fun score(row: String, strategy: Strategy): Int {
 }
 
 class Day02 : AdventDay(2022, 2) {
-    override fun part1(input: List<String>): Int = input.sumOf { score(it, ::strategyPart1) }
+    override fun part1(input: InputRepresentation): Int = input.sumOf { score(it, ::strategyPart1) }
 
-    override fun part2(input: List<String>): Int = input.sumOf { score(it, ::strategyPart2) }
+    override fun part2(input: InputRepresentation): Int = input.sumOf { score(it, ::strategyPart2) }
 }
 
 fun main() = Day02().run()

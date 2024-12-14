@@ -1,7 +1,8 @@
 package year2024
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 import io.ksmt.KContext
 import io.ksmt.expr.KInt32NumExpr
@@ -72,12 +73,12 @@ data class ClawMachineConfiguration(
 }
 
 object Day13 : AdventDay(2024, 13) {
-    override fun part1(input: List<String>) = input.joinToString("\n")
+    override fun part1(input: InputRepresentation) = input.joinToString("\n")
         .split("\n\n")
         .map { ClawMachineConfiguration.parse(it.lines()) }
         .sumOf { it.minCostToWinOrNull() ?: 0L }
 
-    override fun part2(input: List<String>): Long = input.joinToString("\n")
+    override fun part2(input: InputRepresentation): Long = input.joinToString("\n")
         .split("\n\n")
         .map { ClawMachineConfiguration.parse(it.lines()) }
         .map { it.copy(prizeLocation = it.prizeLocation + Point2D(10000000000000, 10000000000000)) }

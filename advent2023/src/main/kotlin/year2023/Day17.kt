@@ -1,7 +1,8 @@
 package year2023
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import java.util.*
 
 object Day17 : AdventDay(2023, 17) {
@@ -81,10 +82,10 @@ object Day17 : AdventDay(2023, 17) {
         error("could not determine score at end")
     }
 
-    override fun part1(input: List<String>) =
+    override fun part1(input: InputRepresentation) =
         Field.of(input).solve(0, 3)
 
-    override fun part2(input: List<String>) =
+    override fun part2(input: InputRepresentation) =
         Field.of(input).solve(4, 10)
 }
 

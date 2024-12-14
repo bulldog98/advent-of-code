@@ -1,7 +1,8 @@
 package year2023
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 
 object Day16 : AdventDay(2023, 16) {
     data class Beam(val point: Point2D, val direction: Point2D)
@@ -103,7 +104,7 @@ object Day16 : AdventDay(2023, 16) {
         }
     }
 
-    override fun part1(input: List<String>): Any {
+    override fun part1(input: InputRepresentation): Any {
         val start = Beam(Point2D(0, 0), Point2D.RIGHT)
         val map = input.flatMapIndexed { y, line ->
             line.mapIndexed { x, c -> Point2D(x, y) to c }
@@ -113,7 +114,7 @@ object Day16 : AdventDay(2023, 16) {
         return floorMap.energizedTiles
     }
 
-    override fun part2(input: List<String>): Any {
+    override fun part2(input: InputRepresentation): Any {
         val map = input.flatMapIndexed { y, line ->
             line.mapIndexed { x, c -> Point2D(x, y) to c }
         }.associate { it }

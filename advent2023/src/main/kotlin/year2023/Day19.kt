@@ -1,6 +1,7 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import helper.numbers.parseAllInts
 import kotlin.math.max
 import kotlin.math.min
@@ -115,7 +116,7 @@ object Day19 : AdventDay(2023, 19) {
             this += defaultRule to currentRanges
         }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val (workflows, states) = input.parse()
         return states.sumOf {
             if (it.isAcceptedBy(workflows))
@@ -125,7 +126,7 @@ object Day19 : AdventDay(2023, 19) {
         }
     }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val (workflows) = input.parse()
         val acceptedStates =
             generateSequence(listOf("in" to MetalPart.entries.associateWith { (1..4000) })) { currentPartition ->

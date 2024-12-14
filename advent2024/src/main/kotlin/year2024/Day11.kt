@@ -1,6 +1,7 @@
 package year2024
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 
 fun Long.oneStep(): List<Long> = when {
@@ -26,11 +27,11 @@ object Day11 : AdventDay(2024, 11) {
             stone.oneStep().sumOf { countStones(it, round + 1, limit) }
     }
 
-    override fun part1(input: List<String>) = input[0].toAllLongs().sumOf {
+    override fun part1(input: InputRepresentation) = input[0].toAllLongs().sumOf {
         countStones(it, 0, 25)
     }
 
-    override fun part2(input: List<String>) = input[0].toAllLongs().sumOf {
+    override fun part2(input: InputRepresentation) = input[0].toAllLongs().sumOf {
         countStones(it, 0, 75)
     }
 }

@@ -1,6 +1,7 @@
 package year2023
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import helper.numbers.NUMBERS_REGEX
 
 data class Mapping(
@@ -57,7 +58,7 @@ object Day05 : AdventDay(2023, 5) {
                 }
             }
 
-    override fun part1(input: List<String>): Any {
+    override fun part1(input: InputRepresentation): Any {
         val seeds = NUMBERS_REGEX.findAll(input[0]).map { it.value.toLong() }.toList()
 
         val mappings = input.computeMappings()
@@ -71,7 +72,7 @@ object Day05 : AdventDay(2023, 5) {
         return res.min()
     }
 
-    override fun part2(input: List<String>): Any {
+    override fun part2(input: InputRepresentation): Any {
         val seedRanges = NUMBERS_REGEX.findAll(input[0])
             .map { it.value.toLong() }
             .chunked(2)

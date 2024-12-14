@@ -1,13 +1,14 @@
 package year2024
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 private const val PARSE_MULTIPLICATIONS = """mul\((\d+),(\d+)\)"""
 private const val DO_NOT_INSTRUCTION = """don't()"""
 private const val DO_INSTRUCTION = """do()"""
 
 object Day03 : AdventDay(2024, 3) {
-    override fun part1(input: List<String>): Long =
+    override fun part1(input: InputRepresentation): Long =
         PARSE_MULTIPLICATIONS.toRegex()
             .findAll(input.joinToString(""))
             .sumOf {
@@ -15,7 +16,7 @@ object Day03 : AdventDay(2024, 3) {
                 x.toLong() * y.toLong()
             }
 
-    override fun part2(input: List<String>): Long {
+    override fun part2(input: InputRepresentation): Long {
         val allInstructions = input.joinToString("")
         val instructionsToComplete = buildList {
             var rest = allInstructions

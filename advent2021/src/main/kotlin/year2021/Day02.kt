@@ -1,6 +1,7 @@
 package year2021
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 private typealias Direction = Pair<String, Int>
 
@@ -17,7 +18,7 @@ private fun Direction.toMovement() = when (first) {
 }
 
 object Day02 : AdventDay(2021, 2) {
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val (depth, hPos) = input.toDirections()
             .map { it.toMovement() }
             .fold(0 to 0) { (oldDepth, oldHPos), (depthGain, hPosGain) ->
@@ -26,7 +27,7 @@ object Day02 : AdventDay(2021, 2) {
         return hPos * depth
     }
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val (depth, hPos) = input.toDirections()
             .map { it.toMovement() }
             .fold(Triple(0, 0, 0)) { (oldDepth, oldHPos, oldAim), (depthGain, hPosGain) ->

@@ -1,7 +1,8 @@
 package year2023
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import findAllPositionsOf
 import kotlin.math.abs
 
@@ -95,13 +96,13 @@ object Day14 : AdventDay(2023, 14) {
         }
     }
 
-    override fun part1(input: List<String>): Long =
+    override fun part1(input: InputRepresentation): Long =
         Dish.of(input)
             .tiltWithDirectionAsTop(Point2D.DOWN)
 //            .also { it.prettyPrint().forEach(::println) }
             .load
 
-    override fun part2(input: List<String>): Long =
+    override fun part2(input: InputRepresentation): Long =
         generateSequence(Dish.of(input)) { dish ->
             dish
                 .tiltWithDirectionAsTop(Point2D.DOWN)

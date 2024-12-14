@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 
 private typealias Move = Triple<Int, Int, Int>
 
@@ -58,14 +59,14 @@ private fun computeInstructions(input: List<String>, pickup: (List<Char>, Int) -
 }
 
 class Day05 : AdventDay(2022, 5) {
-    override fun part1(input: List<String>): String {
+    override fun part1(input: InputRepresentation): String {
         val result = computeInstructions(input) { column, i ->
             column.take(i).reversed()
         }
         return result.result
     }
 
-    override fun part2(input: List<String>): String {
+    override fun part2(input: InputRepresentation): String {
         val result = computeInstructions(input) { column, i ->
             column.take(i)
         }

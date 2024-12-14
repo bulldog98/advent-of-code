@@ -1,6 +1,7 @@
 package year2022
 
 import adventday.AdventDay
+import adventday.InputRepresentation
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -47,7 +48,7 @@ fun String.parse(): Elem {
 }
 
 class Day13 : AdventDay(2022, 13) {
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val pairWise = input.chunked(3)
         val stuff = pairWise.mapIndexed { i, (a, b) ->
             a.parse().compareTo(b.parse()) to i + 1
@@ -56,7 +57,7 @@ class Day13 : AdventDay(2022, 13) {
     }
 
 
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val marker1 = ListElem(listOf(ListElem(listOf(IntElem(2)))))
         val marker2 = ListElem(listOf(ListElem(listOf(IntElem(6)))))
         val lines = input

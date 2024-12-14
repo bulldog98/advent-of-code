@@ -1,7 +1,8 @@
 package year2022
 
-import adventday.AdventDay
 import Point2D
+import adventday.AdventDay
+import adventday.InputRepresentation
 import lcm
 
 class Day24 : AdventDay(2022, 24) {
@@ -98,14 +99,14 @@ class Day24 : AdventDay(2022, 24) {
         error("no path found")
     }
 
-    override fun part1(input: List<String>): Int {
+    override fun part1(input: InputRepresentation): Int {
         val initialMapState: MapState = MapState.of(input)
         val start = Point2D(input.first().indexOfFirst { it == '.' }, 0)
         val goal = Point2D(input.last().indexOfFirst { it == '.' }, input.lastIndex)
 
         return solve(start, goal, initialMapState).first
     }
-    override fun part2(input: List<String>): Int {
+    override fun part2(input: InputRepresentation): Int {
         val initialMapState: MapState = MapState.of(input)
         val start = Point2D(input.first().indexOfFirst { it == '.' }, 0)
         val goal = Point2D(input.last().indexOfFirst { it == '.' }, input.lastIndex)
