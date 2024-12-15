@@ -31,7 +31,7 @@ object Day15 : AdventDay(2024, 15) {
         val cost
             get() = when (this) {
                 is SimpleBox -> position.y * 100 + position.x
-                is BigBox -> 0L
+                is BigBox -> left.y * 100 + left.x
             }
     }
     data class SimpleBox(val position: Point2D) : Box {
@@ -55,16 +55,26 @@ object Day15 : AdventDay(2024, 15) {
             val nextRobotPosition = robotPosition + direction
             if (nextRobotPosition in walls) return this
             if (nextRobotPosition !in walls && boxes.all { nextRobotPosition !in it }) return copy(robotPosition = nextRobotPosition)
-            val afterMovingBox = attemptMoveBox(boxes.first { nextRobotPosition in it }, direction) ?: return this
+            val afterMovingBox = attemptMoveBox(setOf(boxes.first { nextRobotPosition in it }), direction) ?: return this
             return afterMovingBox.copy(robotPosition = nextRobotPosition)
         }
 
-        private fun attemptMoveBox(box: Box, direction: Point2D): Field? {
-            val movedBox = box.moveInDirection(direction)
-            if (movedBox in walls) return null
-            val movedTheBox = copy(boxes = boxes - box + movedBox)
-            if (boxes.any { movedBox in it }) return movedTheBox.attemptMoveBox(movedBox, direction)?.let { it.copy(boxes = it.boxes + movedBox) }
-            return movedTheBox
+        private fun attemptMoveBox(boxesToMove: Set<Box>, direction: Point2D): Field? {
+            val movedBoxes = boxesToMove.map { it.moveInDirection(direction) }
+            if (movedBoxes.any { box -> box in walls }) return null
+            val otherBoxes = boxes - boxesToMove
+            if (movedBoxes.any { movedBox -> otherBoxes.any { movedBox in it } }) {
+                val newDiscoveredBoxesToMove = otherBoxes.filter { box ->
+                    movedBoxes.any { movedBox -> movedBox in box }
+                }
+                return attemptMoveBox(
+                    boxesToMove = boxesToMove + newDiscoveredBoxesToMove,
+                    direction = direction
+                )
+            }
+            return copy(
+                boxes = boxes - boxesToMove + movedBoxes
+            )
         }
 
         // debug helper
@@ -84,7 +94,12 @@ object Day15 : AdventDay(2024, 15) {
 
         companion object {
             fun parse(mapLines: List<String>): Field {
-                val boxes = mapLines.findAllPositionsOf('O').map { SimpleBox(it) }
+                val leftBoxHalf = mapLines.findAllPositionsOf('[')
+                val rightBoxHalf = mapLines.findAllPositionsOf(']')
+                val boxes = mapLines.findAllPositionsOf('O').map { SimpleBox(it) } +
+                    leftBoxHalf.map { BigBox(it, it + Point2D.RIGHT) }.filter {
+                        it.right in rightBoxHalf
+                    }
                 val walls = mapLines.findAllPositionsOf('#')
                 val robotStartPosition = mapLines.findAllPositionsOf('@').first()
                 return Field(boxes.toSet(), walls, robotStartPosition).also { println(it.prettyPrint()) }
@@ -99,9 +114,9 @@ object Day15 : AdventDay(2024, 15) {
         val initialField = Field.parse(map)
         val finalConfig = instructions.fold(initialField) { acc, instruction ->
             acc.attemptMove(instruction.direction).also {
-                 println()
-                 println("Move ${instruction.char}")
-                 println(it.prettyPrint())
+                 // println()
+                 // println("Move ${instruction.char}")
+                 // println(it.prettyPrint())
             }
         }
         return finalConfig.boxes.sumOf { it.cost }
@@ -124,7 +139,14 @@ object Day15 : AdventDay(2024, 15) {
             }
         }
         val initialField = Field.parse(map)
-        TODO("Not yet implemented")
+        val finalConfig = instructions.fold(initialField) { acc, instruction ->
+            acc.attemptMove(instruction.direction).also {
+                 // println()
+                 // println("Move ${instruction.char}")
+                 // println(it.prettyPrint())
+            }
+        }
+        return finalConfig.boxes.sumOf { it.cost }
     }
 }
 
