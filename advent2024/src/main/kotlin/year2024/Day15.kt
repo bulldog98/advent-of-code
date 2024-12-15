@@ -59,7 +59,7 @@ object Day15 : AdventDay(2024, 15) {
             return afterMovingBox.copy(robotPosition = nextRobotPosition)
         }
 
-        private fun attemptMoveBox(boxesToMove: Set<Box>, direction: Point2D): Field? {
+        private tailrec fun attemptMoveBox(boxesToMove: Set<Box>, direction: Point2D): Field? {
             val movedBoxes = boxesToMove.map { it.moveInDirection(direction) }
             if (movedBoxes.any { box -> box in walls }) return null
             val otherBoxes = boxes - boxesToMove
