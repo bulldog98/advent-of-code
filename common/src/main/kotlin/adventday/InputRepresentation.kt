@@ -43,6 +43,14 @@ class InputRepresentation(private val backingFile: BackingOperations): List<Stri
         }
     }
 
+    // used for printing map with additional stuff painted in
+    fun addIntoMap(replace: (Point2D) -> Char?): String =
+        this[0].indices.joinToString("\n") { y ->
+            this.indices.joinToString("") { x ->
+                (replace(Point2D(x, y)) ?: this[y][x]).toString()
+            }
+        }
+
     sealed interface BackingOperations {
         fun readText(): String
         fun readLines(): List<String>
