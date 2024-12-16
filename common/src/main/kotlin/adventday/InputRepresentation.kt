@@ -51,6 +51,8 @@ class InputRepresentation(private val backingFile: BackingOperations): List<Stri
             }
         }
 
+    operator fun get(point: Point2D): Char = this[point.y.toInt()][point.x.toInt()]
+
     sealed interface BackingOperations {
         fun readText(): String
         fun readLines(): List<String>

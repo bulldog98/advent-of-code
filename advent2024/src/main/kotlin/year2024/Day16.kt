@@ -10,14 +10,14 @@ import graph.dijkstra
 
 object Day16 : AdventDay(2024, 16) {
     private enum class DIRECTION(val vector: Point2D, val nextPointFor: (Point2D, Collection<Point2D>) -> Point2D?) {
-        EAST(Point2D.RIGHT, { point, possible ->
-            possible.filter { point.y == it.y && point.x < it.x }.minByOrNull { it.x }
+        WEST(Point2D.LEFT, { point, possible ->
+            possible.filter { point.y == it.y && point.x > it.x }.maxByOrNull { it.x }
         }),
         NORTH(Point2D.UP, { point, possible ->
             possible.filter { point.x == it.x && point.y > it.y }.maxByOrNull { it.y }
         }),
-        WEST(Point2D.LEFT, { point, possible ->
-            possible.filter { point.y == it.y && point.x > it.x }.maxByOrNull { it.x }
+        EAST(Point2D.RIGHT, { point, possible ->
+            possible.filter { point.y == it.y && point.x < it.x }.minByOrNull { it.x }
         }),
         SOUTH(Point2D.DOWN, { point, possible ->
             possible.filter { point.x == it.x && point.y < it.y }.minByOrNull { it.y }
@@ -46,6 +46,7 @@ object Day16 : AdventDay(2024, 16) {
     private class ReindeerMaze private constructor(
         val startPoint: Point2D,
         val finish: Point2D,
+        val cornerSplitOrDeadEnd: Collection<Point2D>,
         val graphRepresentation: Graph<Pair<Point2D, DIRECTION>>
     ) : Graph<Pair<Point2D, DIRECTION>> by graphRepresentation {
         // only gives correct values if connection exists
@@ -86,6 +87,7 @@ object Day16 : AdventDay(2024, 16) {
                 return ReindeerMaze(
                     startPoint = startPoint,
                     finish = finish,
+                    cornerSplitOrDeadEnd = nodePoints,
                     graphRepresentation = graph
                 )
             }
@@ -101,8 +103,73 @@ object Day16 : AdventDay(2024, 16) {
         }
     }
 
+    private data class PartialWay(
+        val node: Pair<Point2D, DIRECTION>,
+        val way: List<Pair<Point2D, DIRECTION>> = listOf(node),
+    ) {
+        fun addNextNode(node: Pair<Point2D, DIRECTION>) = copy(
+            node = node,
+            way = way + node
+        )
+    }
+
     override fun part2(input: InputRepresentation): Long {
-        TODO("Not yet implemented")
+        val reindeerMaze = ReindeerMaze.parse(input)
+        val endPoints = DIRECTION.entries.map { dir -> reindeerMaze.finish to dir }.filter { it in reindeerMaze.nodes }
+        val (costBacking) = reindeerMaze.dijkstra(
+            reindeerMaze.startPoint to DIRECTION.EAST,
+            reindeerMaze::score
+        )
+
+        fun cost(node: Pair<Point2D, DIRECTION>) =
+            if (node.first == reindeerMaze.startPoint && node.second == DIRECTION.EAST)
+                0L
+            else
+                costBacking(node) ?: Long.MAX_VALUE
+
+        val maxAllowedCost = endPoints.minOf { cost(it) }
+        val foundWays = buildSet {
+            val frontier = mutableSetOf(PartialWay(reindeerMaze.startPoint to DIRECTION.EAST))
+            while (frontier.isNotEmpty()) {
+                val currentFrontierToMove = frontier.toMutableList().removeFirst()
+                frontier -= currentFrontierToMove
+                val (currentPos, currentDir) = currentFrontierToMove.node
+                if (currentPos == reindeerMaze.finish) {
+                    add(currentFrontierToMove.way)
+                    continue
+                }
+                if (input[currentPos + currentDir] in setOf('.', 'S', 'E')) {
+                    val next = currentDir.nextPointFor(currentPos, reindeerMaze.cornerSplitOrDeadEnd)
+                    if (next != null) {
+                        val nextNode = next to currentDir
+                        if (cost(nextNode) <= maxAllowedCost && cost(nextNode) > cost(currentFrontierToMove.node) && nextNode !in currentFrontierToMove.way) {
+                            frontier += currentFrontierToMove.addNextNode(nextNode)
+                        }
+                    }
+                }
+                frontier += listOf(currentDir.rotateClockwise(), currentDir.rotateCounterClockwise()).map {
+                    currentPos to it
+                }
+                    .filter { cost(it) <= maxAllowedCost && cost(it) > cost(currentFrontierToMove.node) && it !in currentFrontierToMove.way }
+                    .map { currentFrontierToMove.addNextNode(it) }
+            }
+        }
+        return buildSet {
+            foundWays.forEach { way ->
+                way.zipWithNext().forEach { (node1, node2) ->
+                    val (pos1, dir1) = node1
+                    val (pos2) = node2
+                    if (pos1 == pos2) {
+                        add(pos1)
+                    }
+                    var curPos = pos1
+                    while (curPos != pos2) {
+                        curPos += dir1
+                        add(curPos)
+                    }
+                }
+            }
+        }.size.toLong()
     }
 }
 
