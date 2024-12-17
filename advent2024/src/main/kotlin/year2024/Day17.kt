@@ -23,12 +23,33 @@ object Day17 : AdventDay(2024, 17) {
         return output.joinToString(",")
     }
 
+    private fun makeAllNumbersOfDigits(count: Int): Sequence<Long> = when (count) {
+        1 -> (0..7L).asSequence()
+        else -> (0..7L).asSequence().flatMap { digit ->
+            makeAllNumbersOfDigits(count - 1).map { it * 8 + digit }
+        }
+    }
+
+    /*
+     * this solution uses the fact that the prefix fixing the last x digits gives us the prefixes fixing the last x + 1
+     * digits by appending a new digit
+     */
     override fun part2(input: InputRepresentation): Long {
-        val (initialState, instructionText) = input.asTwoBlocks()
-        val initialRegistryState = RegistryState.parse(initialState)
-        val instructions = instructionText[0].toAllLongs().toList()
-        val range = 8
-        TODO("Not yet implemented")
+        val (initialRegistryState, instructions) = input.asTwoBlocks()
+            .mapFirst { RegistryState.parse(it) }
+            .mapSecond { it[0].toAllLongs().toList() }
+        val baseComputation = ComputerState(initialRegistryState, instructions)
+
+        val result = instructions.indices.fold(listOf("")) { prefixesFixingXLastDigits, lastXDigitsFixed ->
+            prefixesFixingXLastDigits.flatMap { prefix ->
+                (0..7L).map { "$prefix$it" }
+                    .filter { number ->
+                        val res = simulateProgram(baseComputation.overrideRegisterA(number.toLong(8)))
+                        res.takeLast(lastXDigitsFixed + 1) == instructions.takeLast(lastXDigitsFixed + 1)
+                    }
+            }
+        }
+        return result[0].toLong(8)
     }
 }
 

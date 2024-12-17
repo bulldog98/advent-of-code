@@ -9,4 +9,10 @@ data class ComputerState(
         instructions.getOrNull(instructionPointer + 1) != null
 
     fun getInstructions() = instructions[instructionPointer] to instructions[instructionPointer + 1]
+
+    fun overrideRegisterA(newA: Long) = copy(
+        registryState = registryState.copy(
+            registerA = newA
+        )
+    )
 }
