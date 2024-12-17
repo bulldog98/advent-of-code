@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 
 class Day10Test {
     @Test
-    fun part1() = Assertions.assertEquals(8L, Day10.testPart1())
+    fun part1() = Assertions.assertEquals(8L, Day10.testPart1("test1"))
     @Test
-    fun part2() = Assertions.assertEquals(10, Day10.testPart2())
+    fun part2() = Assertions.assertEquals(10, Day10.testPart2("test2"))
 }

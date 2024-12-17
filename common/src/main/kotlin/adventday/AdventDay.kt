@@ -10,6 +10,6 @@ abstract class AdventDay(year: Int, day: Int) {
         println(part2(inputFiles.inputFile))
     }
 
-    fun testPart1() = part1(inputFiles.testInput1)
-    fun testPart2() = part2(inputFiles.testInput2)
+    fun testPart1(exampleSuffix: String = "test") = part1(inputFiles.getFileWithSuffix(exampleSuffix))
+    fun testPart2(exampleSuffix: String = "test") = part2(inputFiles.getFileWithSuffix(exampleSuffix))
 }

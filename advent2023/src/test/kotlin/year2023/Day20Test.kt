@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 class Day20Test {
     @Test
-    fun part1() = Assertions.assertEquals(11687500L, Day20.testPart1())
+    fun part1() = Assertions.assertEquals(11687500L, Day20.testPart1("test1"))
     // the example for part2 is not perfect, since in real input,
     // it seems like rx has a conjunction module as input with multiple inputs
     @Test

@@ -8,7 +8,7 @@ class Day12Test {
     private val day = Day12
 
     @Test
-    fun part1() = assertEquals(1930L, day.testPart1())
+    fun part1() = assertEquals(1930L, day.testPart1("test1"))
 
     @Test
     fun correctSideCounting() = assertEquals(
@@ -25,5 +25,5 @@ class Day12Test {
     )
 
     @Test
-    fun part2() = assertEquals(1206L, day.testPart2())
+    fun part2() = assertEquals(1206L, day.testPart2("test2"))
 }

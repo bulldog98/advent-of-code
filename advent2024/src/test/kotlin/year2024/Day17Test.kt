@@ -16,9 +16,9 @@ class Day17Test {
     )
 
     @Test
-    fun part1() = assertEquals("4,6,3,5,6,3,5,2,1,0", day.testPart1())
+    fun part1() = assertEquals("4,6,3,5,6,3,5,2,1,0", day.testPart1("test1"))
 
     // write number as octal to better see patterns is 117440L
     @Test
-    fun part2() = assertEquals("345300".toLong(8), day.testPart2())
+    fun part2() = assertEquals("345300".toLong(8), day.testPart2("test2"))
 }
