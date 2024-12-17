@@ -1,9 +1,11 @@
 package year2024.day17
 
 sealed interface Instruction: (ComputerState, Long) -> ComputerState {
-    fun ComputerState.computeDvValue(operand: Long) = registryState.registerA / powerOf2(
-        ComboOperand.fromOperand(operand)(registryState)
-    )
+    fun ComputerState.computeDvValue(operand: Long): Long {
+        val comboOperand = ComboOperand.fromOperand(operand)
+        val comboOperandResult = comboOperand(registryState)
+        return registryState.registerA / powerOf2(comboOperandResult)
+    }
 
     private data object AdvInstruction : Instruction {
         override fun invoke(
@@ -26,7 +28,8 @@ sealed interface Instruction: (ComputerState, Long) -> ComputerState {
             computerState: ComputerState,
             operand: Long
         ): ComputerState = computerState.computeNextState {
-            registerB = ComboOperand.fromOperand(operand)(computerState.registryState)
+            val comboOperand = ComboOperand.fromOperand(operand)
+            registerB = comboOperand(computerState.registryState) % 8
         }
     }
     private data object JnzInstruction: Instruction {
@@ -52,7 +55,8 @@ sealed interface Instruction: (ComputerState, Long) -> ComputerState {
             computerState: ComputerState,
             operand: Long
         ): ComputerState = computerState.computeNextState {
-            output(ComboOperand.fromOperand(operand)(computerState.registryState) % 8)
+            val comboOperand = ComboOperand.fromOperand(operand)
+            output(comboOperand(computerState.registryState) % 8)
         }
     }
     private data object BdvInstruction: Instruction {
