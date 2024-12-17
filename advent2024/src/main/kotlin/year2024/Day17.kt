@@ -23,13 +23,6 @@ object Day17 : AdventDay(2024, 17) {
         return output.joinToString(",")
     }
 
-    private fun makeAllNumbersOfDigits(count: Int): Sequence<Long> = when (count) {
-        1 -> (0..7L).asSequence()
-        else -> (0..7L).asSequence().flatMap { digit ->
-            makeAllNumbersOfDigits(count - 1).map { it * 8 + digit }
-        }
-    }
-
     /*
      * this solution uses the fact that the prefix fixing the last x digits gives us the prefixes fixing the last x + 1
      * digits by appending a new digit

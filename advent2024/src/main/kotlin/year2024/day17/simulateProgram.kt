@@ -18,7 +18,7 @@ fun simulateProgram(initialComputerState: ComputerState) = buildList {
             // adv
             0 -> {
                 val newA = computerState.registryState.registerA / powerOf2(
-                    ComboOperand.fromOperand(operand).getValue(computerState.registryState)
+                    ComboOperand.fromOperand(operand)(computerState.registryState)
                 )
                 computerState = computerState.copy(
                     registryState = computerState.registryState.copy(
@@ -40,7 +40,7 @@ fun simulateProgram(initialComputerState: ComputerState) = buildList {
             // bst
             2 -> {
                 val comboOperant = ComboOperand.fromOperand(operand)
-                val newB = comboOperant.getValue(computerState.registryState) % 8
+                val newB = comboOperant(computerState.registryState) % 8
                 computerState = computerState.copy(
                     registryState = computerState.registryState.copy(
                         registerB = newB
@@ -73,7 +73,7 @@ fun simulateProgram(initialComputerState: ComputerState) = buildList {
             // out
             5 -> {
                 val comboOperand = ComboOperand.fromOperand(operand)
-                add(comboOperand.getValue(computerState.registryState) % 8)
+                add(comboOperand(computerState.registryState) % 8)
                 computerState = computerState.copy(
                     instructionPointer = computerState.instructionPointer + 2
                 )
@@ -81,7 +81,7 @@ fun simulateProgram(initialComputerState: ComputerState) = buildList {
             // bdv
             6 -> {
                 val newB = computerState.registryState.registerA / powerOf2(
-                    ComboOperand.fromOperand(operand).getValue(computerState.registryState)
+                    ComboOperand.fromOperand(operand)(computerState.registryState)
                 )
                 computerState = computerState.copy(
                     registryState = computerState.registryState.copy(
@@ -93,7 +93,7 @@ fun simulateProgram(initialComputerState: ComputerState) = buildList {
             // cdv
             7 -> {
                 val newC = computerState.registryState.registerA / powerOf2(
-                    ComboOperand.fromOperand(operand).getValue(computerState.registryState)
+                    ComboOperand.fromOperand(operand)(computerState.registryState)
                 )
                 computerState = computerState.copy(
                     registryState = computerState.registryState.copy(
