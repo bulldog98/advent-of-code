@@ -14,13 +14,30 @@ object Day02: AdventDay(2019, 2) {
         return computer.simulateUntilHalt()[0]
     }
 
-    override fun part2(input: InputRepresentation): Long {
-        val program = IntComputer.parse(input)
-        val a = mutableListOf(1)
-        a[1] = 2
-
-        TODO("Not yet implemented")
+    sealed interface MemoryValue {
+        fun simplified(): MemoryValue = this
     }
+    data class ConstMemoryValue(val const: Long): MemoryValue
+    data class VariableValue(val variableName: String): MemoryValue
+    data class ComputedAddValue(val v1: MemoryValue, val v2: MemoryValue): MemoryValue {
+        override fun simplified() = when {
+            v1 is ConstMemoryValue && v2 is ConstMemoryValue -> ConstMemoryValue(
+                v1.const + v2.const
+            )
+            else -> copy(v1 = v1.simplified(), v2 = v2.simplified())
+        }
+    }
+
+    override fun part2(input: InputRepresentation): Long = (0..99L).flatMap { noun ->
+        (0..99L).filter { verb ->
+            val computer = IntComputer.parse(input)
+            computer[1] = noun
+            computer[2] = verb
+            computer.simulateUntilHalt()[0] == 19690720L
+        }.map { verb ->
+            100 * noun + verb
+        }
+    }.firstOrNull() ?: error("no solution found")
 }
 
 fun main() = Day02.run()
