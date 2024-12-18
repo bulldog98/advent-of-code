@@ -3,6 +3,7 @@ package year2019.computer
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 import year2019.computer.instruction.HaltInstruction
+import year2019.computer.instruction.Instruction
 import year2019.computer.instruction.InstructionContext
 import year2019.computer.instruction.getInstruction
 
@@ -37,21 +38,11 @@ class IntComputer private constructor(
     }
 
     fun computeOneStep(): IntComputer {
-        val opCodeEncoding = this[instructionPointer.toLong()]
-        val instruction = getInstruction(opCodeEncoding % 100)
+        val (instruction, parameters) = memory[instructionPointer].splitInInstructionAndItsParameters(
+            memory.toList(),
+            instructionPointer
+        )
         if (instruction != HaltInstruction) {
-            val writtenParameters = instruction.writesToParameters
-            val parameters = (1..instruction.numberOfParameters.toLong()).map { parameterNumber ->
-                val parameterModeCode =
-                    opCodeEncoding.toString().dropLast(1 + parameterNumber.toInt()).lastOrNull()?.digitToInt() ?: 0
-                val parameterMode = ParameterMode.entries[parameterModeCode]
-                if (parameterNumber.toInt() in writtenParameters) {
-                    if (parameterMode != ParameterMode.PositionMode) error("parameters that get written to can only be in position mode")
-                    this[parameterNumber + instructionPointer]
-                } else {
-                    parameterMode.transformParameter(this[parameterNumber + instructionPointer], memory)
-                }
-            }
             // first increase the pointer, so that if the instruction jumps it overrides the pointer
             instructionPointer += 1 + instruction.numberOfParameters
             with(instructionContext) {
@@ -100,6 +91,33 @@ class IntComputer private constructor(
             output.single()
         }
 
-        fun parseAsFunction(computerInstructions: String): (Long) -> Long = parseAsFunction(*computerInstructions.toAllLongs().toList().toLongArray())
+        fun parseAsFunction(computerInstructions: String): (Long) -> Long =
+            parseAsFunction(*computerInstructions.toAllLongs().toList().toLongArray())
+
+        private fun Long.splitInInstructionAndItsParameters(
+            memory: List<Long>,
+            instructionPointer: Int
+        ): Pair<Instruction, List<Long>> {
+            val opCode = this % 100
+            val instruction = getInstruction(opCode)
+            val digitsWithoutOpCodeFromRightToLeft = (this / 100).toString().reversed().asSequence()
+            val parameterModes =
+                digitsWithoutOpCodeFromRightToLeft.map { ParameterMode.entries[it.digitToInt()] } + generateSequence { ParameterMode.PositionMode }
+            return instruction to parameterModes.withIndex()
+                .map { (indexMinus1, parameterMode) ->
+                    val content = memory[indexMinus1 + 1 + instructionPointer]
+                    if (indexMinus1 + 1 in instruction.writesToParameters) {
+                        parameterMode.transformWriteParameter(content)
+                    } else {
+                        parameterMode.transformReadParameter(content, memory)
+                    }
+                }
+                // important, otherwise the list construction fails
+                .take(instruction.numberOfParameters)
+                .toList()
+                .also {
+                    assert(it.size == instruction.numberOfParameters) { "wrong number of parameters" }
+                }
+        }
     }
 }

@@ -11,6 +11,7 @@ sealed interface Instruction {
     val writesToParameters: List<Int>
         get() = emptyList()
 
+
     fun InstructionContext.executeWith(parameters: List<Long>)
 }
 
