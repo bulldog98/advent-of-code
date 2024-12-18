@@ -6,7 +6,7 @@ import year2019.computer.instruction.HaltInstruction
 import year2019.computer.instruction.InstructionContext
 import year2019.computer.instruction.getInstruction
 
-class IntComputer(
+class IntComputer private constructor(
     initialMemory: List<Long>,
     private val handleOutput: (Long) -> Unit,
     private val handleInput: () -> Long
