@@ -20,4 +20,17 @@ class Day03Test {
             )
         }
     }
+
+    @Nested
+    inner class Part2 {
+        @Test
+        fun `bigger explained example`() {
+            val wire1 = Day03.Wire.parse("R8,U5,L5,D3")
+            val wire2 = Day03.Wire.parse("U7,R6,D4,L4")
+            assertEquals(
+                30L,
+                (wire1 crosses wire2).minOf { wire1.distanceOfPoint(it) + wire2.distanceOfPoint(it) }
+            )
+        }
+    }
 }

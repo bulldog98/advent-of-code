@@ -30,6 +30,15 @@ object Day03 : AdventDay(2019, 3) {
         infix fun crosses(other: Wire): List<Point2D> =
             allPoints.filter { it in other.allPoints }
 
+        fun distanceOfPoint(crossPoint: Point2D) = directions.runningFold(Point2D.ORIGIN) { cur, (dir, length) ->
+            cur + (dir.asPoint * length.toLong())
+        }.zipWithNext().let {
+            val indexToCrossPoint = it.indexOfFirst { (a, b) -> crossPoint in a..b || crossPoint in b..a }
+            it.take(indexToCrossPoint + 1).fold(0L) { acc, (a, b) ->
+                acc + a.manhattanDistance(if (crossPoint in a..b || crossPoint in b..a) crossPoint else b)
+            }
+        }
+
         companion object {
             fun parse(input: String) = Wire(
                 input.split(",").map {
@@ -51,7 +60,12 @@ object Day03 : AdventDay(2019, 3) {
         return (wire1 crosses wire2).minOf { Point2D.ORIGIN.manhattanDistance(it) }
     }
 
-    override fun part2(input: InputRepresentation): Long = TODO("Not implemented yet")
+    override fun part2(input: InputRepresentation): Long {
+
+        val (wire1, wire2) = input.map { Wire.parse(it) }
+
+        return (wire1 crosses wire2).minOf { wire1.distanceOfPoint(it) + wire2.distanceOfPoint(it) }
+    }
 }
 
 fun main() = Day03.run()
