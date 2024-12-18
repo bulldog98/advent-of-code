@@ -8,8 +8,8 @@ import year2019.computer.instruction.getInstruction
 
 class IntComputer(
     initialMemory: List<Long>,
-    private val handleInput: () -> Long,
-    private val handleOutput: (Long) -> Unit
+    private val handleOutput: (Long) -> Unit,
+    private val handleInput: () -> Long
 ) {
     private val memory = initialMemory.toMutableList()
     private var instructionPointer = 0
@@ -71,20 +71,30 @@ class IntComputer(
     companion object {
         fun parse(
             input: InputRepresentation,
+            handleOutput: (Long) -> Unit = { println(it) },
             handleInput: () -> Long = {
                 println("Input")
                 readln().toLong()
-            },
-            handleOutput: (Long) -> Unit = { println(it) }
-        ) = IntComputer(input.flatMap { it.toAllLongs() }, handleInput, handleOutput)
+            }
+        ) = IntComputer(input.flatMap { it.toAllLongs() }, handleOutput, handleInput)
 
         fun parse(
             input: String,
+            handleOutput: (Long) -> Unit = { println(it) },
             handleInput: () -> Long = {
                 println("Input")
                 readln().toLong()
-            },
-            handleOutput: (Long) -> Unit = { println(it) }
-        ) = IntComputer(input.toAllLongs().toList(), handleInput, handleOutput)
+            }
+        ) = IntComputer(input.toAllLongs().toList(), handleOutput, handleInput)
+
+        private fun parseAsFunction(vararg computerInstructions: Long): (Long) -> Long = { input ->
+            val output = mutableListOf<Long>()
+            val outputFunction: (Long) -> Unit = { output += it }
+            val computer = IntComputer(computerInstructions.toList(), outputFunction) { input }
+            computer.simulateUntilHalt()
+            output.single()
+        }
+
+        fun parseAsFunction(computerInstructions: String): (Long) -> Long = parseAsFunction(*computerInstructions.toAllLongs().toList().toLongArray())
     }
 }
