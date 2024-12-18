@@ -4,6 +4,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import graph.AdjacencyListGraph
 import graph.Graph
+import graph.dijkstra
 
 object Day06: AdventDay(2019, 6) {
     // assume Graph has no cycles
@@ -28,7 +29,19 @@ object Day06: AdventDay(2019, 6) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        TODO("Not yet implemented")
+        val orbits = input.map {
+            val (a, b) = it.split(")")
+            a to b
+        }
+        val orbitsWithoutSantaAndYou = orbits.filter { it.second != "SAN" && it.second != "YOU" }
+        val youAreOrbiting = orbits.first { it.second == "YOU" }.first
+        val santaOrbits = orbits.first { it.second == "SAN" }.first
+        val orbitMap = AdjacencyListGraph(orbitsWithoutSantaAndYou.flatMap { listOf(it.first, it.second) }.toSet()) { stellarObject ->
+            orbitsWithoutSantaAndYou.filter { it.first == stellarObject }.map { it.second } +
+                orbitsWithoutSantaAndYou.filter { it.second == stellarObject }.map { it.first }
+        }
+        val (distance) = orbitMap.dijkstra(youAreOrbiting) { _,_ -> 1 }
+        return distance(santaOrbits) ?: Long.MAX_VALUE
     }
 }
 
