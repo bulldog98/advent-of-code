@@ -1,5 +1,6 @@
 package year2019
 
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
@@ -17,7 +18,9 @@ class Day05Test {
                 listOf<Long>(
                     1002, 4, 3, 4, 99
                 ),
-                exampleComputer.computeOneStep()[0..4L]
+                runBlocking {
+                    exampleComputer.computeOneStep()[0..4L]
+                }
             )
         }
 
@@ -26,7 +29,9 @@ class Day05Test {
             val exampleComputer = IntComputer.parse("1101,100,-1,4,0")
             assertEquals(
                 99,
-                exampleComputer.computeOneStep()[4]
+                runBlocking {
+                    exampleComputer.computeOneStep()[4]
+                }
             )
         }
     }

@@ -2,6 +2,7 @@ package year2019.computer
 
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
+import kotlinx.coroutines.runBlocking
 import year2019.computer.instruction.HaltInstruction
 import year2019.computer.instruction.Instruction
 import year2019.computer.instruction.InstructionContext
@@ -9,8 +10,8 @@ import year2019.computer.instruction.getInstruction
 
 class IntComputer private constructor(
     initialMemory: List<Long>,
-    private val handleOutput: (Long) -> Unit,
-    private val handleInput: () -> Long
+    private val handleOutput: suspend (Long) -> Unit,
+    private val handleInput: suspend () -> Long,
 ) {
     private val memory = initialMemory.toMutableList()
     private var instructionPointer = 0
@@ -37,7 +38,7 @@ class IntComputer private constructor(
         memory[address.toInt()] = value
     }
 
-    fun computeOneStep(): IntComputer {
+    suspend fun computeOneStep(): IntComputer {
         val (instruction, parameters) = memory[instructionPointer].splitInInstructionAndItsParameters(
             memory.toList(),
             instructionPointer
@@ -58,10 +59,18 @@ class IntComputer private constructor(
     private fun isHalted() = this[instructionPointer.toLong()] % 100 == 99L
 
     fun simulateUntilHalt(): IntComputer {
+        runBlocking {
+            while (!isHalted()) {
+                computeOneStep()
+            }
+        }
+        return this
+    }
+
+    suspend fun simulateUntilHaltWithInterruptions() {
         while (!isHalted()) {
             computeOneStep()
         }
-        return this
     }
 
     companion object {
@@ -83,16 +92,31 @@ class IntComputer private constructor(
             }
         ) = IntComputer(input.toAllLongs().toList(), handleOutput, handleInput)
 
-        fun parseAsFunction(vararg computerInstructions: Long): (Long) -> Long = { input ->
+        private fun parseAsFunction(vararg computerInstructions: Long): (Long) -> Long = { input ->
             val output = mutableListOf<Long>()
             val outputFunction: (Long) -> Unit = { output += it }
             val computer = IntComputer(computerInstructions.toList(), outputFunction) { input }
-            computer.simulateUntilHalt()
+            runBlocking {
+                computer.simulateUntilHalt()
+            }
             output.single()
         }
 
         fun parseAsFunction(computerInstructions: String): (Long) -> Long =
             parseAsFunction(*computerInstructions.toAllLongs().toList().toLongArray())
+
+        private fun parseWithSuspendInputOutput(
+            input: List<Long>,
+            inputValue: suspend () -> Long,
+            outputValue: suspend (Long) -> Unit
+        ) = IntComputer(input, outputValue, inputValue)
+
+        fun parseWithSuspendInputOutput(
+            input: InputRepresentation,
+            inputValue: suspend () -> Long,
+            outputValue: suspend (Long) -> Unit,
+        ) = parseWithSuspendInputOutput(input.flatMap { it.toAllLongs() }, inputValue, outputValue)
+
 
         private fun Long.splitInInstructionAndItsParameters(
             memory: List<Long>,

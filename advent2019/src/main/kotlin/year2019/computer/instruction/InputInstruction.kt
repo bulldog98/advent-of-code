@@ -8,8 +8,9 @@ data object InputInstruction: Instruction {
     override val writesToParameters: List<Int>
         get() = listOf(1)
 
-    override fun InstructionContext.executeWith(parameters: List<Long>) {
+    override suspend fun InstructionContext.executeWith(parameters: List<Long>) {
         assert(parameters.size == numberOfParameters) { "wrong number of parameters" }
-        memory[parameters[0].toInt()] = this.getInput()
+        val input = this.getInput()
+        memory[parameters[0].toInt()] = input
     }
 }

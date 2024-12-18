@@ -6,7 +6,7 @@ data object JumpIfTrueInstruction: Instruction {
     override val numberOfParameters: Int
         get() = 2
 
-    override fun InstructionContext.executeWith(parameters: List<Long>) {
+    override suspend fun InstructionContext.executeWith(parameters: List<Long>) {
         assert(parameters.size == numberOfParameters) { "wrong number of parameters" }
         val (testValue, jumpToLocation) = parameters
         if (testValue > 0) {

@@ -6,7 +6,7 @@ data object HaltInstruction : Instruction {
     override val numberOfParameters: Int
         get() = 0
 
-    override fun InstructionContext.executeWith(parameters: List<Long>) {
+    override suspend fun InstructionContext.executeWith(parameters: List<Long>) {
         // noop do nothing just halt
     }
 }

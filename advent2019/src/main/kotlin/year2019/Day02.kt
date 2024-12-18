@@ -2,16 +2,17 @@ package year2019
 
 import adventday.AdventDay
 import adventday.InputRepresentation
+import kotlinx.coroutines.runBlocking
 import year2019.computer.IntComputer
 
 object Day02: AdventDay(2019, 2) {
-    override fun part1(input: InputRepresentation): Long {
+    override fun part1(input: InputRepresentation): Long = runBlocking {
         val computer = IntComputer.parse(input).also {
             it[1] = 12
             it[2] = 2
         }
 
-        return computer.simulateUntilHalt()[0]
+        computer.simulateUntilHalt()[0]
     }
 
     override fun part2(input: InputRepresentation): Long = (0..99L).flatMap { noun ->
@@ -19,7 +20,9 @@ object Day02: AdventDay(2019, 2) {
             val computer = IntComputer.parse(input)
             computer[1] = noun
             computer[2] = verb
-            computer.simulateUntilHalt()[0] == 19690720L
+            runBlocking {
+                computer.simulateUntilHalt()[0] == 19690720L
+            }
         }.map { verb ->
             100 * noun + verb
         }

@@ -6,7 +6,7 @@ data object OutputInstruction: Instruction {
     override val numberOfParameters: Int
         get() = 1
 
-    override fun InstructionContext.executeWith(parameters: List<Long>) {
+    override suspend fun InstructionContext.executeWith(parameters: List<Long>) {
         assert(parameters.size == InputInstruction.numberOfParameters) { "wrong number of parameters" }
         this.output(parameters[0])
     }

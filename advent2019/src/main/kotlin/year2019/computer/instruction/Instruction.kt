@@ -12,6 +12,6 @@ sealed interface Instruction {
         get() = emptyList()
 
 
-    fun InstructionContext.executeWith(parameters: List<Long>)
+    suspend fun InstructionContext.executeWith(parameters: List<Long>)
 }
 
