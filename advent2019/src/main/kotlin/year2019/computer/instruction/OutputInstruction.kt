@@ -6,8 +6,8 @@ data object OutputInstruction: Instruction {
     override val numberOfParameters: Int
         get() = 1
 
-    override fun invoke(context: InstructionContext, parameters: List<Long>) {
+    override fun invoke(context: InstructionContext, parameters: List<Long>) = with (context) {
         assert(parameters.size == InputInstruction.numberOfParameters) { "wrong number of parameters" }
-        println("Output: ${parameters[0]}")
+        output(parameters[0])
     }
 }

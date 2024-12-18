@@ -10,8 +10,6 @@ data object InputInstruction: Instruction {
 
     override fun invoke(context: InstructionContext, parameters: List<Long>) = with(context) {
         assert(parameters.size == numberOfParameters) { "wrong number of parameters" }
-        println("provide input")
-        val input = readln()
-        memory[parameters[0].toInt()] = input.toLong()
+        memory[parameters[0].toInt()] = getInput()
     }
 }

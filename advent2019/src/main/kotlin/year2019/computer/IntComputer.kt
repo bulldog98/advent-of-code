@@ -7,7 +7,9 @@ import year2019.computer.instruction.InstructionContext
 import year2019.computer.instruction.getInstruction
 
 class IntComputer(
-    initialMemory: List<Long>
+    initialMemory: List<Long>,
+    private val handleInput: () -> Long,
+    private val handleOutput: (Long) -> Unit
 ) {
     private val memory = initialMemory.toMutableList()
     private var instructionPointer = 0
@@ -16,6 +18,7 @@ class IntComputer(
      * get the address
      */
     operator fun get(address: Long) = memory[address.toInt()]
+
     /**
      * get the addresses
      */
@@ -28,17 +31,19 @@ class IntComputer(
         memory[address.toInt()] = value
     }
 
-    private fun currentInstructionContext(): InstructionContext = InstructionContext(memory) {
-        instructionPointer = it.toInt()
-    }
+    private fun currentInstructionContext(): InstructionContext =
+        InstructionContext(memory, handleInput, handleOutput) {
+            instructionPointer = it.toInt()
+        }
 
     fun computeOneStep(): IntComputer {
         val opCodeEncoding = this[instructionPointer.toLong()]
         val instruction = getInstruction(opCodeEncoding % 100)
         if (instruction != HaltInstruction) {
             val writtenParameters = instruction.writesToParameters
-            val parameters =  (1..instruction.numberOfParameters.toLong()).map { parameterNumber ->
-                val parameterModeCode = opCodeEncoding.toString().dropLast(1 + parameterNumber.toInt()).lastOrNull()?.digitToInt() ?: 0
+            val parameters = (1..instruction.numberOfParameters.toLong()).map { parameterNumber ->
+                val parameterModeCode =
+                    opCodeEncoding.toString().dropLast(1 + parameterNumber.toInt()).lastOrNull()?.digitToInt() ?: 0
                 val parameterMode = ParameterMode.entries[parameterModeCode]
                 if (parameterNumber.toInt() in writtenParameters) {
                     if (parameterMode != ParameterMode.PositionMode) error("parameters that get written to can only be in position mode")
@@ -64,7 +69,22 @@ class IntComputer(
     }
 
     companion object {
-        fun parse(input: InputRepresentation) = IntComputer(input.flatMap { it.toAllLongs() })
-        fun parse(input: String) = IntComputer(input.toAllLongs().toList())
+        fun parse(
+            input: InputRepresentation,
+            handleInput: () -> Long = {
+                println("Input")
+                readln().toLong()
+            },
+            handleOutput: (Long) -> Unit = { println(it) }
+        ) = IntComputer(input.flatMap { it.toAllLongs() }, handleInput, handleOutput)
+
+        fun parse(
+            input: String,
+            handleInput: () -> Long = {
+                println("Input")
+                readln().toLong()
+            },
+            handleOutput: (Long) -> Unit = { println(it) }
+        ) = IntComputer(input.toAllLongs().toList(), handleInput, handleOutput)
     }
 }

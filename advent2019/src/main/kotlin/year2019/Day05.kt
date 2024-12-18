@@ -6,14 +6,17 @@ import year2019.computer.IntComputer
 
 object Day05: AdventDay(2019, 5) {
     override fun part1(input: InputRepresentation): Long {
-        val computer = IntComputer.parse(input)
-
-        return computer.simulateUntilHalt()[0]
+        val output = mutableListOf<Long>()
+        val computer = IntComputer.parse(input, { 1 }, output::add)
+        computer.simulateUntilHalt()
+        return output.single { it != 0L }
     }
 
     override fun part2(input: InputRepresentation): Long {
-        val computer = IntComputer.parse(input)
-        return computer.simulateUntilHalt()[0]
+        val output = mutableListOf<Long>()
+        val computer = IntComputer.parse(input, { 5 }, output::add)
+        computer.simulateUntilHalt()
+        return output.single { it != 0L }
     }
 }
 
