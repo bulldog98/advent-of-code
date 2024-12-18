@@ -13,6 +13,11 @@ class IntComputer(
 ) {
     private val memory = initialMemory.toMutableList()
     private var instructionPointer = 0
+    private val instructionContext by lazy {
+        InstructionContext(memory, handleInput, handleOutput) {
+            instructionPointer = it.toInt()
+        }
+    }
 
     /**
      * get the address
@@ -30,11 +35,6 @@ class IntComputer(
     operator fun set(address: Long, value: Long) {
         memory[address.toInt()] = value
     }
-
-    private fun currentInstructionContext(): InstructionContext =
-        InstructionContext(memory, handleInput, handleOutput) {
-            instructionPointer = it.toInt()
-        }
 
     fun computeOneStep(): IntComputer {
         val opCodeEncoding = this[instructionPointer.toLong()]
@@ -54,7 +54,12 @@ class IntComputer(
             }
             // first increase the pointer, so that if the instruction jumps it overrides the pointer
             instructionPointer += 1 + instruction.numberOfParameters
-            instruction(currentInstructionContext(), parameters)
+            with(instructionContext) {
+                with(instruction) {
+                    // strange workaround with `with`, since otherwise the receiver does not work and the call can not be resolved
+                    executeWith(parameters)
+                }
+            }
         }
         return this
     }

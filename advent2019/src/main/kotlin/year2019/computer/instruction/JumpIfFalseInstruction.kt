@@ -6,11 +6,11 @@ data object JumpIfFalseInstruction: Instruction {
     override val numberOfParameters: Int
         get() = 2
 
-    override fun invoke(context: InstructionContext, parameters: List<Long>) = with(context) {
+    override fun InstructionContext.executeWith(parameters: List<Long>) {
         assert(parameters.size == numberOfParameters) { "wrong number of parameters" }
         val (testValue, jumpToLocation) = parameters
         if (testValue == 0L) {
-            jumpTo(jumpToLocation)
+            this.jumpTo(jumpToLocation)
         }
     }
 }

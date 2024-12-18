@@ -8,7 +8,7 @@ data object MultiplicationInstruction : Instruction {
     override val writesToParameters: List<Int>
         get() = listOf(3)
 
-    override fun invoke(context: InstructionContext, parameters: List<Long>) = with(context) {
+    override fun InstructionContext.executeWith(parameters: List<Long>) {
         assert(parameters.size == AddInstruction.numberOfParameters) { "wrong number of parameters" }
         val (firstParameter, secondParameter, destinationAddress) = parameters
         memory[destinationAddress.toInt()] = firstParameter * secondParameter
