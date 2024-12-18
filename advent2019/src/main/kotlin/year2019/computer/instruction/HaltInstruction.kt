@@ -6,7 +6,7 @@ data object HaltInstruction : Instruction {
     override val numberOfParameters: Int
         get() = 0
 
-    override fun invoke(memoryContent: MutableList<Long>, parameters: List<Long>) {
+    override fun invoke(context: InstructionContext, parameters: List<Long>) {
         // noop do nothing just halt
     }
 }

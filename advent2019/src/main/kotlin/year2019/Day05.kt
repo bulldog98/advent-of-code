@@ -12,7 +12,8 @@ object Day05: AdventDay(2019, 5) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        TODO("Not yet implemented")
+        val computer = IntComputer.parse(input)
+        return computer.simulateUntilHalt()[0]
     }
 }
 

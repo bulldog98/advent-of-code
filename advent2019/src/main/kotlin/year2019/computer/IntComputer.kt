@@ -3,9 +3,12 @@ package year2019.computer
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 import year2019.computer.instruction.HaltInstruction
+import year2019.computer.instruction.InstructionContext
 import year2019.computer.instruction.getInstruction
 
-class IntComputer(initialMemory: List<Long>) {
+class IntComputer(
+    initialMemory: List<Long>
+) {
     private val memory = initialMemory.toMutableList()
     private var instructionPointer = 0
 
@@ -25,6 +28,10 @@ class IntComputer(initialMemory: List<Long>) {
         memory[address.toInt()] = value
     }
 
+    private fun currentInstructionContext(): InstructionContext = InstructionContext(memory) {
+        instructionPointer = it.toInt()
+    }
+
     fun computeOneStep(): IntComputer {
         val opCodeEncoding = this[instructionPointer.toLong()]
         val instruction = getInstruction(opCodeEncoding % 100)
@@ -40,8 +47,9 @@ class IntComputer(initialMemory: List<Long>) {
                     parameterMode.transformParameter(this[parameterNumber + instructionPointer], memory)
                 }
             }
-            instruction(memory, parameters)
+            // first increase the pointer, so that if the instruction jumps it overrides the pointer
             instructionPointer += 1 + instruction.numberOfParameters
+            instruction(currentInstructionContext(), parameters)
         }
         return this
     }

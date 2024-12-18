@@ -5,6 +5,10 @@ fun getInstruction(opCode: Long): Instruction = when (opCode) {
     2L -> MultiplicationInstruction
     3L -> InputInstruction
     4L -> OutputInstruction
+    5L -> JumpIfTrueInstruction
+    6L -> JumpIfFalseInstruction
+    7L -> LessThanInstruction
+    8L -> EqualsInstruction
     99L -> HaltInstruction
     else -> error("unknown instruction")
 }

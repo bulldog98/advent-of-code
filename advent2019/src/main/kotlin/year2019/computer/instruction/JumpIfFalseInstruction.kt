@@ -1,17 +1,16 @@
 package year2019.computer.instruction
 
-data object InputInstruction: Instruction {
+data object JumpIfFalseInstruction: Instruction {
     override val opCode: Long
-        get() = 3
+        get() = 6
     override val numberOfParameters: Int
-        get() = 1
-    override val writesToParameters: List<Int>
-        get() = listOf(1)
+        get() = 2
 
     override fun invoke(context: InstructionContext, parameters: List<Long>) = with(context) {
         assert(parameters.size == numberOfParameters) { "wrong number of parameters" }
-        println("provide input")
-        val input = readln()
-        memory[parameters[0].toInt()] = input.toLong()
+        val (testValue, jumpToLocation) = parameters
+        if (testValue == 0L) {
+            jumpTo(jumpToLocation)
+        }
     }
 }
