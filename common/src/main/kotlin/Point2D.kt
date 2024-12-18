@@ -7,6 +7,7 @@ data class Point2D(val x: Long, val y: Long) {
     operator fun minus(other: Point2D) = Point2D(x - other.x, y - other.y)
     operator fun times(other: Point2D) =
         x * other.y - y * other.x
+    operator fun times(scalar: Long) = Point2D(x * scalar, y * scalar)
 
     fun manhattanDistance(other: Point2D): Long =
         abs(x - other.x) + abs(y - other.y)
