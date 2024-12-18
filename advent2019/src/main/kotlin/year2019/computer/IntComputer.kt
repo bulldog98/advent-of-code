@@ -25,17 +25,28 @@ class IntComputer(initialMemory: List<Long>) {
         memory[address.toInt()] = value
     }
 
-    private fun getInstruction() = getInstruction(this[instructionPointer.toLong()])
-
-    private fun computeOneStep() {
-        val instruction = getInstruction()
+    fun computeOneStep(): IntComputer {
+        val opCodeEncoding = this[instructionPointer.toLong()]
+        val instruction = getInstruction(opCodeEncoding % 100)
         if (instruction != HaltInstruction) {
-            instruction(memory, (1..instruction.numberOfParameters.toLong()).map { this[it + instructionPointer] })
+            val writtenParameters = instruction.writesToParameters
+            val parameters =  (1..instruction.numberOfParameters.toLong()).map { parameterNumber ->
+                val parameterModeCode = opCodeEncoding.toString().dropLast(1 + parameterNumber.toInt()).lastOrNull()?.digitToInt() ?: 0
+                val parameterMode = ParameterMode.entries[parameterModeCode]
+                if (parameterNumber.toInt() in writtenParameters) {
+                    if (parameterMode != ParameterMode.PositionMode) error("parameters that get written to can only be in position mode")
+                    this[parameterNumber + instructionPointer]
+                } else {
+                    parameterMode.transformParameter(this[parameterNumber + instructionPointer], memory)
+                }
+            }
+            instruction(memory, parameters)
             instructionPointer += 1 + instruction.numberOfParameters
         }
+        return this
     }
 
-    private fun isHalted() = getInstruction() == HaltInstruction
+    private fun isHalted() = this[instructionPointer.toLong()] % 100 == 99L
 
     fun simulateUntilHalt(): IntComputer {
         while (!isHalted()) {

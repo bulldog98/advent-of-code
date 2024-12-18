@@ -9,5 +9,8 @@ typealias InstructionFunction = (memoryContent: MutableList<Long>, parameters: L
 sealed interface Instruction : InstructionFunction {
     val opCode: Long
     val numberOfParameters: Int
+    // numbers in here are counted by 1 for parameter 1 and so on
+    val writesToParameters: List<Int>
+        get() = emptyList()
 }
 

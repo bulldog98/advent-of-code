@@ -5,10 +5,12 @@ data object AddInstruction: Instruction {
         get() = 1
     override val numberOfParameters: Int
         get() = 3
+    override val writesToParameters: List<Int>
+        get() = listOf(3)
 
     override fun invoke(memoryContent: MutableList<Long>, paramaters: List<Long>) {
         assert(paramaters.size == numberOfParameters) { "wrong number of parameters" }
-        val (firstParameterAddress, secondParameterAddress, destinationAddress) = paramaters.map { it.toInt() }
-        memoryContent[destinationAddress] = memoryContent[firstParameterAddress] + memoryContent[secondParameterAddress]
+        val (firstParameter, secondParameter, destinationAddress) = paramaters
+        memoryContent[destinationAddress.toInt()] = firstParameter + secondParameter
     }
 }
