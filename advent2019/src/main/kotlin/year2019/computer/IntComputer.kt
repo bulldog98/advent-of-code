@@ -83,7 +83,7 @@ class IntComputer private constructor(
             }
         ) = IntComputer(input.toAllLongs().toList(), handleOutput, handleInput)
 
-        private fun parseAsFunction(vararg computerInstructions: Long): (Long) -> Long = { input ->
+        fun parseAsFunction(vararg computerInstructions: Long): (Long) -> Long = { input ->
             val output = mutableListOf<Long>()
             val outputFunction: (Long) -> Unit = { output += it }
             val computer = IntComputer(computerInstructions.toList(), outputFunction) { input }
