@@ -13,6 +13,10 @@ class IntComputer(initialMemory: List<Long>) {
      * get the address
      */
     operator fun get(address: Long) = memory[address.toInt()]
+    /**
+     * get the addresses
+     */
+    operator fun get(addresses: LongRange) = addresses.map { address -> memory[address.toInt()] }
 
     /**
      * override address with value
@@ -42,5 +46,6 @@ class IntComputer(initialMemory: List<Long>) {
 
     companion object {
         fun parse(input: InputRepresentation) = IntComputer(input.flatMap { it.toAllLongs() })
+        fun parse(input: String) = IntComputer(input.toAllLongs().toList())
     }
 }
