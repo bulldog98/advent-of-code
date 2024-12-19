@@ -3,21 +3,19 @@ package year2019.computer
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 import kotlinx.coroutines.runBlocking
-import year2019.computer.instruction.HaltInstruction
-import year2019.computer.instruction.Instruction
-import year2019.computer.instruction.InstructionContext
-import year2019.computer.instruction.getInstruction
+import year2019.computer.instruction.*
 
 class IntComputer private constructor(
     initialMemory: List<Long>,
     private val handleOutput: suspend (Long) -> Unit,
     private val handleInput: suspend () -> Long,
 ) {
-    private val memory = initialMemory.toMutableList()
-    private var instructionPointer = 0
+    private val memory = Memory(initialMemory)
+    private var instructionPointer = 0L
+    private var relativeBase = 0L
     private val instructionContext by lazy {
-        InstructionContext(memory, handleInput, handleOutput) {
-            instructionPointer = it.toInt()
+        InstructionContext(memory, handleInput, handleOutput, { relativeBase += it }) {
+            instructionPointer = it
         }
     }
 
@@ -39,9 +37,10 @@ class IntComputer private constructor(
     }
 
     suspend fun computeOneStep(): IntComputer {
-        val (instruction, parameters) = memory[instructionPointer].splitInInstructionAndItsParameters(
-            memory.toList(),
-            instructionPointer
+        val (instruction, parameters) = memory[instructionPointer.toInt()].splitInInstructionAndItsParameters(
+            memory,
+            instructionPointer,
+            relativeBase
         )
         if (instruction != HaltInstruction) {
             // first increase the pointer, so that if the instruction jumps it overrides the pointer
@@ -56,7 +55,7 @@ class IntComputer private constructor(
         return this
     }
 
-    private fun isHalted() = this[instructionPointer.toLong()] % 100 == 99L
+    private fun isHalted() = this[instructionPointer] % 100 == 99L
 
     fun simulateUntilHalt(): IntComputer {
         runBlocking {
@@ -120,7 +119,8 @@ class IntComputer private constructor(
 
         private fun Long.splitInInstructionAndItsParameters(
             memory: List<Long>,
-            instructionPointer: Int
+            instructionPointer: Long,
+            relativeBase: Long
         ): Pair<Instruction, List<Long>> {
             val opCode = this % 100
             val instruction = getInstruction(opCode)
@@ -129,11 +129,11 @@ class IntComputer private constructor(
                 digitsWithoutOpCodeFromRightToLeft.map { ParameterMode.entries[it.digitToInt()] } + generateSequence { ParameterMode.PositionMode }
             return instruction to parameterModes.withIndex()
                 .map { (indexMinus1, parameterMode) ->
-                    val content = memory[indexMinus1 + 1 + instructionPointer]
+                    val content = memory[(indexMinus1 + 1 + instructionPointer).toInt()]
                     if (indexMinus1 + 1 in instruction.writesToParameters) {
-                        parameterMode.transformWriteParameter(content)
+                        parameterMode.transformWriteParameter(content, relativeBase)
                     } else {
-                        parameterMode.transformReadParameter(content, memory)
+                        parameterMode.transformReadParameter(content, relativeBase, memory)
                     }
                 }
                 // important, otherwise the list construction fails

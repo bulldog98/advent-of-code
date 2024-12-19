@@ -9,6 +9,7 @@ fun getInstruction(opCode: Long): Instruction = when (opCode) {
     6L -> JumpIfFalseInstruction
     7L -> LessThanInstruction
     8L -> EqualsInstruction
+    9L -> AdjustRelativeBaseInstruction
     99L -> HaltInstruction
     else -> error("unknown instruction")
 }
