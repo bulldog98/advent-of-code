@@ -13,7 +13,10 @@ object Day09: AdventDay(2019, 9) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        TODO("Not yet implemented")
+        val output = mutableListOf<Long>()
+        val computer = IntComputer.parse(input, { output += it}) { 2 }
+        computer.simulateUntilHalt()
+        return output.single()
     }
 }
 
