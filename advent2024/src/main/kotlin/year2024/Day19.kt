@@ -5,25 +5,51 @@ import adventday.InputRepresentation
 import helper.pair.mapFirst
 
 object Day19 : AdventDay(2024, 19) {
-    private data class CacheEntry(val existingTowels: List<String>, val wishedPattern: String)
-    private val cache = mutableMapOf<CacheEntry, Boolean>()
+    private data class CanArrangeCacheEntry(val existingTowels: Set<String>, val wishedPattern: String)
 
-    private fun List<String>.canArrange(wishedPattern: String): Boolean = cache.getOrPut(CacheEntry(this, wishedPattern)) {
-        when {
-            wishedPattern.isEmpty() -> true
-            else -> any {
-                wishedPattern.startsWith(it) && canArrange(wishedPattern.drop(it.length))
+    private val canArrangeCache = mutableMapOf<CanArrangeCacheEntry, Boolean>()
+
+    private fun Set<String>.canArrange(wishedPattern: String): Boolean =
+        canArrangeCache.getOrPut(CanArrangeCacheEntry(this, wishedPattern)) {
+            when {
+                wishedPattern.isEmpty() -> true
+                else -> any {
+                    wishedPattern.startsWith(it) && canArrange(wishedPattern.drop(it.length))
+                }
             }
         }
-    }
+
+    private data class CountArrangementsCacheEntry(val existingTowels: Set<String>, val wishedPattern: String)
+
+    private val countArrangementsCache = mutableMapOf<CountArrangementsCacheEntry, Long>()
+
+    private fun Set<String>.countWaysToArrange(wishedPattern: String): Long =
+        countArrangementsCache.getOrPut(CountArrangementsCacheEntry(this, wishedPattern)) {
+            when {
+                !canArrange(wishedPattern) -> 0
+                wishedPattern.isEmpty() -> 1
+                wishedPattern in this -> 1 + (this - wishedPattern).countWaysToArrange(wishedPattern)
+                else -> sumOf {
+                    if (wishedPattern.startsWith(it))
+                        this.countWaysToArrange(wishedPattern.drop(it.length))
+                    else
+                        0
+                }
+            }
+        }
 
     override fun part1(input: InputRepresentation): Int {
-        val (patterns, towels) = input.asTwoBlocks().mapFirst { it.flatMap { it.split(", ") } }
-        return towels.count { patterns.canArrange(it) }
+        val (existingTowels, wishedPatterns) = input.asTwoBlocks()
+            .mapFirst { it.flatMap { it.split(", ") } }
+            .mapFirst { it.toSet() }
+        return wishedPatterns.count { existingTowels.canArrange(it) }
     }
 
     override fun part2(input: InputRepresentation): Long {
-        TODO("Not yet implemented")
+        val (existingTowels, wishedPatterns) = input.asTwoBlocks()
+            .mapFirst { it.flatMap { it.split(", ") } }
+            .mapFirst { it.toSet() }
+        return wishedPatterns.sumOf { existingTowels.countWaysToArrange(it) }
     }
 }
 
