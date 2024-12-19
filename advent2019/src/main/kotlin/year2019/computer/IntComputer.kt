@@ -91,18 +91,28 @@ class IntComputer private constructor(
             }
         ) = IntComputer(input.toAllLongs().toList(), handleOutput, handleInput)
 
-        private fun parseAsFunction(vararg computerInstructions: Long): (Long) -> Long = { input ->
+        fun parseAsFunction(computerInstructions: String): (Long) -> Long = {
+            parseAsFunctionWithArbitraryOutputAndInput(computerInstructions)(listOf(it)).single()
+        }
+
+        fun parseAsFunctionWithArbitraryOutputAndInput(
+            computerInstructions: String
+        ) = parseAsFunctionWithArbitraryOutputAndInput(computerInstructions.toAllLongs().toList())
+
+        fun parseAsFunctionWithArbitraryOutputAndInput(
+            computerInstructions: List<Long>
+        ): (List<Long>) -> List<Long> = { inputs ->
+            val remainingInputs = inputs.toMutableList()
             val output = mutableListOf<Long>()
             val outputFunction: (Long) -> Unit = { output += it }
-            val computer = IntComputer(computerInstructions.toList(), outputFunction) { input }
+            val computer = IntComputer(computerInstructions, outputFunction) {
+                remainingInputs.removeFirst()
+            }
             runBlocking {
                 computer.simulateUntilHalt()
             }
-            output.single()
+            output
         }
-
-        fun parseAsFunction(computerInstructions: String): (Long) -> Long =
-            parseAsFunction(*computerInstructions.toAllLongs().toList().toLongArray())
 
         private fun parseWithSuspendInputOutput(
             input: List<Long>,
