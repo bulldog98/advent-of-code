@@ -7,14 +7,14 @@ import kotlinx.coroutines.runBlocking
 import year2019.computer.IntComputer
 
 object Day11: AdventDay(2019, 11) {
-    fun Point2D.rotateLeft90Degrees() = when (this) {
+    private fun Point2D.rotateLeft90Degrees() = when (this) {
         Point2D.UP -> Point2D.LEFT
         Point2D.LEFT -> Point2D.DOWN
         Point2D.DOWN -> Point2D.RIGHT
         Point2D.RIGHT -> Point2D.UP
         else -> error("no valid direction")
     }
-    fun Point2D.rotateRight90Degrees() = when (this) {
+    private fun Point2D.rotateRight90Degrees() = when (this) {
         Point2D.UP -> Point2D.RIGHT
         Point2D.RIGHT -> Point2D.DOWN
         Point2D.DOWN -> Point2D.LEFT
