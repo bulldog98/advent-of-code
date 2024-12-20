@@ -44,8 +44,40 @@ object Day11: AdventDay(2019, 11) {
         visitedWithColor.size.toLong()
     }
 
-    override fun part2(input: InputRepresentation): Any {
-        TODO("Not yet implemented")
+    override fun part2(input: InputRepresentation): String = runBlocking {
+        val visitedWithColor = mutableMapOf(Point2D.ORIGIN to 1L)
+        var currentPosition = Point2D.ORIGIN
+        var colorOutput = true
+        var direction = Point2D.UP
+        val computer = IntComputer.parseWithSuspendInputOutput(input, { visitedWithColor.getOrPut(currentPosition) { 0L } }) {
+            if (colorOutput) {
+                visitedWithColor[currentPosition] = it
+            } else {
+                direction = when (it) {
+                    0L -> direction.rotateLeft90Degrees()
+                    1L -> direction.rotateRight90Degrees()
+                    else -> error("should not happen")
+                }
+                currentPosition += direction
+            }
+            colorOutput = !colorOutput
+        }
+        computer.simulateUntilHaltWithInterruptions()
+        val minX = visitedWithColor.keys.minBy { it.x }.x
+        val maxX = visitedWithColor.keys.maxBy { it.x }.x
+        val minY = visitedWithColor.keys.minBy { it.y }.y
+        val maxY = visitedWithColor.keys.maxBy { it.y }.y
+        val res = (minY..maxY).joinToString("\n") { y ->
+            (minX..maxX).joinToString("") { x ->
+                val color = visitedWithColor.getOrDefault(Point2D(x, y), 0L)
+                when (color) {
+                    1L -> "*"
+                    0L -> " "
+                    else -> error("should not happen")
+                }
+            }
+        }
+        res
     }
 }
 
