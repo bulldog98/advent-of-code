@@ -3,7 +3,9 @@ package year2024
 import adventday.AdventDay
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 
 object Day22 : AdventDay(2024, 22) {
@@ -26,7 +28,7 @@ object Day22 : AdventDay(2024, 22) {
         initialSecret.generateSecrets().take(2001).last()
     }
 
-    // pretty slow since it's not properly parallelized
+    // needs a few minutes
     override fun part2(input: InputRepresentation): Long {
         val numbers = input.map { it.toAllLongs().first() }
         val prices = numbers.map { it.generateSecretPrices().drop(1).take(2000).toList() }
@@ -35,15 +37,13 @@ object Day22 : AdventDay(2024, 22) {
         println("start splitting")
         return runBlocking {
             val asyncActions = allOccurringChanges.chunked(1000).map {
-                async {
+                async(Dispatchers.Default) {
                     val result = it.maximalBananaPrice(priceChanges, prices)
                     println("one block done")
                     result
                 }
             }
-            asyncActions.maxOf {
-                it.await()
-            }
+            asyncActions.awaitAll().max()
         }
     }
 
