@@ -3,6 +3,8 @@ package year2024
 import adventday.AdventDay
 import adventday.InputRepresentation
 import collections.pairings
+import graph.AdjacencyListGraph
+import graph.enumerateAllMaxCliques
 
 object Day23 : AdventDay(2024, 23) {
     private data class ComputerNetwork(val computers: List<String>, val directConnections: List<Set<String>>) {
@@ -21,28 +23,13 @@ object Day23 : AdventDay(2024, 23) {
                     .toList()
         }
 
-        fun findLargestDirectConnectedGroup(): Set<String> {
-            val remainingComputers = computers.toMutableList()
-            remainingComputers.sort()
-            var currentLargestGrouping = emptySet<String>()
-            while (remainingComputers.isNotEmpty()) {
-                val currentGrouping = mutableSetOf(remainingComputers.removeFirst())
-                var oldGroupSize = 0
-                while (oldGroupSize < currentGrouping.size) {
-                    oldGroupSize = currentGrouping.size
-                    val com = remainingComputers.firstOrNull { com ->
-                        currentGrouping.all { setOf(it, com) in directConnections }
-                    }
-                    if (com != null && remainingComputers.remove(com)) {
-                        currentGrouping += com
-                    }
-                }
-                if (currentGrouping.size > currentLargestGrouping.size) {
-                    currentLargestGrouping = currentGrouping
-                }
+        private val graph: AdjacencyListGraph<String> by lazy {
+            AdjacencyListGraph(computers) { com ->
+                directConnections.filter { com in it }.map { connection -> (connection - com).single() }
             }
-            return currentLargestGrouping
         }
+
+        fun findLargestDirectConnectedGroup(): Set<String> = graph.enumerateAllMaxCliques().maxBy { it.size }
 
         companion object {
             fun parse(input: InputRepresentation): ComputerNetwork {
