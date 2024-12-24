@@ -1,135 +1,100 @@
 package year2024
 
+import Point2D
 import adventday.AdventDay
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 
-object Day21: AdventDay(2024, 21) {
-    // region numeric keypad
-    private data class NumberKeyPad(val position: Char = 'A') {
-        fun moveTo(char: Char): Pair<NumberKeyPad, List<String>> = copy(position = char) to position.getShortestWaysTo(char)
-
-        fun waysToInput(input: String) = input.fold(this to listOf("")) { (numPad, ways), nextChar ->
-            val (nextNumPad, furtherSteps) = numPad.moveTo(nextChar)
-            nextNumPad to furtherSteps.flatMap { ways.map { w -> w + it + "A" } }
-        }.second
-
-        companion object {
-            // +---+---+---+
-            // | 7 | 8 | 9 |
-            // +---+---+---+
-            // | 4 | 5 | 6 |
-            // +---+---+---+
-            // | 1 | 2 | 3 |
-            // +---+---+---+
-            //     | 0 | A |
-            //     +---+---+
-            private val digitKeyNeighborLookup = mapOf(
-                'A' to listOf('0' to '<', '3' to '^'),
-                '0' to listOf('2' to '^', 'A' to '>'),
-                '1' to listOf('4' to '^', '2' to '>'),
-                '2' to listOf('1' to '<', '5' to '^', '3' to '>', '0' to 'v'),
-                '3' to listOf('A' to 'v', '2' to '<', '6' to '^'),
-                '4' to listOf('1' to 'v', '5' to '>', '7' to '^'),
-                '5' to listOf('2' to 'v', '4' to '<', '6' to '>', '8' to '^'),
-                '6' to listOf('3' to 'v', '5' to '<', '9' to '^'),
-                '7' to listOf('4' to 'v', '8' to '>'),
-                '8' to listOf('5' to 'v', '7' to '<', '9' to '>'),
-                '9' to listOf('6' to 'v', '8' to '<')
-            )
-
-            private val memoizeShortestWays = mutableMapOf<Pair<Char, Pair<Char, String>>, List<String>>()
-            private fun Char.getShortestWaysTo(other: Char, seen: String = ""): List<String> = memoizeShortestWays.getOrPut(this to (other to seen)) {
-                val neighbors = digitKeyNeighborLookup[this]!!
-                if (neighbors.any { it.first == other }) return@getOrPut listOf(neighbors.first { it.first == other }.second + "")
-                val ways = when (other) {
-                    this -> emptyList()
-                    else -> digitKeyNeighborLookup[this]!!.filter { it.first !in seen }.flatMap { (nextChar, goDir) ->
-                        nextChar.getShortestWaysTo(other, seen = seen + this).map {
-                            goDir + it
-                        }
-                    }
+object Day21 : AdventDay(2024, 21) {
+    /**
+     * give a multiline string, - for holes
+     */
+    private data class KeyPad(
+        val stringRepresentation: String
+    ) {
+        private val map = buildMap {
+            stringRepresentation.lines().forEachIndexed { y, line ->
+                line.forEachIndexed { x, c ->
+                    put(c, Point2D(x, y))
                 }
-                if (ways.isNotEmpty()) {
-                    val shortest = ways.filter { it.isNotEmpty() }.minOf { it.length }
-                    ways.filter { it.length == shortest }
-                } else
-                    ways
             }
         }
+
+        fun getPositionOf(char: Char) = map.getValue(char)
     }
-    // endregion
 
-    // region direction keypad
-    private data class DirectionKeyPad(val position: Char = 'A') {
-        fun moveTo(char: Char): Pair<DirectionKeyPad, List<String>> = copy(position = char) to position.getShortestWaysTo(char)
+    private val numberPad = KeyPad(
+        """
+        789
+        456
+        123
+        -0A
+    """.trimIndent()
+    )
 
-        fun waysToInput(input: String) = input.fold(this to listOf("")) { (dirPad, ways), nextChar ->
-            val (nextDirPad, furtherSteps) = dirPad.moveTo(nextChar)
-            nextDirPad to furtherSteps.flatMap { ways.map { w -> w + it + "A" } }
-        }.second
+    private val directionPad = KeyPad(
+        """
+        -^A
+        <v>
+    """.trimIndent()
+    )
 
-        companion object {
-            //    +---+---+
-            //    | ^ | A |
-            //+---+---+---+
-            //| < | v | > |
-            //+---+---+---+
-            private val digitKeyNeighborLookup = mapOf(
-                'A' to listOf('^' to '<', '>' to 'v'),
-                '^' to listOf('A' to '>', 'v' to 'v'),
-                'v' to listOf('<' to '<', '>' to '>', '^' to '^'),
-                '<' to listOf('v' to '>'),
-                '>' to listOf('v' to '<', 'A' to '^')
-            )
+    private fun List<String>.computeInputComplexity(robotDepthCount: Int) =
+        sumOf { it.lengthOfCommand(robotDepthCount) * it.toAllLongs().first() }
 
-            private val memoizeShortestWays = mutableMapOf<Pair<Char, Pair<Char, String>>, List<String>>()
-            private fun Char.getShortestWaysTo(other: Char, seen: String = ""): List<String> = memoizeShortestWays.getOrPut(this to (other to seen)) {
-                val neighbors = digitKeyNeighborLookup[this]!!
-                if (neighbors.any { it.first == other }) return@getOrPut listOf(neighbors.first { it.first == other }.second + "")
-                val ways = when (other) {
-                    this -> return@getOrPut listOf("")
-                    else -> digitKeyNeighborLookup[this]!!.filter { it.first !in seen }.flatMap { (nextChar, goDir) ->
-                        nextChar.getShortestWaysTo(other, seen = seen + this).map {
-                            goDir + it
-                        }
+    private fun String.lengthOfCommand(depth: Int, first: Boolean = true): Long = "A$this"
+        .zipWithNext { a, b -> State(a, b, depth).computeLengthOfInput(first) }
+        .sum()
+
+    data class State(val from: Char, val to: Char, val depth: Int)
+
+    private val memoization = mutableMapOf<State, Long>()
+    private fun State.computeLengthOfInput(isNumberPad: Boolean): Long = memoization.getOrPut(this) {
+        val keypad = if (isNumberPad) numberPad else directionPad
+        val routes = findPathsOn(keypad)
+        when (depth) {
+            0 -> routes.first().length.toLong()
+            else -> routes.minOf { it.lengthOfCommand(depth - 1, false) }
+        }
+    }
+
+    private fun State.findPathsOn(keypad: KeyPad): List<String> {
+        val start = keypad.getPositionOf(from)
+        val destination = keypad.getPositionOf(to)
+        val hole = keypad.getPositionOf('-')
+
+        return generateSequence(listOf(start to emptyList<Point2D>())) { frontier ->
+            frontier.flatMap { (currentPosition, path) ->
+                when (currentPosition) {
+                    hole -> emptyList()
+                    else -> buildList {
+                        if (currentPosition.x > destination.x)
+                            this += currentPosition + Point2D.LEFT to path + Point2D.LEFT
+                        if (currentPosition.x < destination.x)
+                            this += currentPosition + Point2D.RIGHT to path + Point2D.RIGHT
+                        if (currentPosition.y > destination.y)
+                            this += currentPosition + Point2D.UP to path + Point2D.UP
+                        if (currentPosition.y < destination.y)
+                            this += currentPosition + Point2D.DOWN to path + Point2D.DOWN
                     }
                 }
-                if (ways.isNotEmpty()) {
-                    val shortest = ways.filter { it.isNotEmpty() }.minOf { it.length }
-                    ways.filter { it.length == shortest }
-                } else
-                    ways
             }
-        }
+        }.takeWhile { it.isNotEmpty() }.last().map { (_, line) -> line.asInstructionString() }
     }
 
-    override fun part1(input: InputRepresentation): Long {
-        val afterFirstRobot = input.map {
-            it to NumberKeyPad('A').waysToInput(it)
+    private fun List<Point2D>.asInstructionString() = map {
+        when (it) {
+            Point2D.UP -> '^'
+            Point2D.DOWN -> 'v'
+            Point2D.RIGHT -> '>'
+            Point2D.LEFT -> '<'
+            else -> error("invalid direction")
         }
-        val afterSecondRoboter = afterFirstRobot.map { (originalInput, ways) ->
-            val ways2 = ways.flatMap { DirectionKeyPad().waysToInput(it) }
-            val lengthOfShortestWay2 = ways2.minOf { it.length }
-            val shortestWay2s = ways2.filter { it.length == lengthOfShortestWay2 }
-            Triple(originalInput, ways, shortestWay2s)
-        }
+    }.joinToString("", postfix = "A")
 
-        val yourInputForSecondRobot = afterSecondRoboter.map { (originalInput, ways, secondWays) ->
-            val ways3 = secondWays.flatMap { DirectionKeyPad().waysToInput(it) }
-            val lengthOfShortestWay3 = ways3.minOf { it.length }
-            val shortestWay3s = ways3.filter { it.length == lengthOfShortestWay3 }
-            originalInput to shortestWay3s
-        }
+    override fun part1(input: InputRepresentation): Long = input.computeInputComplexity(2)
 
-        return yourInputForSecondRobot.sumOf { (input, yourInput) ->
-            input.toAllLongs().first() * yourInput[0].length
-        }
-    }
-
-    override fun part2(input: InputRepresentation): Any {
-        TODO("Not yet implemented")
-    }
+    override fun part2(input: InputRepresentation): Long = input.computeInputComplexity(25)
 }
 
 fun main() = Day21.run()
