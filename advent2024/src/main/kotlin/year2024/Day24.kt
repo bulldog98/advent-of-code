@@ -48,7 +48,7 @@ object Day24 : AdventDay(2024, 24) {
         }
     }
 
-    private data class Wireing(
+    private data class Wiring(
         val initialValues: Map<String, Boolean>,
         val gates: List<Gate>
     ) {
@@ -69,7 +69,7 @@ object Day24 : AdventDay(2024, 24) {
             }
         }
 
-        private fun computeValue(value: String): Wireing = when {
+        private fun computeValue(value: String): Wiring = when {
             value in initialValues.keys -> this
             gates.any { it.variable == value } -> {
                 val gate = gates.first { it.variable == value }
@@ -87,7 +87,7 @@ object Day24 : AdventDay(2024, 24) {
         }
 
         companion object {
-            fun parse(input: InputRepresentation): Wireing {
+            fun parse(input: InputRepresentation): Wiring {
                 val (variables, gates) = input.asTwoBlocks()
                     .mapFirst { lines ->
                         buildMap {
@@ -104,17 +104,178 @@ object Day24 : AdventDay(2024, 24) {
                         }
                     }
                     .mapSecond { lines -> lines.map { Gate.parse(it) } }
-                return Wireing(variables, gates)
+                return Wiring(variables, gates)
             }
         }
     }
 
-    override fun part1(input: InputRepresentation): Long {
-        val wireing = Wireing.parse(input)
-        return wireing.computeValues().toLong(2)
+    private sealed interface ComputationTree {
+        val variableName: String
+        fun complete(lookup: Map<String, ComputationTree>): ComputationTree
+        fun getUsedVariableNames(): List<String>
+        fun rewireOutput(oldVariableName: String, newVariableName: String): ComputationTree
+        fun congurentTo(computationTree: ComputationTree): Boolean
+
+        data class VariableNodeComputationTree(override val variableName: String) : ComputationTree {
+            override fun complete(lookup: Map<String, ComputationTree>): ComputationTree = this
+            override fun getUsedVariableNames(): List<String> = listOf(variableName)
+            override fun rewireOutput(oldVariableName: String, newVariableName: String): ComputationTree = copy(
+                variableName = when (variableName) {
+                    oldVariableName -> newVariableName
+                    newVariableName -> oldVariableName
+                    else -> variableName
+                }
+            )
+
+            override fun congurentTo(computationTree: ComputationTree): Boolean = this == computationTree
+        }
+
+        sealed interface FunctionComputationTree : ComputationTree {
+            val left: ComputationTree
+            val right: ComputationTree
+            fun overwrite(left: ComputationTree, right: ComputationTree): ComputationTree
+            override fun complete(lookup: Map<String, ComputationTree>): ComputationTree {
+                val newLeft = when (left) {
+                    is VariableNodeComputationTree -> lookup[left.variableName] ?: error("could not lookup ${left.variableName}")
+                    else -> left.complete(lookup)
+                }
+                val newRight = when (right) {
+                    is VariableNodeComputationTree -> lookup[right.variableName] ?: error("could not lookup ${right.variableName}")
+                    else -> right.complete(lookup)
+                }
+                if (left == newLeft && right == newRight) return this
+                return overwrite(left = newLeft, right = newRight).complete(lookup)
+            }
+
+            override fun getUsedVariableNames(): List<String> =
+                left.getUsedVariableNames() + variableName + right.getUsedVariableNames()
+        }
+
+        data class AndVariableComputationTree(
+            override val variableName: String,
+            override val left: ComputationTree,
+            override val right: ComputationTree
+        ) : FunctionComputationTree {
+            override fun overwrite(
+                left: ComputationTree,
+                right: ComputationTree
+            ): ComputationTree = copy(variableName = variableName, left = left, right = right)
+            override fun rewireOutput(oldVariableName: String, newVariableName: String): ComputationTree = copy(
+                variableName = when (variableName) {
+                    oldVariableName -> newVariableName
+                    newVariableName -> oldVariableName
+                    else -> variableName
+                }
+            )
+
+            override fun congurentTo(computationTree: ComputationTree): Boolean =
+                computationTree is AndVariableComputationTree && (
+                    (left.congurentTo(computationTree.left) && right.congurentTo(computationTree.right)) ||
+                        (right.congurentTo(computationTree.left) && left.congurentTo(computationTree.right))
+                    )
+        }
+
+        data class XorVariableComputationTree(
+            override val variableName: String,
+            override val left: ComputationTree,
+            override val right: ComputationTree
+        ) : FunctionComputationTree {
+            override fun overwrite(
+                left: ComputationTree,
+                right: ComputationTree
+            ): ComputationTree = copy(left = left, right = right)
+            override fun rewireOutput(oldVariableName: String, newVariableName: String): ComputationTree = copy(
+                variableName = when (variableName) {
+                    oldVariableName -> newVariableName
+                    newVariableName -> oldVariableName
+                    else -> variableName
+                }
+            )
+            override fun congurentTo(computationTree: ComputationTree): Boolean =
+                computationTree is XorVariableComputationTree && (
+                    (left.congurentTo(computationTree.left) && right.congurentTo(computationTree.right)) ||
+                        (right.congurentTo(computationTree.left) && left.congurentTo(computationTree.right))
+                    )
+        }
+
+        data class OrVariableComputationTree(
+            override val variableName: String,
+            override val left: ComputationTree,
+            override val right: ComputationTree
+        ) : FunctionComputationTree {
+            override fun overwrite(
+                left: ComputationTree,
+                right: ComputationTree
+            ): ComputationTree = copy(left = left, right = right)
+            override fun rewireOutput(oldVariableName: String, newVariableName: String): ComputationTree = copy(
+                variableName = when (variableName) {
+                    oldVariableName -> newVariableName
+                    newVariableName -> oldVariableName
+                    else -> variableName
+                }
+            )
+            override fun congurentTo(computationTree: ComputationTree): Boolean =
+                computationTree is OrVariableComputationTree && (
+                    (left.congurentTo(computationTree.left) && right.congurentTo(computationTree.right)) ||
+                        (right.congurentTo(computationTree.left) && left.congurentTo(computationTree.right))
+                    )
+        }
+
+        companion object {
+            fun fromGate(gate: Gate) = when (gate) {
+                is Gate.AndGate -> AndVariableComputationTree(
+                    variableName = gate.variable,
+                    left = VariableNodeComputationTree(gate.param1),
+                    right = VariableNodeComputationTree(gate.param2)
+                )
+
+                is Gate.XorGate -> XorVariableComputationTree(
+                    variableName = gate.variable,
+                    left = VariableNodeComputationTree(gate.param1),
+                    right = VariableNodeComputationTree(gate.param2)
+                )
+
+                is Gate.OrGate -> OrVariableComputationTree(
+                    variableName = gate.variable,
+                    left = VariableNodeComputationTree(gate.param1),
+                    right = VariableNodeComputationTree(gate.param2)
+                )
+            }
+        }
     }
 
-    override fun part2(input: InputRepresentation): Any {
+    override fun part1(input: InputRepresentation): Long = Wiring.parse(input)
+        .computeValues()
+        .toLong(2)
+
+    override fun part2(input: InputRepresentation): String {
+        val directComputationMap =
+            input.asTwoBlocks().second.map { ComputationTree.fromGate(Gate.parse(it))
+            }.associateBy {
+                it.variableName
+            }
+        val computationTreeLookup =
+            directComputationMap + (directComputationMap.keys.filter { it.startsWith('z') }).flatMap {
+                listOf(
+                    ComputationTree.VariableNodeComputationTree("x" + it.drop(1)),
+                    ComputationTree.VariableNodeComputationTree("y" + it.drop(1))
+                )
+            }.associateBy { it.variableName }
+        val zComputations = directComputationMap.filter { it.key.startsWith('z') }
+            .values
+            .sortedBy { it.variableName }
+            .map { it.complete(computationTreeLookup) }
+
+        val notXors = zComputations.filter { it !is ComputationTree.XorVariableComputationTree }
+
+        // - 0, 1, 45
+        val incorrectZComps = zComputations.filter { it !is ComputationTree.XorVariableComputationTree ||
+            !((it.left is ComputationTree.XorVariableComputationTree && it.right is ComputationTree.OrVariableComputationTree) ||
+                (it.right is ComputationTree.XorVariableComputationTree && it.left is ComputationTree.OrVariableComputationTree)
+                )
+        }
+
+        // set a breakpoint here and figure out by hand, which of the zGates do not match the correct spec.
         TODO("Not yet implemented")
     }
 }
