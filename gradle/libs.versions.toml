@@ -5,7 +5,7 @@ serializationVersion = "1.7.3"
 benchmarkVersion = "0.4.13"
 ktorVersion = "3.1.1"
 junitVersion = "5.9.2"
-ksmtVersion = "0.5.26"
+ksmtVersion = "0.5.29"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlinVersion" }
