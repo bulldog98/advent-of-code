@@ -1,6 +1,11 @@
-val coroutinesVersion : String by rootProject.extra
-val kotlinVersion : String by rootProject.extra
-val junitVersion : String by rootProject.extra
+import org.gradle.accessors.dm.LibrariesForLibs
+
+repositories {
+    mavenCentral()
+}
+
+// needed because of https://github.com/gradle/gradle/issues/15383
+val libs = the<LibrariesForLibs>()
 
 plugins {
     kotlin("jvm")
@@ -11,14 +16,10 @@ tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlinx.coroutines)
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testImplementation(libs.junit.api)
+    testRuntimeOnly(libs.junit.engine)
 }

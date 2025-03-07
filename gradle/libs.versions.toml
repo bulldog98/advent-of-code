@@ -1,0 +1,24 @@
+[versions]
+kotlinVersion = "2.1.0"
+coroutinesVersion = "1.7.3"
+serializationVersion = "1.7.3"
+benchmarkVersion = "0.4.13"
+ktorVersion = "3.0.1"
+junitVersion = "5.9.2"
+
+[libraries]
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlinVersion" }
+kotlin-plugin-jvm = { group = "org.jetbrains.kotlin.jvm", name = "org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kotlinVersion" }
+kotlin-plugin-allopen = { group = "org.jetbrains.kotlin.plugin.allopen", name = "org.jetbrains.kotlin.plugin.allopen.gradle.plugin", version.ref = "kotlinVersion" }
+kotlin-plugin-serialization = { group = "org.jetbrains.kotlin.plugin.serialization", name = "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", version.ref = "kotlinVersion" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationVersion" }
+kotlinx-plugin-benchmark = { module = "org.jetbrains.kotlinx.benchmark:org.jetbrains.kotlinx.benchmark.gradle.plugin", version.ref = "benchmarkVersion" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorVersion" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorVersion" }
+ktor-client-encoding = { module = "io.ktor:ktor-client-encoding", version.ref = "ktorVersion" }
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitVersion" }
+junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junitVersion" }
+
+[bundles]
+ktor = ["ktor-client-core", "ktor-client-okhttp", "ktor-client-encoding"]

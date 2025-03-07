@@ -1,4 +1,7 @@
-val serializationVersion : String by rootProject.extra
+import org.gradle.accessors.dm.LibrariesForLibs
+
+// needed because of https://github.com/gradle/gradle/issues/15383
+val libs = the<LibrariesForLibs>()
 
 plugins {
     id("de.bulldog98.kotlin")
@@ -9,7 +12,7 @@ plugins {
 
 dependencies {
     implementation(project(":common"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+    implementation(libs.kotlinx.serialization)
 }
 
 allOpen {
