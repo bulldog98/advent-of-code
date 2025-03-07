@@ -3,18 +3,14 @@ plugins {
 }
 
 repositories {
-    mavenCentral()
+    gradlePluginPortal() // so that external plugins can be resolved in dependencies section
 }
+
+val kotlinVersion = "2.1.0"
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
-}
-
-gradlePlugin {
-    // Define the plugin
-    val greeting by plugins.creating {
-        id = "de.bulldog98.plugin.adventOfCode"
-        implementationClass = "de.bulldog98.DataPlugin"
-    }
+    implementation(kotlin("gradle-plugin", kotlinVersion))
+    implementation("org.jetbrains.kotlin.plugin.allopen", "org.jetbrains.kotlin.plugin.allopen.gradle.plugin", kotlinVersion)
+    implementation("org.jetbrains.kotlin.plugin.serialization", "org.jetbrains.kotlin.plugin.serialization.gradle.plugin", kotlinVersion)
+    implementation("org.jetbrains.kotlinx.benchmark:org.jetbrains.kotlinx.benchmark.gradle.plugin:0.4.13")
 }

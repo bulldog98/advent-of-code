@@ -1,3 +1,7 @@
+plugins {
+    id("de.bulldog98.kotlin")
+}
+
 val ktorVersion : String by rootProject.extra
 
 dependencies {
