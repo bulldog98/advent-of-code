@@ -5,6 +5,7 @@ serializationVersion = "1.7.3"
 benchmarkVersion = "0.4.13"
 ktorVersion = "3.1.1"
 junitVersion = "5.9.2"
+ksmtVersion = "0.5.26"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlinVersion" }
@@ -19,6 +20,9 @@ ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kto
 ktor-client-encoding = { module = "io.ktor:ktor-client-encoding", version.ref = "ktorVersion" }
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitVersion" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junitVersion" }
+ksmt-core = { module = "io.ksmt:ksmt-core", version.ref = "ksmtVersion" }
+ksmt-z3 = { module = "io.ksmt:ksmt-z3", version.ref = "ksmtVersion" }
 
 [bundles]
 ktor = ["ktor-client-core", "ktor-client-okhttp", "ktor-client-encoding"]
+ksmt = ["ksmt-core", "ksmt-z3"]
