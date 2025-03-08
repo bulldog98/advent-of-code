@@ -6,8 +6,10 @@ val rootDataDir = rootDir.resolve("data")
 val defaultDataDir: DirectoryProperty = objects.directoryProperty().fileValue(rootDataDir)
 extension.dataPath.convention(defaultDataDir)
 
-task<EnsureDataInResourcesTask>("ensureDataInResources") {
+val ensureDataInResources = tasks.register<EnsureDataInResourcesTask>("ensureDataInResources") {
     data.set(extension.dataPath)
 }
 
-tasks.findByName("classes")?.dependsOn?.add("ensureDataInResources")
+tasks.findByName("classes")?.run {
+    dependsOn(ensureDataInResources)
+}
