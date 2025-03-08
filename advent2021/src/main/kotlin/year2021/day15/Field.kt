@@ -37,7 +37,7 @@ data class Field(
     override val keys: Set<Point2D>
         get() = points
     override val size: Int
-        get() = bottomRight.x.toInt() * bottomRight.y.toInt()
+        get() = (1 + bottomRight.x.toInt()) * (1 + bottomRight.y.toInt())
     override val values: Collection<Int>
         get() = keys.map { this[it] ?: error("point is not in field") }
 
