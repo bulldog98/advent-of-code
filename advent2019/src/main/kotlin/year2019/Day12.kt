@@ -11,6 +11,13 @@ data class Planet(val position: Point3D, val velocity: Point3D) {
     fun computeEnergy(): Long =
         (position.x.absoluteValue + position.y.absoluteValue + position.z.absoluteValue) *
             (velocity.x.absoluteValue + velocity.y.absoluteValue + velocity.z.absoluteValue)
+
+    companion object {
+        fun parseAll(input: InputRepresentation): List<Planet> = input.map {
+            val (x, y, z) = it.toAllLongs().toList()
+            Planet(Point3D(x, y, z), Point3D.ORIGIN)
+        }
+    }
 }
 
 fun List<Planet>.applyGravity(): List<Planet> = map {
@@ -32,20 +39,18 @@ fun List<Planet>.applyVelocity() = map {
 }
 
 class Day12(private val numberOfRounds: Int) : AdventDay(2019, 12) {
-    override fun part1(input: InputRepresentation): Long {
-        val planets = input.map {
-            val (x, y, z) = it.toAllLongs().toList()
-            Planet(Point3D(x, y, z), Point3D.ORIGIN)
-        }
-        val simulation = generateSequence(planets) {
-            it.applyGravity().applyVelocity()
-        }
-        return simulation.drop(numberOfRounds).first().sumOf { it.computeEnergy() }
+    private fun List<Planet>.simulation(): Sequence<List<Planet>> = generateSequence(this) {
+        it.applyGravity().applyVelocity()
     }
 
-    override fun part2(input: InputRepresentation): Long {
-        TODO("Not yet implemented")
-    }
+    override fun part1(input: InputRepresentation): Long =
+        Planet.parseAll(input)
+            .simulation()
+            .drop(numberOfRounds)
+            .first()
+            .sumOf { it.computeEnergy() }
+
+    override fun part2(input: InputRepresentation): Long = TODO("Not yet implemented")
 }
 
 fun main() = Day12(1000).run()
