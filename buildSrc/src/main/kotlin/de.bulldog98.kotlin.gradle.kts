@@ -20,6 +20,6 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlinx.coroutines)
 
-    testImplementation(libs.junit.api)
-    testRuntimeOnly(libs.junit.engine)
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform)
 }
