@@ -15,10 +15,15 @@ object Day12 : AdventDay(2021, 12) {
         }
     }
 
+    private fun InputRepresentation.countPathsFromStartToEnd(allowedToVisitSmallCaveAgain: Boolean = false): Long {
+        val graph = asGraph()
+        return graph.pathsFrom(PathFragment("start", graph.hashCode(), allowedToVisitSmallCaveAgain))
+    }
+
     private data class PathFragment(
         val currentNode: String,
         val hash: Int,
-        val allowedToVisitSmallCaveAgain: Boolean = false,
+        val allowedToVisitSmallCaveAgain: Boolean,
         val visited: Set<String> = setOf(currentNode)
     )
 
@@ -44,15 +49,9 @@ object Day12 : AdventDay(2021, 12) {
             }
         }
 
-    override fun part1(input: InputRepresentation): Long {
-        val graph = input.asGraph()
-        return graph.pathsFrom(PathFragment("start", graph.hashCode()))
-    }
+    override fun part1(input: InputRepresentation): Long = input.countPathsFromStartToEnd()
 
-    override fun part2(input: InputRepresentation): Long {
-        val graph = input.asGraph()
-        return graph.pathsFrom(PathFragment("start", graph.hashCode(), true))
-    }
+    override fun part2(input: InputRepresentation): Long = input.countPathsFromStartToEnd(true)
 }
 
 fun main() = Day12.run()
