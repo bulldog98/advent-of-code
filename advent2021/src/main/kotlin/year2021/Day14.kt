@@ -9,16 +9,12 @@ object Day14 : AdventDay(2021, 14) {
         SimulationState(input.asTwoBlocks())
             .simulate()
             .first { it.afterStep == 10 }
-            .let { finalPolymer ->
-                finalPolymer
-                    .groupBy { c -> c }
-                    .map { it.value.size }
-            }.let { occurrences ->
-                occurrences.max() - occurrences.min()
-            }
+            .computeDifference()
 
-    override fun part2(input: InputRepresentation): Any {
-        TODO("Not yet implemented")
-    }
+    override fun part2(input: InputRepresentation) =
+        SimulationState(input.asTwoBlocks())
+            .simulate()
+            .first { it.afterStep == 40 }
+            .computeDifference()
 }
 fun main() = Day14.run()
