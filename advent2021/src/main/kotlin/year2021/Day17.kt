@@ -47,7 +47,15 @@ object Day17 : AdventDay(2021, 17) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        TODO("Not yet implemented")
+        val targetArea = TargetArea.parse(input.asText())
+        val velocities = (0..targetArea.xRange.last).asSequence().flatMap { x ->
+            (targetArea.yRange.first..targetArea.yRange.first.absoluteValue).map { y ->
+                Point2D(x, y)
+            }
+        }
+        return velocities.map { ProbePosition(Point2D.ORIGIN, it).simulate(targetArea) }.count {
+            it.any { p -> p.position.x in targetArea.xRange && p.position.y in targetArea.yRange }
+        }.toLong()
     }
 }
 
