@@ -49,4 +49,7 @@ class Day18Test {
             Day18.testPart1()
         )
     }
+
+    @Test
+    fun part2() = assertEquals(3993, Day18.testPart2())
 }

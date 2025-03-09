@@ -2,6 +2,7 @@ package year2021
 
 import adventday.AdventDay
 import adventday.InputRepresentation
+import collections.pairings
 import year2021.day18.SnailFishNumber
 
 object Day18 : AdventDay(2021, 18) {
@@ -11,8 +12,9 @@ object Day18 : AdventDay(2021, 18) {
         input.map { SnailFishNumber.parse(it) }.reduce(SnailFishNumber::plus)
             .computeMagnitude()
 
-    override fun part2(input: InputRepresentation): Long =
-        TODO("Not yet implemented")
+    override fun part2(input: InputRepresentation): Int =
+        input.map { SnailFishNumber.parse(it) }.pairings()
+            .maxOf { (a, b) -> listOf(a + b, b + a).maxOf { it.computeMagnitude() } }
 }
 
 fun main() = Day18.run()
