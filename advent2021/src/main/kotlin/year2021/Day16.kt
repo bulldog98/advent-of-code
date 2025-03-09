@@ -10,9 +10,8 @@ object Day16 : AdventDay(2021, 16) {
         it.version
     }
 
-    override fun part2(input: InputRepresentation): Any {
-        TODO("Not yet implemented")
-    }
+    override fun part2(input: InputRepresentation): Long =
+        Packet.parseHexString(input.asText()).value
 }
 
 fun main() = Day16.run()

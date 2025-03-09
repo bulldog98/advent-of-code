@@ -1,6 +1,6 @@
 package year2021.day16
 
-data class Literal(override val version: Int, val value: Long) : Packet {
+data class Literal(override val version: Int, override val value: Long) : Packet {
     companion object {
         const val TYPE_ID = 4
 

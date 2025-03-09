@@ -2,6 +2,7 @@ package year2021.day16
 
 sealed interface Packet {
     val version: Int
+    val value: Long
 
     companion object {
         fun parseHexString(hexString: String) = parseBinaryString(hexString.windowed(1).joinToString("") {
@@ -19,9 +20,9 @@ sealed interface Packet {
         fun parseBinaryString(binaryString: String): Pair<Packet, String> {
             val (versionString, typeString) = binaryString.take(6).chunked(3)
             val version = versionString.toInt(2)
-            return when (typeString.toInt(2)) {
+            return when (val typeId = typeString.toInt(2)) {
                 Literal.TYPE_ID -> Literal.parseBinaryString(version, binaryString.drop(6))
-                else -> Operator.parseBinaryString(version, binaryString.drop(6))
+                else -> Operator.parseBinaryString(version, typeId, binaryString.drop(6))
             }
         }
     }
