@@ -6,7 +6,7 @@ benchmarkVersion = "0.4.13"
 ktorVersion = "3.3.0"
 junitVersion = "6.0.0"
 junitPlatformVersion = "6.0.0"
-ksmtVersion = "0.6.3"
+ksmtVersion = "0.6.4"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlinVersion" }
