@@ -3,56 +3,61 @@ package year2025
 import adventday.AdventDay
 import adventday.InputRepresentation
 
-sealed interface Instruction : (Long) -> Long {
-    data class Left(override val amount: Long) : Instruction {
-        override fun invoke(a: Long): Long = a - amount
+sealed interface Instruction {
+    data class Left(override val amount: Int) : Instruction {
+        override val direction: Int
+            get() = -1
     }
 
-    data class Right(override val amount: Long) : Instruction {
-        override fun invoke(a: Long): Long = a + amount
+    data class Right(override val amount: Int) : Instruction {
+        override val direction: Int
+            get() = 1
     }
 
-    val amount: Long
+    val amount: Int
+    val direction: Int
 
     companion object {
         fun parse(inputLine: String): Instruction = when {
-            inputLine.startsWith("L") -> Left(inputLine.drop(1).toLong())
-            inputLine.startsWith("R") -> Right(inputLine.drop(1).toLong())
+            inputLine.startsWith("L") -> Left(inputLine.drop(1).toInt())
+            inputLine.startsWith("R") -> Right(inputLine.drop(1).toInt())
             else -> error("could not parse")
         }
     }
 }
 
-data class Dial(val position: Long, val clicks: Long = 0) {
-    fun execute(instruction: Instruction): Dial {
-        var newClicks = 0L
-        var nextPosition = position
-        val direction = if (instruction is Instruction.Left) -1 else 1
-        repeat(instruction.amount.toInt()) {
-            nextPosition = (nextPosition + direction + 100L) % 100
-            if (nextPosition % 100L == 0L) {
-                newClicks++
-            }
-        }
-        return copy(
-            position = nextPosition,
-            clicks = clicks + newClicks
-        )
+data class Dial(val position: Int = 50, val clicks: Int = 0)
+
+operator fun Dial.plus(instruction: Instruction): Dial {
+    val restWay = instruction.amount % 100
+    val realPosition = when {
+        position == 0 && instruction is Instruction.Left -> 100
+        else -> position
     }
+    val lastPos = realPosition + restWay * instruction.direction
+    val clickOnLastRotation: Int = when {
+        lastPos <= 0 -> 1
+        lastPos >= 100 -> 1
+        else -> 0
+    }
+    return copy(
+        position = (position + (instruction.amount % 100) * instruction.direction + 100) % 100,
+        clicks = clicks + instruction.amount / 100 + clickOnLastRotation
+    )
 }
 
 object Day01 : AdventDay(2025, 1) {
-    override fun part1(input: InputRepresentation): Long = input
+    override fun part1(input: InputRepresentation): Int = input
         .map(Instruction::parse)
-        .runningFold(50L) { acc, instruction ->
-            instruction(acc)
+        .runningFold(Dial()) { acc, instruction ->
+            acc + instruction
         }
-        .count { it % 100L == 0L }.toLong()
+        .count { it.position == 0 }
 
-    override fun part2(input: InputRepresentation): Long = input
+    override fun part2(input: InputRepresentation): Int = input
         .map(Instruction::parse)
-        .fold(Dial(50)) { dial, instruction ->
-            dial.execute(instruction)
+        .fold(Dial()) { dial, instruction ->
+            dial + instruction
         }.clicks
 }
 
