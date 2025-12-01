@@ -41,7 +41,7 @@ operator fun Dial.plus(instruction: Instruction): Dial {
         else -> 0
     }
     return copy(
-        position = (position + (instruction.amount % 100) * instruction.direction + 100) % 100,
+        position = (position + (instruction.amount % 100) * instruction.direction).mod(100),
         clicks = clicks + instruction.amount / 100 + clickOnLastRotation
     )
 }
