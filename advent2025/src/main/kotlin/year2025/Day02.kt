@@ -3,32 +3,18 @@ package year2025
 import adventday.AdventDay
 import adventday.InputRepresentation
 
-private fun String.isRepeatPattern(): Boolean {
-    var i = 1
-    while (i <= length / 2) {
-        if (drop(i) in dropLast(length - i)) {
-            return true
-        }
-        i++
-    }
-    return false
+private fun String.isRepeatPattern(): Boolean = length / 2 * 2 == length &&
+    take(length / 2 ) + take(length / 2) == this
+
+private operator fun String.times(count: Int): String = timesHelper(count)
+
+private tailrec fun String.timesHelper(count: Int, prefix: String = ""): String = when (count) {
+    0 -> prefix
+    else -> timesHelper(count - 1, prefix + this)
 }
 
-private fun String.isOnlyRepeatingSubstring(): Boolean {
-    var i = 1
-    while (i <= length / 2) {
-        if (take(i) in drop(i)) {
-            var string = take(i)
-            while (string.length < length) {
-                string += take(i)
-            }
-            if (string == this) {
-                return true
-            }
-        }
-        i++
-    }
-    return false
+private fun String.isOnlyRepeatingSubstring(): Boolean = (1 ..< length).any {
+    length / it * it == length && take(it) * (length / it) == this
 }
 
 object Day02 : AdventDay(2025, 2) {
