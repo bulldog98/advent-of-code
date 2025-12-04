@@ -1,37 +1,21 @@
 package year2025
 
-import Point2D
 import adventday.AdventDay
 import adventday.InputRepresentation
+import findAllPositionsOf
 
-private val paperRoll = '@'
+private const val paperRoll = '@'
 
 object Day04 : AdventDay(2025, 4) {
     override fun part1(input: InputRepresentation): Int {
-        val positions = buildSet {
-            for (x in input[0].indices) {
-                for (y in input.indices) {
-                    if (input[x][y] == paperRoll) {
-                        add(Point2D(x, y))
-                    }
-                }
-            }
-        }
-        return positions.count {
-            it.neighborHood.count { it in positions } < 4
+        val positions = input.findAllPositionsOf(paperRoll)
+        return positions.count { position ->
+            position.neighborHood.count { it in positions } < 4
         }
     }
 
     override fun part2(input: InputRepresentation): Int {
-        val positions = buildSet {
-            for (x in input[0].indices) {
-                for (y in input.indices) {
-                    if (input[x][y] == paperRoll) {
-                        add(Point2D(x, y))
-                    }
-                }
-            }
-        }
+        val positions = input.findAllPositionsOf(paperRoll)
         val allAccessiblePaperRollsRemoved = generateSequence(positions) { currentPositions ->
             currentPositions.filter { position ->
                 position.neighborHood.count { it in currentPositions } >= 4
