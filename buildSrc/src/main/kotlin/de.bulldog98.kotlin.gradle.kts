@@ -17,7 +17,6 @@ tasks.getByName<Test>("test") {
 }
 
 dependencies {
-    implementation(libs.kotlin.stdlib)
     implementation(libs.kotlinx.coroutines)
 
     testImplementation(libs.junit.jupiter)
