@@ -13,7 +13,7 @@ data class Planet(val position: Point3D, val velocity: Point3D) {
             (velocity.x.absoluteValue + velocity.y.absoluteValue + velocity.z.absoluteValue)
 
     companion object {
-        fun parseAll(input: InputRepresentation): List<Planet> = input.map {
+        fun parseAll(input: InputRepresentation): List<Planet> = input.lines.map { it: String ->
             val (x, y, z) = it.toAllLongs().toList()
             Planet(Point3D(x, y, z), Point3D.ORIGIN)
         }

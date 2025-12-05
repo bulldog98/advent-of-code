@@ -17,11 +17,11 @@ object Day06: AdventDay(2019, 6) {
     }
 
     override fun part1(input: InputRepresentation): Long {
-        val orbits = input.map {
+        val orbits = input.lines.map { it: String ->
             val (a, b) = it.split(")")
             a to b
         }
-        val orbitMap = AdjacencyListGraph(input.flatMap { it.split("(") }.toSet()) { stellarObject ->
+        val orbitMap = AdjacencyListGraph(input.lines.flatMap { it.split("(") }.toSet()) { stellarObject ->
             orbits.filter { it.first == stellarObject }.map { it.second }
         }
 
@@ -29,7 +29,7 @@ object Day06: AdventDay(2019, 6) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        val orbits = input.map {
+        val orbits = input.lines.map { it: String ->
             val (a, b) = it.split(")")
             a to b
         }

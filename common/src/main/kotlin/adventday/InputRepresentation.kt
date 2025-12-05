@@ -1,15 +1,14 @@
+@file:Suppress("Unused")
 package adventday
 
 import Point2D
 import helper.numbers.toAllLongs
-import helper.pair.mapFirst
-import helper.pair.mapSecond
 import java.io.File
 
 /*
  * this class represents the data, it assumes that the backing file exists
  */
-class InputRepresentation(private val backingFile: BackingOperations): List<String> by backingFile.readLines() {
+class InputRepresentation(private val backingFile: BackingOperations) {
     /**
      * this constructor is intended for testing purposes
      */
@@ -20,21 +19,25 @@ class InputRepresentation(private val backingFile: BackingOperations): List<Stri
     constructor(fileContent: List<String>) : this(BackingOperations.StringListBacking(fileContent))
     constructor(file: File) : this(BackingOperations.FileBacking(file))
 
-    fun asText() = backingFile.readText()
-    fun asSplitByEmptyLine() = asText().split("\n\n")
-    fun asNumbers() = asText().toAllLongs()
+    val lines: List<String> by lazy { backingFile.readLines() }
+    val lineSequence: Sequence<String> by lazy { lines.asSequence() }
+    val text: String by lazy { backingFile.readText() }
+    val sections: List<InputRepresentation> by lazy {
+        text.split("\n\n")
+            .map { InputRepresentation(it) }
+    }
+    fun asSplitByEmptyLine() = sections
+    fun asNumbers() = text.toAllLongs()
 
     /**
      * split by empty line take exactly 2
      */
-    fun asTwoBlocks(): Pair<List<String>, List<String>> = asSplitByEmptyLine()
+    fun asTwoBlocks(): Pair<InputRepresentation, InputRepresentation> = asSplitByEmptyLine()
         .zipWithNext()
         .first()
-        .mapFirst { it.lines() }
-        .mapSecond { it.lines() }
 
     fun asCharMap(validChar: (Char) -> Boolean = { true }) = buildMap {
-        forEachIndexed { y, it ->
+        backingFile.readLines().forEachIndexed { y, it ->
             it.forEachIndexed { x, c ->
                 if (validChar(c)) {
                     put(Point2D(x, y), c)
@@ -45,13 +48,13 @@ class InputRepresentation(private val backingFile: BackingOperations): List<Stri
 
     // used for printing map with additional stuff painted in
     fun addIntoMap(replace: (Point2D) -> Char?): String =
-        this[0].indices.joinToString("\n") { y ->
-            this.indices.joinToString("") { x ->
-                (replace(Point2D(x, y)) ?: this[y][x]).toString()
+        backingFile.readLines()[0].indices.joinToString("\n") { y ->
+            backingFile.readLines().indices.joinToString("") { x ->
+                (replace(Point2D(x, y)) ?: this.lines[y][x]).toString()
             }
         }
 
-    operator fun get(point: Point2D): Char = this[point.y.toInt()][point.x.toInt()]
+    operator fun get(point: Point2D): Char = this.lines[point.y.toInt()][point.x.toInt()]
 
     sealed interface BackingOperations {
         fun readText(): String

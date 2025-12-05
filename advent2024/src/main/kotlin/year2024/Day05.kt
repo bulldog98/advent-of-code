@@ -30,8 +30,8 @@ private fun List<Long>.orderByRules(orderRules: List<Pair<Long, Long>>): List<Lo
 }
 
 fun InputRepresentation.getPageOrderRulesAndOrdering() = asTwoBlocks()
-    .mapFirst { it.getPageOrderRules() }
-    .mapSecond { it.getPageOrderings() }
+    .mapFirst { it.lines.getPageOrderRules() }
+    .mapSecond { it.lines.getPageOrderings() }
 
 object Day05 : AdventDay(2024, 5) {
     override fun part1(input: InputRepresentation): Long {

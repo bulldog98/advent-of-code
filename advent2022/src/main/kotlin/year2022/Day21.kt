@@ -130,12 +130,12 @@ class Day21 : AdventDay(2022, 21) {
     }
 
     override fun part1(input: InputRepresentation): ValueNumber {
-        val lookupOperation = computeOperationMap(input)
+        val lookupOperation = computeOperationMap(input.lines)
         return lookupOperation["root"]!!.value(lookupOperation::getValue)
     }
     override fun part2(input: InputRepresentation): ValueNumber {
-        val (a, b) = input.find { it.startsWith("root: ") }!!.drop(6).split(" + ")
-        val lookupEquation = computeOperationMap(input.filter { "root: " !in it && "humn: " !in it }) +
+        val (a, b) = input.lines.find { it.startsWith("root: ") }!!.drop(6).split(" + ")
+        val lookupEquation = computeOperationMap(input.lines.filter { "root: " !in it && "humn: " !in it }) +
                 mapOf("humn" to Unknown)
         val rootEquation = Operation("root", a, b, MathOperation.MINUS)
         return rootEquation.solve(0L, lookupEquation::getValue)

@@ -56,12 +56,12 @@ class Day09 : AdventDay(2022, 9) {
         }.size
 
     override fun part1(input: InputRepresentation): Int = simulate(
-        input.map { RopeMove.from(it) },
+        input.lines.map<String, RopeMove> { it: String -> RopeMove.from(it) },
         MutableList(2) { 0 to 0}
     )
 
     override fun part2(input: InputRepresentation): Int = simulate(
-        input.map { RopeMove.from(it) },
+        input.lines.map<String, RopeMove> { it: String -> RopeMove.from(it) },
         MutableList(10) { 0 to 0}
     )
 }

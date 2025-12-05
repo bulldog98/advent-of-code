@@ -37,13 +37,13 @@ object Day11 : AdventDay(2023, 11) {
     }
 
     override fun part1(input: InputRepresentation): Any {
-        val galaxies = input.computeGalaxiesWithWithAdjustment(2)
+        val galaxies = input.lines.computeGalaxiesWithWithAdjustment(2)
         val pairs = galaxies.allPairs()
         return pairs.sumOf(::manhattanDistance)
     }
 
     override fun part2(input: InputRepresentation): Any {
-        val galaxies = input.computeGalaxiesWithWithAdjustment(1_000_000L)
+        val galaxies = input.lines.computeGalaxiesWithWithAdjustment(1_000_000L)
         val pairs = galaxies.allPairs()
         return pairs.sumOf(::manhattanDistance)
     }

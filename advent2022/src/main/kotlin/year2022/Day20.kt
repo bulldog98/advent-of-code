@@ -89,14 +89,14 @@ class Day20 : AdventDay(2022, 20) {
     }
 
     override fun part1(input: InputRepresentation): Long {
-        val list = CyclicLinkedList.from(input.map { it.toLong() })
+        val list = CyclicLinkedList.from(input.lines.map { it: String -> it.toLong() })
         list.mixing()
         return list.groveCoordinates().sumOf { list[it].data }
     }
 
     override fun part2(input: InputRepresentation): Long {
         val key = 811589153L
-        val list = CyclicLinkedList.from(input.map { it.toLong() }, key)
+        val list = CyclicLinkedList.from(input.lines.map { it: String -> it.toLong() }, key)
         // mix 10 times
         repeat(10) { list.mixing() }
         // use originValue to compute sum, since data is % cycle length

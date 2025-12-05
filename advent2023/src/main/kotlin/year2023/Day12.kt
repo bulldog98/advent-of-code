@@ -106,13 +106,13 @@ object Day12 : AdventDay(2023, 12) {
 
     override fun part1(input: InputRepresentation): Long =
         input
-            .map(Line::of)
+            .lines.map<String, Line> { it: String -> Line.of(it) }
             .sumOf { it.computeNumberOfArrangements() }
 
 
     override fun part2(input: InputRepresentation): Long =
         input
-            .map { line ->
+            .lines.map { line: String ->
                 val (pattern, nums) = line.split(" ")
                 val newPattern = listOf(pattern).repeatList(5).joinToString("?") { it }
                 val newNums = listOf(nums).repeatList(5).joinToString(",") { it }

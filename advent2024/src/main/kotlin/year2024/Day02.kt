@@ -15,7 +15,7 @@ fun List<Long>.omit(index: Int): List<Long> = subList(0, index) + subList(index 
 
 object Day02 : AdventDay(2024, 2) {
     override fun part1(input: InputRepresentation): Int {
-        val lines = input.map { it.split(" ").map(String::toLong) }
+        val lines = input.lines.map { it: String -> it.split(" ").map(String::toLong) }
         return lines.count { nums ->
             if (nums[0] < nums[1]) {
                 nums.allIncreasingMax3()
@@ -26,7 +26,7 @@ object Day02 : AdventDay(2024, 2) {
     }
 
     override fun part2(input: InputRepresentation): Int {
-        val lines = input.map { it.split(" ").map(String::toLong) }
+        val lines = input.lines.map { it: String -> it.split(" ").map(String::toLong) }
         return lines.count { nums ->
             nums.allIncreasingMax3() ||
                 nums.allDecreasingMax3() ||

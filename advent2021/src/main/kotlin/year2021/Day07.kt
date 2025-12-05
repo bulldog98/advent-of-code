@@ -21,13 +21,13 @@ private fun Collection<Int>.alignTo(i: Int, cost: (Int) -> Int = ::abs): Int = a
 fun increaseByStep(n: Int): Int = (n * (n+1)) / 2
 
 object Day07 : AdventDay(2021, 7) {
-    override fun part1(input: InputRepresentation): Int = with(input[0].split(",").map(String::toInt)) {
+    override fun part1(input: InputRepresentation): Int = with(input.lines[0].split(",").map(String::toInt)) {
         indices.minOfOrNull {
             this.alignTo(it)
         } ?: throw Error("no valid config")
     }
 
-    override fun part2(input: InputRepresentation): Int = with(input[0].split(",").map(String::toInt)) {
+    override fun part2(input: InputRepresentation): Int = with(input.lines[0].split(",").map(String::toInt)) {
         indices.minOfOrNull {
             this.alignTo(it, ::increaseByStep)
         } ?: throw Error("no valid config")

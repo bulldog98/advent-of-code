@@ -7,7 +7,7 @@ import graph.Graph
 
 object Day12 : AdventDay(2021, 12) {
     private fun InputRepresentation.asGraph(): Graph<String> {
-        val edges = map {
+        val edges = lines.map { it: String ->
             it.split("-").toSet()
         }
         return AdjacencyListGraph(edges.flatten().distinct()) { v ->

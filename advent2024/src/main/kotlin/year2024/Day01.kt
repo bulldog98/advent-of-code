@@ -7,7 +7,7 @@ import kotlin.math.abs
 
 object Day01 : AdventDay(2024, 1) {
     override fun part1(input: InputRepresentation): Long {
-        val (leftList, right) = input.map {
+        val (leftList, right) = input.lines.map { it: String ->
             it.toAllLongs().zipWithNext().first()
         }.unzip()
 
@@ -15,9 +15,9 @@ object Day01 : AdventDay(2024, 1) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        val firstList = input.map { it.substringBefore(" ").toLong() }
+        val firstList = input.lines.map { it: String -> it.substringBefore(" ").toLong() }
         val secondCounts = buildMap<Long, Long> {
-            input.forEach { line ->
+            input.lines.forEach { line ->
                 val num = line.substringAfterLast(" ").toLong()
                 this[num] = this.getOrDefault(num, 0L) + 1L
             }

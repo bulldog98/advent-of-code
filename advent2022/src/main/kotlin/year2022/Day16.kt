@@ -106,14 +106,14 @@ class Day16 : AdventDay(2022, 16) {
     }.max()
 
     override fun part1(input: InputRepresentation): Int {
-        val nodes = input.map { ValveNode.of(it) }
+        val nodes = input.lines.map { it: String -> ValveNode.of(it) }
         nodes.computeAllDistances()
         val startNode = nodes.find { it.name == "AA" }!!
         return nodes.maxPath(emptySet(), startNode, 30, 0, 0)
     }
 
     override fun part2(input: InputRepresentation): Int {
-        val nodes = input.map { ValveNode.of(it) }
+        val nodes = input.lines.map { it: String -> ValveNode.of(it) }
         return nodes.maxPathWithElephantHelp(26)
     }
 }

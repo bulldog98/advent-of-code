@@ -17,17 +17,17 @@ private val additionalDigitMapping = mapOf(
 private val additionalDigits = additionalDigitMapping.keys
 
 object Day01 : AdventDay(2023, 1) {
-    override fun part1(input: InputRepresentation): Int =
-        input.sumOf {
+    override fun part1(input: InputRepresentation): Int = input
+        .lines.sumOf {
             val onlyDigits = it.filter { c -> c.isDigit() }
             val string = onlyDigits.first().toString() + onlyDigits.last()
             string.toInt()
         }
 
-    override fun part2(input: InputRepresentation): Int = input.sumOf {
+    override fun part2(input: InputRepresentation): Int = input.lines.sumOf {
         val onlyDigits = it.windowed(5, partialWindows = true).filter { window ->
             window.first().isDigit() || additionalDigits.any { digit -> window.startsWith(digit) }
-        }.map {  window ->
+        }.map { window ->
             if (window.first().isDigit())
                 window.first().toString()
             else

@@ -59,11 +59,11 @@ class Day15(private val row: Long, private val maxCoordinate: Int) : AdventDay(2
     }
 
     override fun part1(input: InputRepresentation): Int {
-        val area = Area.of(input)
+        val area = Area.of(input.lines)
         return area.countNonDistressSignalInRow(row)
     }
     override fun part2(input: InputRepresentation): Long {
-        val area = Area.of(input)
+        val area = Area.of(input.lines)
         val safeRangesPerLine = Array<List<LongRange>>(maxCoordinate + 1) { mutableListOf() }
 
         for (row in 0..maxCoordinate) {

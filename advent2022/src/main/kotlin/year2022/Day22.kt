@@ -3,6 +3,8 @@ package year2022
 import Point2D
 import adventday.AdventDay
 import adventday.InputRepresentation
+import helper.pair.mapFirst
+import helper.pair.mapSecond
 import kotlin.math.sqrt
 
 private fun List<String>.findAllWithChar(char: Char): Set<Point2D> = buildSet {
@@ -19,12 +21,12 @@ private fun moveInsideAs2d(
     into: Set<Point2D>
 ): Point2D.(Day22.Direction) -> Point2D = { direction: Day22.Direction ->
     when (direction) {
-        year2022.Day22.Direction.UP, year2022.Day22.Direction.DOWN -> {
+        Day22.Direction.UP, Day22.Direction.DOWN -> {
             val possibleNextStep = into.filter { it.x == x }
             val next = this + direction.asPointDiff
             when {
                 next in possibleNextStep -> next
-                direction == year2022.Day22.Direction.DOWN -> possibleNextStep.minBy { it.y }
+                direction == Day22.Direction.DOWN -> possibleNextStep.minBy { it.y }
                 else -> possibleNextStep.maxBy { it.y }
             }
         }
@@ -34,7 +36,7 @@ private fun moveInsideAs2d(
             val next = this + direction.asPointDiff
             when {
                 next in possibleNextStep -> next
-                direction == year2022.Day22.Direction.RIGHT -> possibleNextStep.minBy { it.x }
+                direction == Day22.Direction.RIGHT -> possibleNextStep.minBy { it.x }
                 else -> possibleNextStep.maxBy { it.x }
             }
         }
@@ -151,7 +153,7 @@ class Day22 : AdventDay(2022, 22) {
         }
     }
     override fun part1(input: InputRepresentation): Long {
-        val field = FieldInformation.from(input.asTwoBlocks())
+        val field = FieldInformation.from(input.asTwoBlocks().mapFirst { it.lines }.mapSecond { it.lines })
         return field
             .executeInstructions(moveInsideAs2d(field.field + field.walls))
             .let { (pos, dir) ->
@@ -160,7 +162,7 @@ class Day22 : AdventDay(2022, 22) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        val field = FieldInformation.from(input.asTwoBlocks())
+        val field = FieldInformation.from(input.asTwoBlocks().mapFirst { it.lines }.mapSecond { it.lines })
         return field // TODO: here has to be another function
             .executeInstructions(moveInsideAs2d(field.field + field.walls))
             .let { (pos, dir) ->

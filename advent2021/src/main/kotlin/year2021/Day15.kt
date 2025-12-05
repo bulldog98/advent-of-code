@@ -13,7 +13,7 @@ import year2021.day15.*
 
 object Day15 : AdventDay(2021, 15) {
     override fun part1(input: InputRepresentation): Long {
-        val field = Field.of(input)
+        val field = Field.of(input.lines)
         val (distance) = field.asGraph()
             .dijkstra(Point2D(0, 0), field.costInSection(Point2D.ORIGIN))
         return (distance(field.bottomRight) ?: 0L)
@@ -21,7 +21,7 @@ object Day15 : AdventDay(2021, 15) {
 
     // TODO: handles example, but not real input
     override fun part2(input: InputRepresentation): Long {
-        val field = Field.of(input)
+        val field = Field.of(input.lines)
         val graph = field.asGraph()
         val sections = (0..<5L).flatMap { x -> (0..<5L).map { y -> Point2D(x, y) } }.toSet()
         val cache = buildMap<Long, (Point2D, Point2D) -> Long?> {

@@ -27,11 +27,11 @@ object Day15: AdventDay(2023, 15) {
     }
 
     override fun part1(input: InputRepresentation): Int {
-        return input[0].split(",").sumOf { it.hashWithAppendix1A() }
+        return input.lines[0].split(",").sumOf { it.hashWithAppendix1A() }
     }
 
     override fun part2(input: InputRepresentation): Any {
-        val instructions = input[0].split(",").map {
+        val instructions = input.lines[0].split(",").map {
             Instruction.of(it)
         }
         val boxes = Array(256) { mutableListOf<Lens>() }

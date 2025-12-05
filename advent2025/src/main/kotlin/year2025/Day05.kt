@@ -2,15 +2,20 @@ package year2025
 
 import adventday.AdventDay
 import adventday.InputRepresentation
+import helper.pair.mapFirst
+import helper.pair.mapSecond
 import kotlin.math.max
 import kotlin.math.min
 
-private fun InputRepresentation.toRangesAndIngredients(): Pair<List<LongRange>, List<Long>> =
-    asSplitByEmptyLine().let { (a, b) ->
-        a.lines().map {
-            val (i, j) = it.split("-")
+private fun InputRepresentation.toRangesAndIngredients(): Pair<List<LongRange>, List<Long>> = asTwoBlocks()
+    .mapFirst {
+        it.lines.map { line: String ->
+            val (i, j) = line.split("-")
             i.toLong()..j.toLong()
-        } to b.lines().map { it.toLong() }
+        }
+    }
+    .mapSecond { line ->
+        line.lines.map { it: String -> it.toLong() }
     }
 
 fun LongRange.overlap(other: LongRange) = !(last < other.first || other.last < first)

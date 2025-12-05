@@ -56,8 +56,8 @@ data class Board(
 
     companion object {
         operator fun invoke(input: InputRepresentation): Board {
-            val maxY = input.size
-            val maxX = input.maxOf { it.length }
+            val maxY = input.lines.size
+            val maxX = input.lines.maxOf { it.length }
             val map = input
                 .asCharMap { FieldContent(it) != null}
                 .mapValues { FieldContent(it.value) ?: error("should not happen") }

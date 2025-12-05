@@ -15,7 +15,7 @@ class Day17 : AdventDay(2022, 17) {
     private val blockShape          = setOf(0 xy 0, 0 xy 1, 1 xy 0, 1 xy 1)
     private val shapes = listOf(lineHorizontalShape, plusShape, lShape, lineVerticalShape, blockShape)
     override fun part1(input: InputRepresentation): Long {
-        val dirs = input[0].map { dirFrom(it) }
+        val dirs = input.lines[0].map { dirFrom(it) }
         var chamber = Chamber(dirs = dirs, shapes = shapes)
         for (step in 0 until 2022) {
             chamber = chamber.simulateOneStep(step)
@@ -24,7 +24,7 @@ class Day17 : AdventDay(2022, 17) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        val dirs = input[0].map { dirFrom(it) }
+        val dirs = input.lines[0].map { dirFrom(it) }
         val cycleInfo = CycleInfo.findFor(Chamber(dirs = dirs, shapes = shapes))
 
         val rocksToJumpOver = 1_000_000_000_000 - cycleInfo.cycleStartHeight

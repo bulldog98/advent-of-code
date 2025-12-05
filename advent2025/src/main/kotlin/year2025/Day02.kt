@@ -18,13 +18,13 @@ private fun String.isOnlyRepeatingSubstring(): Boolean = (1 ..< length).any {
 }
 
 object Day02 : AdventDay(2025, 2) {
-    override fun part1(input: InputRepresentation): Long = input[0]
+    override fun part1(input: InputRepresentation): Long = input.lines[0]
         .split(",")
         .flatMap { it.split("-").let { (a, b) -> (a.toLong()..b.toLong()) } }
         .filter { it.toString().isRepeatPattern() }
         .sumOf { it }
 
-    override fun part2(input: InputRepresentation): Long = input[0]
+    override fun part2(input: InputRepresentation): Long = input.lines[0]
         .split(",")
         .flatMap { it.split("-").let { (a, b) -> (a.toLong()..b.toLong()) } }
         .filter { it.toString().isOnlyRepeatingSubstring() }

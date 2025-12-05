@@ -23,10 +23,10 @@ fun Pair<Point2D, Point2D>.explore(maxX: Long, maxY: Long, barriers: Collection<
 
 object Day06 : AdventDay(2024, 6) {
     override fun part1(input: InputRepresentation): Int {
-        val barriers = input.findAllPositionsOf('#')
-        val startPosition = input.findAllPositionsOf('^').first()
-        val maxX = input[0].length - 1
-        val maxY = input.size - 1
+        val barriers = input.lines.findAllPositionsOf('#')
+        val startPosition = input.lines.findAllPositionsOf('^').first()
+        val maxX = input.lines[0].length - 1
+        val maxY = input.lines.size - 1
 
         return (startPosition to Point2D.UP).explore(maxX.toLong(), maxY.toLong(), barriers)
             .map { (pos, _) -> pos }
@@ -34,10 +34,10 @@ object Day06 : AdventDay(2024, 6) {
     }
 
     override fun part2(input: InputRepresentation): Int {
-        val barriers = input.findAllPositionsOf('#')
-        val startPosition = input.findAllPositionsOf('^').first()
-        val maxX = input[0].length.toLong() - 1
-        val maxY = input.size.toLong() - 1
+        val barriers = input.lines.findAllPositionsOf('#')
+        val startPosition = input.lines.findAllPositionsOf('^').first()
+        val maxX = input.lines[0].length.toLong() - 1
+        val maxY = input.lines.size.toLong() - 1
 
         // only points that would be visited anyway are can result in a hit barrier
         return (startPosition to Point2D.UP).explore(maxX, maxY, barriers)

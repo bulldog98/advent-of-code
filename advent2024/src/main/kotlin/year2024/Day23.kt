@@ -33,7 +33,7 @@ object Day23 : AdventDay(2024, 23) {
 
         companion object {
             fun parse(input: InputRepresentation): ComputerNetwork {
-                val connections = input.map { it.split("-").toSet() }
+                val connections = input.lines.map { it: String -> it.split("-").toSet() }
                 val computers = connections.flatten().distinct()
                 return ComputerNetwork(computers, connections)
             }

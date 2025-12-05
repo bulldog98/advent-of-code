@@ -8,13 +8,13 @@ import year2023.day03.allSymbols
 import year2023.day03.numbersSurrounding
 
 object Day03 : AdventDay(2023, 3) {
-    override fun part1(input: InputRepresentation) = with(Board(input)) {
+    override fun part1(input: InputRepresentation) = with(Board(input.lines)) {
         allSymbols.flatMap { (symbolPosition, _) ->
             numbersSurrounding(symbolPosition)
         }.sumOf { it.num }
     }
 
-    override fun part2(input: InputRepresentation): Int = with(Board(input)) {
+    override fun part2(input: InputRepresentation): Int = with(Board(input.lines)) {
         allSymbols
             .filter { (_, symbol) -> symbol.symbol == '*' }
             .map { (symbolPosition, _) ->

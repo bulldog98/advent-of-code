@@ -60,11 +60,11 @@ fun String.parseInput(): Directory {
 
 class Day07 : AdventDay(2022, 7) {
     override fun part1(input: InputRepresentation): Int {
-        val root = input.asText().parseInput()
+        val root = input.text.parseInput()
         return root.filterInTree { it.fileSize <= 100_000 }.sumOf { it.fileSize }
     }
     override fun part2(input: InputRepresentation): Int {
-        val root = input.asText().parseInput()
+        val root = input.text.parseInput()
         val currentSize = root.fileSize
         return root.filterInTree {
             70_000_000 - (currentSize - it.fileSize)  >= 30_000_000

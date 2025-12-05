@@ -11,15 +11,17 @@ private fun List<Long>.turnOn(toTurnOn: Int, numberPrefix: Long = 0): Long = whe
 }
 
 object Day03 : AdventDay(2025, 3) {
-    override fun part1(input: InputRepresentation): Long = input
-        .map { bank -> bank.toCharArray().map { "$it".toLong() } }
-        .sumOf { bank ->
+    override fun part1(input: InputRepresentation): Long =
+        input
+            .lines.map { bank: String -> bank.toCharArray().map { "$it".toLong() } }
+            .sumOf { bank ->
             bank.turnOn(2)
         }
 
-    override fun part2(input: InputRepresentation): Long = input
-        .map { bank -> bank.toCharArray().map { "$it".toLong() } }
-        .sumOf { bank ->
+    override fun part2(input: InputRepresentation): Long =
+        input
+            .lines.map { bank: String -> bank.toCharArray().map { "$it".toLong() } }
+            .sumOf { bank ->
             bank.turnOn(12)
         }
 }

@@ -6,13 +6,13 @@ import year2023.day04.Card
 
 object Day04 : AdventDay(2023, 4) {
     override fun part1(input: InputRepresentation) =
-        input.map(::Card)
+        input.lines.map { it: String -> Card(it) }
             .sumOf {
                 it.score
             }
 
     override fun part2(input: InputRepresentation): Int {
-        val cards = input.map(::Card).map { it to 1 }.toMutableList()
+        val cards = input.lines.map { it: String -> Card(it) }.map { it to 1 }.toMutableList()
         for (i in cards.indices) {
             val numOfMore = cards[i].first.winningNumbersCount
             val numberOfCard = cards[i].second

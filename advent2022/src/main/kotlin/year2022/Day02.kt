@@ -60,9 +60,11 @@ private fun score(row: String, strategy: Strategy): Int {
 }
 
 class Day02 : AdventDay(2022, 2) {
-    override fun part1(input: InputRepresentation): Int = input.sumOf { score(it, ::strategyPart1) }
+    override fun part1(input: InputRepresentation): Int = input.lines
+        .sumOf { score(it, ::strategyPart1) }
 
-    override fun part2(input: InputRepresentation): Int = input.sumOf { score(it, ::strategyPart2) }
+    override fun part2(input: InputRepresentation): Int = input.lines
+        .sumOf { score(it, ::strategyPart2) }
 }
 
 fun main() = Day02().run()

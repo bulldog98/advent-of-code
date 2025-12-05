@@ -23,14 +23,14 @@ object Day22 : AdventDay(2024, 22) {
         b - a
     }
 
-    override fun part1(input: InputRepresentation): Long = input.sumOf {
+    override fun part1(input: InputRepresentation): Long = input.lines.sumOf {
         val initialSecret = it.toAllLongs().first()
         initialSecret.generateSecrets().take(2001).last()
     }
 
     // needs a few minutes
     override fun part2(input: InputRepresentation): Long {
-        val numbers = input.map { it.toAllLongs().first() }
+        val numbers = input.lines.map { it: String -> it.toAllLongs().first() }
         val prices = numbers.map { it.generateSecretPrices().drop(1).take(2000).toList() }
         val priceChanges = numbers.map { it.generatePriceChanges().take(2000).windowed(4).toList() }
         val allOccurringChanges = priceChanges.flatten().distinct()

@@ -18,7 +18,7 @@ class Day08(
         companion object {
             private val digitRegex = """\d""".toRegex()
             fun parseInput(input: InputRepresentation, width: Int, height: Int): List<Layer> =
-                digitRegex.findAll(input.asText()).map { it.value.toInt() }.chunked(width * height) {
+                digitRegex.findAll(input.text).map { it.value.toInt() }.chunked(width * height) {
                     Layer(it.chunked(width))
                 }.toList()
         }

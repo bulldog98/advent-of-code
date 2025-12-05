@@ -8,9 +8,11 @@ fun String.findXUniqueChars(x: Int) = windowedSequence(x)
 
 class Day06 : AdventDay(2022, 6) {
     override fun part1(input: InputRepresentation): Int = input
+        .lines
         .first()
         .findXUniqueChars(4)
     override fun part2(input: InputRepresentation): Int = input
+        .lines
         .first()
         .findXUniqueChars(14)
 }

@@ -55,14 +55,14 @@ object Day03 : AdventDay(2019, 3) {
     }
 
     override fun part1(input: InputRepresentation): Long {
-        val (wire1, wire2) = input.map { Wire.parse(it) }
+        val (wire1, wire2) = input.lines.map { it: String -> Wire.parse(it) }
 
         return (wire1 crosses wire2).minOf { Point2D.ORIGIN.manhattanDistance(it) }
     }
 
     override fun part2(input: InputRepresentation): Long {
 
-        val (wire1, wire2) = input.map { Wire.parse(it) }
+        val (wire1, wire2) = input.lines.map { it: String -> Wire.parse(it) }
 
         return (wire1 crosses wire2).minOf { wire1.distanceOfPoint(it) + wire2.distanceOfPoint(it) }
     }

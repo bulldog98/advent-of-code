@@ -22,7 +22,7 @@ class Day03Benchmark {
 
     @Setup
     fun setup() {
-        input.size
+        input.lines.size
     }
 
     @Benchmark

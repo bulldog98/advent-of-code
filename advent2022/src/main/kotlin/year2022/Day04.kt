@@ -10,7 +10,7 @@ fun parseAssignment(input: String): Pair<IntRange, IntRange> {
 
 private fun String.parsePair(): IntRange {
     val (a, b) = split("-")
-    return a.toInt() .. b.toInt()
+    return a.toInt()..b.toInt()
 }
 
 infix fun IntRange.contains(other: IntRange): Boolean =
@@ -24,19 +24,18 @@ infix fun IntRange.contains(other: IntRange): Boolean =
  */
 infix fun IntRange.overlap(other: IntRange): Boolean =
     other.first in this || other.last in this
-            || first in other || last in other
+        || first in other || last in other
 
 class Day04 : AdventDay(2022, 4) {
-    override fun part1(input: InputRepresentation) = input.count {
+    override fun part1(input: InputRepresentation) = input.lines.count {
         val (a, b) = parseAssignment(it)
         a contains b || b contains a
     }
 
-    override fun part2(input: InputRepresentation) =
-        input.count {
-            val (a, b) = parseAssignment(it)
-            a overlap b
-        }
+    override fun part2(input: InputRepresentation) = input.lines.count {
+        val (a, b) = parseAssignment(it)
+        a overlap b
+    }
 }
 
 fun main() = Day04().run()

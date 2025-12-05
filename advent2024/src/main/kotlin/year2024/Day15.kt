@@ -109,9 +109,9 @@ object Day15 : AdventDay(2024, 15) {
 
     override fun part1(input: InputRepresentation): Long {
         val (map, instructions) = input.asTwoBlocks().mapSecond {
-            it.flatMap { line -> line.map { char -> Instruction(char, char.toDirectionVector()) } }
+            it.lines.flatMap { line -> line.map { char -> Instruction(char, char.toDirectionVector()) } }
         }
-        val initialField = Field.parse(map)
+        val initialField = Field.parse(map.lines)
         val finalConfig = instructions.fold(initialField) { acc, instruction ->
             acc.attemptMove(instruction.direction).also {
                  // println()
@@ -124,9 +124,9 @@ object Day15 : AdventDay(2024, 15) {
 
     override fun part2(input: InputRepresentation): Long {
         val (map, instructions) = input.asTwoBlocks().mapSecond {
-            it.flatMap { line -> line.map { char -> Instruction(char, char.toDirectionVector()) } }
+            it.lines.flatMap { line -> line.map { char -> Instruction(char, char.toDirectionVector()) } }
         }.mapFirst {
-            it.map { line ->
+            it.lines.map<String, String> { line: String ->
                 line.map { char ->
                     when (char) {
                         '#' -> "##"

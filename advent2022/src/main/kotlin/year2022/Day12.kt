@@ -40,12 +40,12 @@ class Day12 : AdventDay(2022, 12) {
     }
 
     override fun part1(input: InputRepresentation): Long {
-        val graph = Terrain(input)
+        val graph = Terrain(input.lines)
         var from = -1 to -1
         var to = -1 to -1
-        input[0].indices.forEach { x ->
-            input.indices.forEach { y ->
-                val c = input[y][x]
+        input.lines[0].indices.forEach { x ->
+            input.lines.indices.forEach { y ->
+                val c = input.lines[y][x]
                 if (c == 'S') {
                     from = x to y
                 }
@@ -54,17 +54,17 @@ class Day12 : AdventDay(2022, 12) {
                 }
             }
         }
-        val (dist, _) = graph.dijkstra(from, computeCostFunction(input))
+        val (dist, _) = graph.dijkstra(from, computeCostFunction(input.lines))
         return dist(to) ?: Long.MAX_VALUE
     }
 
     override fun part2(input: InputRepresentation): Long {
-        val graph = Terrain(input)
+        val graph = Terrain(input.lines)
         var to = -1 to -1
         val startingPoints = mutableListOf<Pair<Int, Int>>()
-        input[0].indices.forEach { x ->
-            input.indices.forEach { y ->
-                val c = input[y][x]
+        input.lines[0].indices.forEach { x ->
+            input.lines.indices.forEach { y ->
+                val c = input.lines[y][x]
                 if (c == 'a' || c == 'S') {
                     startingPoints += x to y
                 }
@@ -74,7 +74,7 @@ class Day12 : AdventDay(2022, 12) {
             }
         }
         return startingPoints.fold(Long.MAX_VALUE) { curMin, from ->
-            val (dist, _) = graph.dijkstra(from, computeCostFunction(input))
+            val (dist, _) = graph.dijkstra(from, computeCostFunction(input.lines))
             listOf(curMin, dist(to) ?: Long.MAX_VALUE).min()
         }
     }

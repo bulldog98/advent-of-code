@@ -12,8 +12,8 @@ import year2024.day17.simulateProgram
 object Day17 : AdventDay(2024, 17) {
     override fun part1(input: InputRepresentation): String {
         val (initialRegistryState, instructions) = input.asTwoBlocks()
-            .mapFirst { RegistryState.parse(it) }
-            .mapSecond { it[0].toAllLongs().toList() }
+            .mapFirst { RegistryState.parse(it.lines) }
+            .mapSecond { it.lines[0].toAllLongs().toList() }
         val output = simulateProgram(
             ComputerState(
                 initialRegistryState,
@@ -29,8 +29,8 @@ object Day17 : AdventDay(2024, 17) {
      */
     override fun part2(input: InputRepresentation): Long {
         val (initialRegistryState, instructions) = input.asTwoBlocks()
-            .mapFirst { RegistryState.parse(it) }
-            .mapSecond { it[0].toAllLongs().toList() }
+            .mapFirst { RegistryState.parse(it.lines) }
+            .mapSecond { it.lines[0].toAllLongs().toList() }
         val baseComputation = ComputerState(initialRegistryState, instructions)
 
         val result = instructions.indices.fold(listOf("")) { prefixesFixingXLastDigits, lastXDigitsFixed ->

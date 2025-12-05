@@ -30,14 +30,14 @@ class Day20(private val minImprovement: Int) : AdventDay(2024, 20) {
         fun improvementOf(cheat: Cheat): Long = distanceToEnd(cheat.start)!! - distanceToEnd(cheat.end)!! - cheat.size
         companion object {
             fun parse(input: InputRepresentation): RaceTrack {
-                val walls = input.findAllPositionsOf('#')
-                val start = input.findAllPositionsOf('S').single()
-                val finish = input.findAllPositionsOf('E').single()
+                val walls = input.lines.findAllPositionsOf('#')
+                val start = input.lines.findAllPositionsOf('S').single()
+                val finish = input.lines.findAllPositionsOf('E').single()
                 return RaceTrack(
                     walls,
                     start,
                     finish,
-                    AdjacencyListGraph(input.findAllPositionsOf('.') + start + finish) { node ->
+                    AdjacencyListGraph(input.lines.findAllPositionsOf('.') + start + finish) { node ->
                         node.cardinalNeighbors.filter { it !in walls }
                     }
                 )

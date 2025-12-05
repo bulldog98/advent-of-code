@@ -48,14 +48,16 @@ operator fun Dial.plus(instruction: Instruction): Dial {
 
 object Day01 : AdventDay(2025, 1) {
     override fun part1(input: InputRepresentation): Int = input
-        .map(Instruction::parse)
+        .lines
+        .map { it: String -> Instruction.parse(it) }
         .runningFold(Dial()) { acc, instruction ->
             acc + instruction
         }
         .count { it.position == 0 }
 
     override fun part2(input: InputRepresentation): Int = input
-        .map(Instruction::parse)
+        .lines
+        .map { it: String -> Instruction.parse(it) }
         .fold(Dial()) { dial, instruction ->
             dial + instruction
         }.clicks

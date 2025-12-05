@@ -37,7 +37,7 @@ fun Long.toSnafuNumber(): String {
 
 class Day25 : AdventDay(2022, 25) {
     override fun part1(input: InputRepresentation): Long =
-        input.sumOf { it.parseSnafuNumber() }
+        input.lines.sumOf { it.parseSnafuNumber() }
 
     override fun part2(input: InputRepresentation): String =
         part1(input).toSnafuNumber()

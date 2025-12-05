@@ -10,7 +10,7 @@ import year2021.day18.SnailFishNumber
 
 class Day18Test {
     private val data = InputFiles(2021, 18)
-    private fun sumUp(suffix: String) = data.getFileWithSuffix(suffix).map {
+    private fun sumUp(suffix: String) = data.getFileWithSuffix(suffix).lines.map { it: String ->
         SnailFishNumber.parse(it)
     }.sumOf()
     fun sumUpExample(number: Int) = sumUp("example$number")

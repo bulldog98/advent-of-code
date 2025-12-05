@@ -74,11 +74,11 @@ data class ClawMachineConfiguration(
 
 object Day13 : AdventDay(2024, 13) {
     override fun part1(input: InputRepresentation) = input.asSplitByEmptyLine()
-        .map { ClawMachineConfiguration.parse(it.lines()) }
+        .map { ClawMachineConfiguration.parse(it.lines) }
         .sumOf { it.minCostToWinOrNull() ?: 0L }
 
     override fun part2(input: InputRepresentation): Long = input.asSplitByEmptyLine()
-        .map { ClawMachineConfiguration.parse(it.lines()) }
+        .map { ClawMachineConfiguration.parse(it.lines) }
         .map { it.copy(prizeLocation = it.prizeLocation + Point2D(10000000000000, 10000000000000)) }
         .sumOf { it.minCostToWinOrNull() ?: 0L }
 }

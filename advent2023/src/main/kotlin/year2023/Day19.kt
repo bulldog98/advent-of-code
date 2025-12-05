@@ -83,13 +83,13 @@ object Day19 : AdventDay(2023, 19) {
         }
     }
 
-    private fun Pair<List<String>, List<String>>.parse(): Pair<Map<String, Workflow>, List<State>> =
-        mapFirst { lines ->
-            lines.map(Workflow::of)
+    private fun Pair<InputRepresentation, InputRepresentation>.parse(): Pair<Map<String, Workflow>, List<State>> =
+        mapFirst { input ->
+            input.lines.map(Workflow::of)
                 .groupBy { it.name }
                 .mapValues { it.value.single() }
         }
-            .mapSecond { it.map(State::of) }
+            .mapSecond { it.lines.map(State::of) }
 
     // we want to produce emptyRang
     @Suppress("EmptyRange")

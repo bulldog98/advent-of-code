@@ -41,11 +41,11 @@ class Day18(
     }
 
     override fun part1(input: InputRepresentation): Long {
-        return input.map { it.toAllLongs().toList() }.map { Point2D(it[0], it[1]) }.take(bytesForPart1).costForTravelToEndPoint()
+        return input.lines.map { it: String -> it.toAllLongs().toList() }.map { Point2D(it[0], it[1]) }.take(bytesForPart1).costForTravelToEndPoint()
     }
 
     override fun part2(input: InputRepresentation): String {
-        val bytesToCorrupt = input.map { it.toAllLongs().toList() }.map { Point2D(it[0], it[1]) }
+        val bytesToCorrupt = input.lines.map { it: String -> it.toAllLongs().toList() }.map { Point2D(it[0], it[1]) }
         // search backwards, since it's nearer the end
         val indexOfBlockingByte = (bytesForPart1..<bytesToCorrupt.size).binarySearch {
             bytesToCorrupt.take(it).costForTravelToEndPoint() != Long.MAX_VALUE

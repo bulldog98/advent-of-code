@@ -7,6 +7,7 @@ import findAllPositionsOf
 import graph.AdjacencyListGraph
 import graph.Graph
 import graph.dijkstra
+import year2024.Day16.plus
 
 object Day16 : AdventDay(2024, 16) {
     private enum class DIRECTION(val vector: Point2D, val nextPointFor: (Point2D, Collection<Point2D>) -> Point2D?) {
@@ -58,10 +59,10 @@ object Day16 : AdventDay(2024, 16) {
 
         companion object {
             fun parse(input: InputRepresentation): ReindeerMaze {
-                val walls = input.findAllPositionsOf('#')
-                val empty = input.findAllPositionsOf('.')
-                val startPoint = input.findAllPositionsOf('S').first()
-                val finish = input.findAllPositionsOf('E').first()
+                val walls = input.lines.findAllPositionsOf('#')
+                val empty = input.lines.findAllPositionsOf('.')
+                val startPoint = input.lines.findAllPositionsOf('S').first()
+                val finish = input.lines.findAllPositionsOf('E').first()
                 val canWalkIn = empty + startPoint + finish
                 fun Point2D.isCornerOrSplitOrDeadEnd(): Boolean =
                     cardinalNeighbors.count { it in canWalkIn } in setOf(1, 3, 4) ||

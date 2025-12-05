@@ -80,7 +80,7 @@ class IntComputer private constructor(
                 println("Input")
                 readln().toLong()
             }
-        ) = IntComputer(input.flatMap { it.toAllLongs() }, handleOutput, handleInput)
+        ) = IntComputer(input.asNumbers().toList(), handleOutput, handleInput)
 
         fun parse(
             input: String,
@@ -124,7 +124,7 @@ class IntComputer private constructor(
             input: InputRepresentation,
             inputValue: suspend () -> Long,
             outputValue: suspend (Long) -> Unit,
-        ) = parseWithSuspendInputOutput(input.flatMap { it.toAllLongs() }, inputValue, outputValue)
+        ) = parseWithSuspendInputOutput(input.asNumbers().toList(), inputValue, outputValue)
 
 
         private fun Long.splitInInstructionAndItsParameters(

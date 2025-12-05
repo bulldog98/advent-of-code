@@ -9,7 +9,7 @@ data class GameInput(
 
 fun InputRepresentation.toGameInput() = asSplitByEmptyLine().let { blocks ->
     GameInput(
-        drawnNumbers = blocks[0].splitToSequence(',').map { it.toInt() },
-        boards = blocks.drop(1).map(String::lines).map { it.toBoard() }
+        drawnNumbers = blocks[0].text.splitToSequence(',').map { it.toInt() },
+        boards = blocks.drop(1).map(InputRepresentation::lines).map { it.toBoard() }
     )
 }

@@ -10,8 +10,10 @@ object Day02 : AdventDay(2023, 2) {
         "green" to 13,
         "blue" to 14
     )
-    override fun part1(input: InputRepresentation): Int =
-        input.sumOf {
+
+    override fun part1(input: InputRepresentation): Int = input
+        .lines
+        .sumOf {
             Game(it).let { game ->
                 if (game.isPossibleWith(allowedMax))
                     game.id
@@ -20,9 +22,10 @@ object Day02 : AdventDay(2023, 2) {
             }
         }
 
-    override fun part2(input: InputRepresentation): Int =
-        input.map { Game(it) }
-            .sumOf { it.fewestPossible().power }
+    override fun part2(input: InputRepresentation): Int = input
+        .lines
+        .map { it: String -> Game(it) }
+        .sumOf { it.fewestPossible().power }
 }
 
 fun main() = Day02.run()

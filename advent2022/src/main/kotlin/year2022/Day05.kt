@@ -62,7 +62,7 @@ private fun computeInstructions(
 class Day05 : AdventDay(2022, 5) {
     override fun part1(input: InputRepresentation): String {
         val (start, instructions) = input.asTwoBlocks()
-        val result = computeInstructions(start, instructions) { column, i ->
+        val result = computeInstructions(start.lines, instructions.lines) { column, i ->
             column.take(i).reversed()
         }
         return result.result
@@ -70,7 +70,7 @@ class Day05 : AdventDay(2022, 5) {
 
     override fun part2(input: InputRepresentation): String {
         val (start, instructions) = input.asTwoBlocks()
-        val result = computeInstructions(start, instructions) { column, i ->
+        val result = computeInstructions(start.lines, instructions.lines) { column, i ->
             column.take(i)
         }
         return result.result

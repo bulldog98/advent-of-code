@@ -47,9 +47,9 @@ data class HikeMap(private val input: List<String>) {
 
 
 object Day10 : AdventDay(2024, 10) {
-    override fun part1(input: InputRepresentation) = HikeMap(input).computeScore()
+    override fun part1(input: InputRepresentation) = HikeMap(input.lines).computeScore()
 
-    override fun part2(input: InputRepresentation) = HikeMap(input).computeRating()
+    override fun part2(input: InputRepresentation) = HikeMap(input.lines).computeRating()
 }
 
 fun main() = Day10.run()

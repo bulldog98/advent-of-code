@@ -38,12 +38,12 @@ object Day17 : AdventDay(2021, 17) {
         }
     }
 
-    override fun part1(input: InputRepresentation): Long = TargetArea.parse(input.asText())
+    override fun part1(input: InputRepresentation): Long = TargetArea.parse(input.text)
         .computeAllSolutions().maxOf {
             it.maxOf { p -> p.y }
         }
 
-    override fun part2(input: InputRepresentation): Long = TargetArea.parse(input.asText())
+    override fun part2(input: InputRepresentation): Long = TargetArea.parse(input.text)
         .computeAllSolutions().count().toLong()
 }
 

@@ -7,7 +7,7 @@ import year2023.day22.Brick.Companion.settle
 
 object Day22 : AdventDay(2023, 22) {
     override fun part1(input: InputRepresentation): Any {
-        val settledBricks = Brick.of(input).settle()
+        val settledBricks = Brick.of(input.lines).settle()
         return settledBricks.count { brick ->
             val otherBricks = settledBricks.filter { it != brick }
             otherBricks.all { it.isSupportedWithOutBricks(brick) }
@@ -15,7 +15,7 @@ object Day22 : AdventDay(2023, 22) {
     }
 
     override fun part2(input: InputRepresentation): Int {
-        val settledBricks = Brick.of(input).settle().sortedBy { it.points.first().z }
+        val settledBricks = Brick.of(input.lines).settle().sortedBy { it.points.first().z }
         return settledBricks.filter {brick ->
             val otherBricks = settledBricks.filter { it != brick }
             otherBricks.any { !it.isSupportedWithOutBricks(brick) }

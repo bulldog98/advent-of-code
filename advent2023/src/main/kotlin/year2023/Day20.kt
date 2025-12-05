@@ -120,7 +120,7 @@ object Day20 : AdventDay(2023, 20) {
     private operator fun Pair<Long, Long>.plus(other: Pair<Long, Long>) = first + other.first to second + other.second
 
     override fun part1(input: InputRepresentation): Long =
-        generateSequence(Module.of(input) to (0L to 0L)) { (currentState, count) ->
+        generateSequence(Module.of(input.lines) to (0L to 0L)) { (currentState, count) ->
             var lowCount = 0L
             var highCount = 0L
             val nextState = currentState.simulateOneButtonPush { (_, _, pulse) ->
@@ -136,7 +136,7 @@ object Day20 : AdventDay(2023, 20) {
             }
 
     override fun part2(input: InputRepresentation): Long {
-        val modules = Module.of(input)
+        val modules = Module.of(input.lines)
         val rxInputConjunctionModule = modules.filterValues { "rx" in it.destinationModules }.values.single()
         // my input had lv as conjunction module that outputs into rx. Might not work if your input does not have the same
         if (rxInputConjunctionModule !is Module.ConjunctionModule) error("input of rx must be conjunction module otherwise computation fails")

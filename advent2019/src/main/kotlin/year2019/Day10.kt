@@ -38,13 +38,13 @@ object Day10: AdventDay(2019, 10) {
     }
 
     override fun part1(input: InputRepresentation): Long {
-        val asteroids = input.findAllPositionsOf('#')
+        val asteroids = input.lines.findAllPositionsOf('#')
         return asteroids.maxOf { (asteroids - it).canBeSeenBy(it).size.toLong() }
     }
 
     override fun part2(input: InputRepresentation): Long {
         // the X is for the laser station in the examples
-        val asteroids = input.findAllPositionsOf('#') + input.findAllPositionsOf('X')
+        val asteroids = input.lines.findAllPositionsOf('#') + input.lines.findAllPositionsOf('X')
         val laserStation = asteroids.maxBy { (asteroids - it).canBeSeenBy(it).size.toLong() }
 
         val quadrant = Quadrants(laserStation)

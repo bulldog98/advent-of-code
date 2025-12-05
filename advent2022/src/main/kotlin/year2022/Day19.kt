@@ -115,7 +115,7 @@ class Day19 : AdventDay(2022, 19) {
     }
 
     override fun part1(input: InputRepresentation): Int {
-        val blueprints = input.map { Blueprint.from(it) }
+        val blueprints = input.lines.map { it: String -> Blueprint.from(it) }
 
         return blueprints.foldIndexed(0) { i, acc, cur ->
             val curRes = Stock().maxMineGeodesIn(24, cur)
@@ -123,7 +123,7 @@ class Day19 : AdventDay(2022, 19) {
         }
     }
     override fun part2(input: InputRepresentation): Long {
-        val blueprints = input.take(3).map { Blueprint.from(it) }
+        val blueprints = input.lines.take(3).map { Blueprint.from(it) }
 
         return blueprints.fold(1L) { acc, cur ->
             acc * Stock().maxMineGeodesIn(32, cur)

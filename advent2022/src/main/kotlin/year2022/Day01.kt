@@ -18,10 +18,10 @@ class Day01 : AdventDay(2022, 1) {
         }.toList()
 
     override fun part1(input: InputRepresentation): Int =
-        input.calculateCalories().maxOrNull() ?: 0
+        input.lines.calculateCalories().maxOrNull() ?: 0
 
     override fun part2(input: InputRepresentation): Int =
-        input.calculateCalories().sortedDescending().take(3).sum()
+        input.lines.calculateCalories().sortedDescending().take(3).sum()
 }
 
 fun main() = Day01().run()

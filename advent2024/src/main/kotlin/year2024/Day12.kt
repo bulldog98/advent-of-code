@@ -77,12 +77,12 @@ object Day12 : AdventDay(2024, 12) {
         }
     }
 
-    override fun part1(input: InputRepresentation): Long = input.parseToRegions().sumOf {
+    override fun part1(input: InputRepresentation): Long = input.lines.parseToRegions().sumOf {
         // println("${it.plant}: ${it.area} * ${it.perimeter}")
         it.area * it.perimeter
     }
 
-    override fun part2(input: InputRepresentation): Long = input.parseToRegions().sumOf {
+    override fun part2(input: InputRepresentation): Long = input.lines.parseToRegions().sumOf {
         // println("${it.plant}: ${it.area} * ${it.numberOfSides}")
         it.area * it.numberOfSides
     }

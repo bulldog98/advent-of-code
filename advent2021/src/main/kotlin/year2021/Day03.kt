@@ -10,9 +10,9 @@ private fun UInt.invert(bits: Int) = inv() % 2.0.pow(bits).toUInt()
 
 object Day03 : AdventDay(2021, 3) {
     override fun part1(input: InputRepresentation): Int {
-        val parsed = input.map { it.toUInt(2) }
+        val parsed = input.lines.map { it: String -> it.toUInt(2) }
         val gamma = (0 until UInt.SIZE_BITS).toList().map { pos ->
-            if (parsed.count { it[pos] == 1u } > (input.size / 2)) {
+            if (parsed.count { it[pos] == 1u } > (input.lines.size / 2)) {
                 '1'
             } else
                 '0'
@@ -23,7 +23,7 @@ object Day03 : AdventDay(2021, 3) {
     }
 
     override fun part2(input: InputRepresentation): Int {
-        val parsed = input.map { it.toUInt(2) }
+        val parsed = input.lines.map { it: String -> it.toUInt(2) }
         val bitSize = parsed.minOf { it.countLeadingZeroBits() }
         fun List<UInt>.mostCommonBitAtPos(pos: Int) = if (count { it[pos] == 0u } > count { it[pos] == 1u }) 0u else 1u
         fun List<UInt>.leastCommonBitAtPos(pos: Int) = if (mostCommonBitAtPos(pos) == 0u) 1u else 0u

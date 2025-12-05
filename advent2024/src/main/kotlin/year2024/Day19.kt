@@ -40,16 +40,16 @@ object Day19 : AdventDay(2024, 19) {
 
     override fun part1(input: InputRepresentation): Int {
         val (existingTowels, wishedPatterns) = input.asTwoBlocks()
-            .mapFirst { it.flatMap { it.split(", ") } }
+            .mapFirst { it.lines.flatMap { it.split(", ") } }
             .mapFirst { it.toSet() }
-        return wishedPatterns.count { existingTowels.canArrange(it) }
+        return wishedPatterns.lines.count { existingTowels.canArrange(it) }
     }
 
     override fun part2(input: InputRepresentation): Long {
         val (existingTowels, wishedPatterns) = input.asTwoBlocks()
-            .mapFirst { it.flatMap { it.split(", ") } }
+            .mapFirst { it.lines.flatMap { it.split(", ") } }
             .mapFirst { it.toSet() }
-        return wishedPatterns.sumOf { existingTowels.countWaysToArrange(it) }
+        return wishedPatterns.lines.sumOf { existingTowels.countWaysToArrange(it) }
     }
 }
 

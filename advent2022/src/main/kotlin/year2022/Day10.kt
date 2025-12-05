@@ -51,7 +51,7 @@ class Day10 : AdventDay(2022, 10) {
     }
 
     override fun part1(input: InputRepresentation): Int {
-        val program = input.map { Instruction.from(it) }
+        val program = input.lines.map { it: String -> Instruction.from(it) }
         var state = State(program)
         var result = 0
         while (state.cycle < 220) {
@@ -68,7 +68,7 @@ class Day10 : AdventDay(2022, 10) {
     }
 
     override fun part2(input: InputRepresentation): String {
-        val program = input.map { Instruction.from(it) }
+        val program = input.lines.map { it: String -> Instruction.from(it) }
         val screen = Screen()
         var state = State(program)
         while (state.cycle < 240) {

@@ -81,7 +81,7 @@ object Day13: AdventDay(2023, 13) {
     } ?: findReflections()
 
     override fun part1(input: InputRepresentation): Long {
-        val parsed = input.asSplitByEmptyLine().asSequence().map { it.lines() }
+        val parsed = input.asSplitByEmptyLine().asSequence().map { it.lines }
         return parsed.sumOf {
             val reflection = it.findReflections()
             reflection.single().value.toLong()
@@ -89,7 +89,7 @@ object Day13: AdventDay(2023, 13) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        val parsed = input.asSplitByEmptyLine().asSequence().map { it.lines() }
+        val parsed = input.asSplitByEmptyLine().asSequence().map { it.lines }
         return parsed.sumOf {
             val reflection = it.reflectionAfterReplacingSmudge()
             (reflection - it.findReflections().toSet()).single().value.toLong()

@@ -9,9 +9,9 @@ import java.nio.file.Path
 
 object Day25 : AdventDay(2023, 25) {
     override fun part1(input: InputRepresentation): Int {
-        val nodes = input.flatMap { it.split(" ", ": ") }.toSet()
+        val nodes = input.lines.flatMap { it.split(" ", ": ") }.toSet()
         val connections = nodes.associateWith { n ->
-            input.filter { n in it }.flatMap {
+            input.lines.filter { n in it }.flatMap {
                 val (first, second) = it.split(": ")
                 if (n == first) second.split(" ")
                 else listOf(first)

@@ -92,9 +92,9 @@ object Day21 : AdventDay(2024, 21) {
         }
     }.joinToString("", postfix = "A")
 
-    override fun part1(input: InputRepresentation): Long = input.computeInputComplexity(2)
+    override fun part1(input: InputRepresentation): Long = input.lines.computeInputComplexity(2)
 
-    override fun part2(input: InputRepresentation): Long = input.computeInputComplexity(25)
+    override fun part2(input: InputRepresentation): Long = input.lines.computeInputComplexity(25)
 }
 
 fun main() = Day21.run()

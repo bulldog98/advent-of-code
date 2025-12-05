@@ -73,9 +73,9 @@ object Day23 : AdventDay(2023, 23) {
     }
 
     override fun part1(input: InputRepresentation): Int {
-        val destination = Point2D(input[0].length - 2, input.size - 1)
+        val destination = Point2D(input.lines[0].length - 2, input.lines.size - 1)
         val start = Point2D(1, 0)
-        val graph = input.buildGraph()
+        val graph = input.lines.buildGraph()
 
         val splits = graph.nodes.filter { graph.neighborsOf(it).filter { p -> input[p] in "^v<>" }.size == 2 }
         val help = graph.computeHelperMap(splits, start, destination, splits + start + destination)
@@ -84,9 +84,9 @@ object Day23 : AdventDay(2023, 23) {
     }
 
     override fun part2(input: InputRepresentation): Any {
-        val destination = Point2D(input[0].length - 2, input.size - 1)
+        val destination = Point2D(input.lines[0].length - 2, input.lines.size - 1)
         val start = Point2D(1, 0)
-        val graph = input.buildGraph(true)
+        val graph = input.lines.buildGraph(true)
 
         val splits = graph.nodes.filter { graph.neighborsOf(it).filter { p -> input[p] in "^v<>" }.size >= 2 }
         val help = graph.computeHelperMap(splits, start, destination, splits + start + destination)

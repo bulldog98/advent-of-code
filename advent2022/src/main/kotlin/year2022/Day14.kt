@@ -70,7 +70,7 @@ class Day14 : AdventDay(2022, 14) {
     }
 
     override fun part1(input: InputRepresentation): Int {
-        var area = Area.of(input)
+        var area = Area.of(input.lines)
         while (true) {
             val next = area.simulateSandFall(startPoint)
             if (next == area) return area.blockedBySand.size
@@ -79,7 +79,7 @@ class Day14 : AdventDay(2022, 14) {
     }
 
     override fun part2(input: InputRepresentation): Int {
-        var area = Area.of(input)
+        var area = Area.of(input.lines)
         val leftX = area.blockedByRock.minOf { (a) -> a }
         val rightX = area.blockedByRock.maxOf { (a) -> a }
         val lowest = area.lowestRow

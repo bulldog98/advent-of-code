@@ -11,9 +11,9 @@ object Day25 : AdventDay(2024, 25) {
 
     override fun part1(input: InputRepresentation): Long {
         val blocks = input.asSplitByEmptyLine()
-        val lockHeight = blocks[0].lines().size - 2 // top and bottom always full or empty
+        val lockHeight = blocks[0].lines.size - 2 // top and bottom always full or empty
         val (locks, keys) = blocks.map { block ->
-            val lines = block.lines()
+            val lines = block.lines
             val isKey = lines[0][0] == '.'
             lines[0].indices.map { x ->
                 lines.indices.count { h -> lines[h][x] == '#' } - 1

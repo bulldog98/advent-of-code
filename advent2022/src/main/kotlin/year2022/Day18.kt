@@ -41,7 +41,7 @@ class Day18 : AdventDay(2022, 18) {
     }
 
     override fun part1(input: InputRepresentation): Int {
-        val lavaDroplets = input.map {
+        val lavaDroplets = input.lines.map { it: String ->
             it.split(",").let { (x, y, z) ->
                 Point3D(x.toLong(), y.toLong(), z.toLong())
             }
@@ -50,7 +50,7 @@ class Day18 : AdventDay(2022, 18) {
     }
 
     override fun part2(input: InputRepresentation): Int {
-        val lavaDroplets = input.map(Point3D.Companion::parse)
+        val lavaDroplets = input.lines.map { it: String -> Point3D.parse(it) }
         val potentiallyExposedToAir = lavaDroplets.flatMap { it.faces }.toSet()
 
         val boundary = Boundary3D.from(lavaDroplets)

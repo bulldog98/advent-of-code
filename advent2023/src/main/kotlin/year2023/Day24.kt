@@ -55,7 +55,7 @@ object Day24: AdventDay(2023, 24) {
     }
 
     override fun part1(input: InputRepresentation): Int {
-        val pairs = input.map {HailStone.of(it) }
+        val pairs = input.lines.map { it: String -> HailStone.of(it) }
         val xYRange = 200000000000000.0..400000000000000.0
         return pairs.allPairs().count { (a, b) ->
             val (x, y) = a.asLine().intersect(b.asLine()) ?: (0.0 to 0.0)
@@ -65,7 +65,7 @@ object Day24: AdventDay(2023, 24) {
 
     override fun part2(input: InputRepresentation): Any {
 
-        val pairs = input.map { HailStone.of(it) }
+        val pairs = input.lines.map { it: String -> HailStone.of(it) }
         return with(KContext()) {
             operator fun <T: KBvSort> KExpr<T>.times(other: KExpr<T>): KExpr<T> = mkBvMulExpr(this, other)
             operator fun <T: KBvSort> KExpr<T>.plus(other: KExpr<T>): KExpr<T> = mkBvAddExpr(this, other)

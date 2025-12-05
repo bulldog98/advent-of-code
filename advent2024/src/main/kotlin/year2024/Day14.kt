@@ -76,7 +76,7 @@ class Day14(
 
         companion object {
             fun parse(input: InputRepresentation, width: Long, height: Long) = RobotField(
-                robots = input.map(RobotState::parse),
+                robots = input.lines.map { it: String -> RobotState.parse(it) },
                 width = width,
                 height = height
             )

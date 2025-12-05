@@ -27,7 +27,7 @@ fun String.asCardTypeValues(jokerBad: Boolean = false) =
 object Day07 : AdventDay(2023, 7) {
     override fun part1(input: InputRepresentation): Int =
         input
-            .asSequence()
+            .lineSequence
             .map {
                 Hand(it.split(" "))
             }
@@ -37,7 +37,7 @@ object Day07 : AdventDay(2023, 7) {
 
     override fun part2(input: InputRepresentation): Any =
         input
-            .asSequence()
+            .lineSequence
             .map {
                 Hand(it.split(" "), true)
             }

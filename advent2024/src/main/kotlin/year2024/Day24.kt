@@ -27,9 +27,9 @@ object Day24 : AdventDay(2024, 24) {
     }
 
     override fun part1(input: InputRepresentation): Long = input.asTwoBlocks()
-        .mapSecond { line -> line.map { ComputationTree.pares(it) }.getZComputations().reversed() }
-        .mapFirst { line ->
-            line.associateBy({ it.split(": ")[0] }) {
+        .mapSecond { line -> line.lines.map { it: String -> ComputationTree.pares(it) }.getZComputations().reversed() }
+        .mapFirst { input ->
+            input.lines.associateBy({ it.split(": ")[0] }) {
                 val value = it.split(": ")[1]
                 when (value) {
                     "1" -> true
@@ -44,7 +44,7 @@ object Day24 : AdventDay(2024, 24) {
         }
 
     override fun part2(input: InputRepresentation): String {
-        val initialComputations = input.asTwoBlocks().second.map { ComputationTree.pares(it) }
+        val initialComputations = input.asTwoBlocks().second.lines.map { it: String -> ComputationTree.pares(it) }
         val maxBit = initialComputations.filter { it.variableName.startsWith('z') }
             .maxOf { it.variableName.drop(1).toInt() } - 1
 

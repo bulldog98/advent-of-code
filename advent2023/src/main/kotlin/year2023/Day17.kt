@@ -83,10 +83,10 @@ object Day17 : AdventDay(2023, 17) {
     }
 
     override fun part1(input: InputRepresentation) =
-        Field.of(input).solve(0, 3)
+        Field.of(input.lines).solve(0, 3)
 
     override fun part2(input: InputRepresentation) =
-        Field.of(input).solve(4, 10)
+        Field.of(input.lines).solve(4, 10)
 }
 
 fun main() = Day17.run()

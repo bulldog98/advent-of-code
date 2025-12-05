@@ -49,10 +49,10 @@ fun Forest.sceniceMeasure(x: Int, y: Int): Int {
 
 class Day08 : AdventDay(2022, 8) {
     override fun part1(input: InputRepresentation): Int {
-        return input.parseForest().getVisibleCoords().size
+        return input.lines.parseForest().getVisibleCoords().size
     }
     override fun part2(input: InputRepresentation): Int {
-        val forest = input.parseForest()
+        val forest = input.lines.parseForest()
         val visible = forest.getVisibleCoords().maxBy { (x,y) -> forest.sceniceMeasure(x, y)}
         return forest.sceniceMeasure(visible.first, visible.second)
     }

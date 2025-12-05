@@ -23,14 +23,14 @@ object Day04: AdventDay(2019, 4) {
     fun Long.toDigits() = toString().toList()
 
     override fun part1(input: InputRepresentation): Int {
-        val range = input[0].split("-").map { it.toLong() }.let { it[0]..it[1] }
+        val range = input.lines[0].split("-").map { it.toLong() }.let { it[0]..it[1] }
         return range.count {
             it.toDigits().testPwCriteriaPart1()
         }
     }
 
     override fun part2(input: InputRepresentation): Int {
-        val range = input[0].split("-").map { it.toLong() }.let { it[0]..it[1] }
+        val range = input.lines[0].split("-").map { it.toLong() }.let { it[0]..it[1] }
 
         return range.count {
                 it.toDigits().testPwCriteriaPart2()

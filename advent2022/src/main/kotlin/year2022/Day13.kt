@@ -49,7 +49,7 @@ fun String.parse(): Elem {
 
 class Day13 : AdventDay(2022, 13) {
     override fun part1(input: InputRepresentation): Int {
-        val pairWise = input.chunked(3)
+        val pairWise = input.lines.chunked(3)
         val stuff = pairWise.mapIndexed { i, (a, b) ->
             a.parse().compareTo(b.parse()) to i + 1
         }.filter { (c) -> c <= 0 }
@@ -61,7 +61,7 @@ class Day13 : AdventDay(2022, 13) {
         val marker1 = ListElem(listOf(ListElem(listOf(IntElem(2)))))
         val marker2 = ListElem(listOf(ListElem(listOf(IntElem(6)))))
         val lines = input
-            .asSequence()
+            .lineSequence
             .filter { it.isNotEmpty() }
             .map{
                 it.parse()

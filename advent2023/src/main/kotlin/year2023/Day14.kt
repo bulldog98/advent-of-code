@@ -97,13 +97,13 @@ object Day14 : AdventDay(2023, 14) {
     }
 
     override fun part1(input: InputRepresentation): Long =
-        Dish.of(input)
+        Dish.of(input.lines)
             .tiltWithDirectionAsTop(Point2D.DOWN)
 //            .also { it.prettyPrint().forEach(::println) }
             .load
 
     override fun part2(input: InputRepresentation): Long =
-        generateSequence(Dish.of(input)) { dish ->
+        generateSequence(Dish.of(input.lines)) { dish ->
             dish
                 .tiltWithDirectionAsTop(Point2D.DOWN)
                 .tiltWithDirectionAsTop(Point2D.RIGHT)

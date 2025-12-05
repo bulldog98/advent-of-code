@@ -65,7 +65,7 @@ class Day23 : AdventDay(2022, 23) {
     }
 
     override fun part1(input: InputRepresentation): Long {
-        val elfsAfter10Rounds = input.findAllPositionsOf().simulateForXRounds(10)
+        val elfsAfter10Rounds = input.lines.findAllPositionsOf().simulateForXRounds(10)
         val minX = elfsAfter10Rounds.minOf { it.x }
         val minY = elfsAfter10Rounds.minOf { it.y }
         val maxX = elfsAfter10Rounds.maxOf { it.x }
@@ -77,7 +77,7 @@ class Day23 : AdventDay(2022, 23) {
 
     override fun part2(input: InputRepresentation): Int {
         var curRound = 1
-        var prev = input.findAllPositionsOf()
+        var prev = input.lines.findAllPositionsOf()
         var curr = prev.simulateForXRounds(1, 0)
         while (prev != curr) {
             prev = curr

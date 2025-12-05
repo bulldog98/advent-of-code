@@ -13,7 +13,7 @@ import year2021.day16.Packet
 class Day16Test {
     private val testData = InputFiles(2021, 16)
     private fun parseExample(number: Int) = Packet.parseHexString(
-        testData.getFileWithSuffix("example$number").asText()
+        testData.getFileWithSuffix("example$number").text
     )
 
     @Nested

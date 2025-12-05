@@ -100,16 +100,16 @@ class Day24 : AdventDay(2022, 24) {
     }
 
     override fun part1(input: InputRepresentation): Int {
-        val initialMapState: MapState = MapState.of(input)
-        val start = Point2D(input.first().indexOfFirst { it == '.' }, 0)
-        val goal = Point2D(input.last().indexOfFirst { it == '.' }, input.lastIndex)
+        val initialMapState: MapState = MapState.of(input.lines)
+        val start = Point2D(input.lines.first().indexOfFirst { it == '.' }, 0)
+        val goal = Point2D(input.lines.last().indexOfFirst { it == '.' }, input.lines.lastIndex)
 
         return solve(start, goal, initialMapState).first
     }
     override fun part2(input: InputRepresentation): Int {
-        val initialMapState: MapState = MapState.of(input)
-        val start = Point2D(input.first().indexOfFirst { it == '.' }, 0)
-        val goal = Point2D(input.last().indexOfFirst { it == '.' }, input.lastIndex)
+        val initialMapState: MapState = MapState.of(input.lines)
+        val start = Point2D(input.lines.first().indexOfFirst { it == '.' }, 0)
+        val goal = Point2D(input.lines.last().indexOfFirst { it == '.' }, input.lines.lastIndex)
 
         val stuff = listOf(start, goal, start, goal).zipWithNext()
         return stuff.fold(0 to initialMapState) { (rounds, state), (start, goal) ->

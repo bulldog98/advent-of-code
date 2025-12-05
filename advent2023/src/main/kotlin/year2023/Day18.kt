@@ -35,7 +35,7 @@ object Day18 : AdventDay(2023, 18) {
         }) / 2L
 
     override fun part1(input: InputRepresentation): Long {
-        val instructions = input.map(::parseInstructionPart1)
+        val instructions = input.lines.map { it: String -> parseInstructionPart1(it) }
         val edges = instructions.fold(listOf(Point2D(0, 0))) { cur, (dir, times) ->
             cur + (cur.last() + dir * times)
         }
@@ -44,7 +44,7 @@ object Day18 : AdventDay(2023, 18) {
     }
 
     override fun part2(input: InputRepresentation): Long {
-        val instructions = input.map(::parseInstructionPart2)
+        val instructions = input.lines.map { it: String -> parseInstructionPart2(it) }
         val edges = instructions.fold(listOf(Point2D(0, 0))) { cur, (dir, times) ->
             cur + (cur.last() + dir * times)
         }

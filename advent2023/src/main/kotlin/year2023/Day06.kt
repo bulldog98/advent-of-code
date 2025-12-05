@@ -14,8 +14,8 @@ object Day06: AdventDay(2023, 6) {
         }
 
     override fun part1(input: InputRepresentation): Int {
-        val times = input[0].toAllLongs()
-        val distance = input[1].toAllLongs()
+        val times = input.lines[0].toAllLongs()
+        val distance = input.lines[1].toAllLongs()
         val games = times.zip(distance)
         return games.fold(1) { cur, game ->
             cur * game.numberOfWaysToWin()
@@ -23,8 +23,8 @@ object Day06: AdventDay(2023, 6) {
     }
 
     override fun part2(input: InputRepresentation): Int {
-        val time = NUMBERS_REGEX.findAll(input[0]).joinToString("") { it.value }.toLong()
-        val distance = NUMBERS_REGEX.findAll(input[1]).joinToString("") { it.value }.toLong()
+        val time = NUMBERS_REGEX.findAll(input.lines[0]).joinToString("") { it.value }.toLong()
+        val distance = NUMBERS_REGEX.findAll(input.lines[1]).joinToString("") { it.value }.toLong()
         val game = time to distance
         return game.numberOfWaysToWin()
     }

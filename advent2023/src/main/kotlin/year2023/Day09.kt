@@ -4,7 +4,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 
-object Day09: AdventDay(2023, 9) {
+object Day09 : AdventDay(2023, 9) {
     private fun Sequence<Long>.computeHistory() =
         generateSequence(this.toList()) { lastRow ->
             lastRow.windowed(2).map { (a, b) ->
@@ -25,11 +25,13 @@ object Day09: AdventDay(2023, 9) {
                 next - cur
             }
 
-    override fun part1(input: InputRepresentation): Long =
-        input.sumOf { it.toAllLongs().extrapolateNextValue() }
+    override fun part1(input: InputRepresentation): Long = input
+        .lines
+        .sumOf { it.toAllLongs().extrapolateNextValue() }
 
-    override fun part2(input: InputRepresentation): Long =
-        input.sumOf { it.toAllLongs().extrapolatePrevValue() }
+    override fun part2(input: InputRepresentation): Long = input
+        .lines
+        .sumOf { it.toAllLongs().extrapolatePrevValue() }
 }
 
 fun main() = Day09.run()
