@@ -4,7 +4,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import helper.pair.mapFirst
 
-object Day19 : AdventDay(2024, 19) {
+object Day19 : AdventDay(2024, 19, "Linen Layout") {
     private data class CanArrangeCacheEntry(val existingTowels: Set<String>, val wishedPattern: String)
 
     private val canArrangeCache = mutableMapOf<CanArrangeCacheEntry, Boolean>()

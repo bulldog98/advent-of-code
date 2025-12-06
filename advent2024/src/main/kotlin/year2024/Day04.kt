@@ -23,7 +23,7 @@ fun Point2D.computeWordDirections(): Set<List<Point2D>> = setOf(
     moveInDirection(Point2D.DOWN + Point2D.RIGHT, 4),
 )
 
-object Day04 : AdventDay(2024, 4) {
+object Day04 : AdventDay(2024, 4, "Ceres Search") {
     override fun part1(input: InputRepresentation): Int {
         val field = input.asCharMap { it in xmasChars }
         return field.entries.filter { (_, c) -> c == 'X' }.sumOf { (p, _) ->

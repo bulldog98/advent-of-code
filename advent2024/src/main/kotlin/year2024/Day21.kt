@@ -5,7 +5,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 
-object Day21 : AdventDay(2024, 21) {
+object Day21 : AdventDay(2024, 21, "Keypad Conundrum") {
     /**
      * give a multiline string, - for holes
      */

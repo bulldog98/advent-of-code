@@ -8,7 +8,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 
-object Day22 : AdventDay(2024, 22) {
+object Day22 : AdventDay(2024, 22, "Monkey Market") {
     private fun Long.generateSecrets() = generateSequence(this) { oldSecret ->
         val firstStep = ((oldSecret * 64) xor oldSecret) % 16777216
         val secondStep = ((firstStep / 32) xor firstStep) % 16777216

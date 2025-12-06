@@ -6,7 +6,7 @@ import collections.pairings
 import graph.AdjacencyListGraph
 import graph.enumerateAllMaxCliques
 
-object Day23 : AdventDay(2024, 23) {
+object Day23 : AdventDay(2024, 23, "LAN Party") {
     private data class ComputerNetwork(val computers: List<String>, val directConnections: List<Set<String>>) {
         private val cache = mutableMapOf<Int, List<Set<String>>>()
         fun findDirectlyConnectedGroupOfSize(size: Int = 3): List<Set<String>> = cache.getOrPut(size) {

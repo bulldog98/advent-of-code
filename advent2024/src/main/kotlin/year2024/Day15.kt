@@ -8,7 +8,7 @@ import helper.pair.mapFirst
 import helper.pair.mapSecond
 import kotlin.math.absoluteValue
 
-object Day15 : AdventDay(2024, 15) {
+object Day15 : AdventDay(2024, 15, "Warehouse Woes") {
     private fun Char.toDirectionVector() = when (this) {
         '^' -> Point2D.UP
         '>' -> Point2D.RIGHT

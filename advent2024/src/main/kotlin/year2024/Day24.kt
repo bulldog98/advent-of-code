@@ -8,7 +8,7 @@ import year2024.day24.ComputationTree
 import year2024.day24.getInvalidPartForAdditionForBit
 import year2024.day24.isValidAdditionForBit
 
-object Day24 : AdventDay(2024, 24) {
+object Day24 : AdventDay(2024, 24, "Crossed Wires") {
     private fun List<ComputationTree>.getCompletedComputations(): List<ComputationTree> {
         val computationTreeLookup =
             (this + (this.filter { it.variableName.startsWith('z') }).flatMap {

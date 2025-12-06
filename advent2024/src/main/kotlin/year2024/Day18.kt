@@ -10,7 +10,7 @@ import helper.numbers.toAllLongs
 class Day18(
     private val gridSize: Long,
     private val bytesForPart1: Int,
-) : AdventDay(2024, 18) {
+) : AdventDay(2024, 18, "RAM Run") {
     private val start = Point2D.ORIGIN
     private val destination = Point2D(gridSize, gridSize)
     private val validCoordinates = start..destination

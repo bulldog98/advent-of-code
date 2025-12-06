@@ -7,7 +7,7 @@ private const val PARSE_MULTIPLICATIONS = """mul\((\d+),(\d+)\)"""
 private const val DO_NOT_INSTRUCTION = """don't()"""
 private const val DO_INSTRUCTION = """do()"""
 
-object Day03 : AdventDay(2024, 3) {
+object Day03 : AdventDay(2024, 3, "Mull It Over") {
     override fun part1(input: InputRepresentation): Long =
         PARSE_MULTIPLICATIONS.toRegex()
             .findAll(input.text)

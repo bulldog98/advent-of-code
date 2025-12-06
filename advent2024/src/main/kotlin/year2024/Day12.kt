@@ -29,7 +29,7 @@ fun List<Point2D>.splitInContinuousParts(axis: Axis) = buildList {
     }
 }
 
-object Day12 : AdventDay(2024, 12) {
+object Day12 : AdventDay(2024, 12, "Garden Groups") {
     data class Region(val plant: Char, val points: List<Point2D>) {
         val area = points.size.toLong()
         val perimeter by lazy {

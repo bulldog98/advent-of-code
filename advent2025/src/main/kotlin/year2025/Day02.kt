@@ -17,7 +17,7 @@ private fun String.isOnlyRepeatingSubstring(): Boolean = (1 ..< length).any {
     length / it * it == length && take(it) * (length / it) == this
 }
 
-object Day02 : AdventDay(2025, 2) {
+object Day02 : AdventDay(2025, 2, "Gift Shop") {
     override fun part1(input: InputRepresentation): Long = input.lines[0]
         .split(",")
         .flatMap { it.split("-").let { (a, b) -> (a.toLong()..b.toLong()) } }

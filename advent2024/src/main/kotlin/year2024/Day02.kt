@@ -13,7 +13,7 @@ fun List<Long>.allDecreasingMax3() = windowed(2).fold(true) { acc, (a, b) ->
 
 fun List<Long>.omit(index: Int): List<Long> = subList(0, index) + subList(index + 1, size)
 
-object Day02 : AdventDay(2024, 2) {
+object Day02 : AdventDay(2024, 2, "Red-Nosed Reports") {
     override fun part1(input: InputRepresentation): Int {
         val lines = input.lines.map { it: String -> it.split(" ").map(String::toLong) }
         return lines.count { nums ->

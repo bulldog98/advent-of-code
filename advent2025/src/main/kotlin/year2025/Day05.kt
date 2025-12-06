@@ -19,7 +19,7 @@ private fun InputRepresentation.toRangesAndIngredients(): Pair<List<LongRange>, 
 private val LongRange.size: Long
     get() = last - start + 1
 
-object Day05 : AdventDay(2025, 5) {
+object Day05 : AdventDay(2025, 5, "Cafeteria") {
     override fun part1(input: InputRepresentation): Int {
         val (ranges, rest) = input.toRangesAndIngredients()
         return rest.count { ranges.any { range -> it in range } }

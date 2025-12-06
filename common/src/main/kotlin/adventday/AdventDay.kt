@@ -1,11 +1,12 @@
 package adventday
 
-abstract class AdventDay(year: Int, day: Int) {
+abstract class AdventDay(val year: Int, val day: Int, val title: String = "unknown") {
     private val inputFiles: InputFiles = InputFiles(year, day)
 
     abstract fun part1(input: InputRepresentation) : Any
     abstract fun part2(input: InputRepresentation) : Any
     fun run() {
+        println("--- AoC $year, Day $day: $title ---\n")
         println(part1(inputFiles.inputFile))
         println(part2(inputFiles.inputFile))
     }

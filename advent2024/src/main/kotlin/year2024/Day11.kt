@@ -17,7 +17,7 @@ fun Long.oneStep(): List<Long> = when {
 
 data class CacheEntry(val stone: Long, val step: Int, val limit: Int)
 
-object Day11 : AdventDay(2024, 11) {
+object Day11 : AdventDay(2024, 11, "Plutonian Pebbles") {
     private val cache = mutableMapOf<CacheEntry, Long>()
     private fun countStones(stone: Long, round: Int, limit: Int): Long = cache.getOrPut(CacheEntry(stone, round, limit)) {
         if (round == limit)

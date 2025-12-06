@@ -11,7 +11,7 @@ import kotlin.math.absoluteValue
 class Day14(
     private val width: Long,
     private val height: Long
-) : AdventDay(2024, 14) {
+) : AdventDay(2024, 14, "Restroom Redoubt") {
     private data class RobotState(val position: Point2D, val velocity: Point2D) {
         fun move(xBound: Long, yBound: Long, steps: Long = 1L): RobotState {
             val xCycleLength = xBound / gcd(velocity.x.absoluteValue, xBound)

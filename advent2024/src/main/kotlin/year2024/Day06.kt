@@ -21,7 +21,7 @@ fun Pair<Point2D, Point2D>.explore(maxX: Long, maxY: Long, barriers: Collection<
     }
 }.takeWhile { (pos, _) -> (pos.x in 0..maxX) && pos.y in 0..maxY }
 
-object Day06 : AdventDay(2024, 6) {
+object Day06 : AdventDay(2024, 6, "Guard Gallivant") {
     override fun part1(input: InputRepresentation): Int {
         val barriers = input.lines.findAllPositionsOf('#')
         val startPosition = input.lines.findAllPositionsOf('^').first()

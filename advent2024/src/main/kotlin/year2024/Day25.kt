@@ -5,7 +5,7 @@ import adventday.InputRepresentation
 import helper.pair.mapFirst
 import helper.pair.mapSecond
 
-object Day25 : AdventDay(2024, 25) {
+object Day25 : AdventDay(2024, 25, "Code Chronicle") {
     private fun List<Int>.isOpenedBy(key: List<Int>, lockHeight: Int): Boolean = zip(key)
         .all { (l, k) -> l <= lockHeight - k }
 

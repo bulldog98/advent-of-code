@@ -20,7 +20,7 @@ fun Equation.isFeasible(allOperatorsApplied: (Long, Long) -> List<Long>): Boolea
         .any { it.isFeasible(allOperatorsApplied) }
 }
 
-object Day07 : AdventDay(2024, 7) {
+object Day07 : AdventDay(2024, 7, "Bridge Repair") {
     override fun part1(input: InputRepresentation): Long {
         val equations = input.lines.map { it: String -> Equation.parse(it) }
         return equations.filter { it.isFeasible { a, b ->

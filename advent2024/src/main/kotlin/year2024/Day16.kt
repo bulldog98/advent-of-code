@@ -9,7 +9,7 @@ import graph.Graph
 import graph.dijkstra
 import year2024.Day16.plus
 
-object Day16 : AdventDay(2024, 16) {
+object Day16 : AdventDay(2024, 16, "Reindeer Maze") {
     private enum class DIRECTION(val vector: Point2D, val nextPointFor: (Point2D, Collection<Point2D>) -> Point2D?) {
         WEST(Point2D.LEFT, { point, possible ->
             possible.filter { point.y == it.y && point.x > it.x }.maxByOrNull { it.x }

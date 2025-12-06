@@ -8,7 +8,7 @@ import graph.AdjacencyListGraph
 import graph.Graph
 import graph.dijkstra
 
-class Day20(private val minImprovement: Int) : AdventDay(2024, 20) {
+class Day20(private val minImprovement: Int) : AdventDay(2024, 20, "Race Condition") {
     private data class RaceTrack(
         val walls: Set<Point2D>,
         val start: Point2D,

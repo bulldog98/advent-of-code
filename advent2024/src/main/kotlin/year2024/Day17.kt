@@ -9,7 +9,7 @@ import year2024.day17.ComputerState
 import year2024.day17.RegistryState
 import year2024.day17.simulateProgram
 
-object Day17 : AdventDay(2024, 17) {
+object Day17 : AdventDay(2024, 17, "Chronospatial Computer") {
     override fun part1(input: InputRepresentation): String {
         val (initialRegistryState, instructions) = input.asTwoBlocks()
             .mapFirst { RegistryState.parse(it.lines) }

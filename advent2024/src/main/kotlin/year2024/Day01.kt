@@ -5,7 +5,7 @@ import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 import kotlin.math.abs
 
-object Day01 : AdventDay(2024, 1) {
+object Day01 : AdventDay(2024, 1, "Historian Hysteria") {
     override fun part1(input: InputRepresentation): Long {
         val (leftList, right) = input.lines.map { it: String ->
             it.toAllLongs().zipWithNext().first()

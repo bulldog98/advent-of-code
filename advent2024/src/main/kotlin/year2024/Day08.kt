@@ -50,7 +50,7 @@ data object WithHarmonies : AntiNodeComputation {
     }
 }
 
-object Day08 : AdventDay(2024, 8) {
+object Day08 : AdventDay(2024, 8, "Resonant Collinearity") {
     override fun part1(input: InputRepresentation) = WithoutHarmonies.countAntiNodes(input.lines)
 
     override fun part2(input: InputRepresentation) = WithHarmonies.countAntiNodes(input.lines)

@@ -10,7 +10,7 @@ private fun List<Long>.turnOn(toTurnOn: Int, numberPrefix: Long = 0): Long = whe
     }
 }
 
-object Day03 : AdventDay(2025, 3) {
+object Day03 : AdventDay(2025, 3, "Lobby") {
     override fun part1(input: InputRepresentation): Long =
         input
             .lines.map { bank: String -> bank.toCharArray().map { "$it".toLong() } }

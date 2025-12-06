@@ -33,7 +33,7 @@ fun InputRepresentation.getPageOrderRulesAndOrdering() = asTwoBlocks()
     .mapFirst { it.lines.getPageOrderRules() }
     .mapSecond { it.lines.getPageOrderings() }
 
-object Day05 : AdventDay(2024, 5) {
+object Day05 : AdventDay(2024, 5, "Print Queue") {
     override fun part1(input: InputRepresentation): Long {
         val (orderRules, orderings) = input.getPageOrderRulesAndOrdering()
 

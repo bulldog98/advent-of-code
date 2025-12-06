@@ -72,7 +72,7 @@ data class ClawMachineConfiguration(
     }
 }
 
-object Day13 : AdventDay(2024, 13) {
+object Day13 : AdventDay(2024, 13, "Claw Contraption") {
     override fun part1(input: InputRepresentation) = input.asSplitByEmptyLine()
         .map { ClawMachineConfiguration.parse(it.lines) }
         .sumOf { it.minCostToWinOrNull() ?: 0L }

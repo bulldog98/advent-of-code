@@ -6,7 +6,7 @@ import findAllPositionsOf
 
 private const val paperRoll = '@'
 
-object Day04 : AdventDay(2025, 4) {
+object Day04 : AdventDay(2025, 4, "Printing Department") {
     override fun part1(input: InputRepresentation): Int {
         val positions = input.lines.findAllPositionsOf(paperRoll)
         return positions.count { position ->

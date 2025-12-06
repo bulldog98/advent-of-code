@@ -35,7 +35,7 @@ private fun InputRepresentation.asRawColumns(
     return instructions.zip(extractColumns().map { column -> parseColumn(column) })
 }
 
-object Day06 : AdventDay(2025, 6) {
+object Day06 : AdventDay(2025, 6, "Trash Compactor") {
     override fun part1(input: InputRepresentation): Long = input
         .asRawColumns()
         .sumOf { (operator, cells) ->

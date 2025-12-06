@@ -43,7 +43,7 @@ fun String.toMemory() = chunked(2)
             FreeBlock(oneOrTwoDigits.getOrElse(1) { '0' }.digitToInt())
         ) }
 
-object Day09 : AdventDay(2024, 9){
+object Day09 : AdventDay(2024, 9, "Disk Fragmenter") {
     override fun part1(input: InputRepresentation): Long {
         val blocks = input.lines[0].toMemory()
         val memory = blocks.initialMemory()

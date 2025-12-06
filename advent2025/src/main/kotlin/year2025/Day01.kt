@@ -46,7 +46,7 @@ operator fun Dial.plus(instruction: Instruction): Dial {
     )
 }
 
-object Day01 : AdventDay(2025, 1) {
+object Day01 : AdventDay(2025, 1, "Secret Entrance") {
     override fun part1(input: InputRepresentation): Int = input
         .lines
         .map { it: String -> Instruction.parse(it) }
