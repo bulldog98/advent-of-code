@@ -3,56 +3,56 @@ package year2025
 import adventday.AdventDay
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
+import year2025.day06.Operator
+
+private fun InputRepresentation.extractColumns(): List<List<String>> {
+    val columnSizes = lines.last().split("*", "+")
+        .drop(1)
+        .dropLast(1)
+        .map { it.length }
+    val tableAsRows = lines.dropLast(1).map { line ->
+        buildList {
+            var offset = 0
+            columnSizes.forEach { size ->
+                this += line.substring(offset, offset + size)
+                offset += size + 1
+            }
+            this += line.substring(offset)
+        }
+    }
+    return tableAsRows[0].indices.map { column ->
+        tableAsRows.indices.map { row ->
+            tableAsRows[row][column]
+        }
+    }
+}
+
+private fun InputRepresentation.asRawColumns(
+    parseColumn: (List<String>) -> List<Long> = { it.map { column -> column.toAllLongs().first() } }
+): List<Pair<Operator, List<Long>>> {
+    val instructions = lines.last().split(" ").filter { it.isNotEmpty() }
+        .map { Operator.parse(it) }
+    return instructions.zip(extractColumns().map { column -> parseColumn(column) })
+}
 
 object Day06 : AdventDay(2025, 6) {
-    override fun part1(input: InputRepresentation): Long {
-        val table = input.lines.dropLast(1).map {
-            it.toAllLongs().toList()
+    override fun part1(input: InputRepresentation): Long = input
+        .asRawColumns()
+        .sumOf { (operator, cells) ->
+            operator.compute(cells)
         }
-        val instructions = input.lines.last().split(" ").filter { it.isNotEmpty() }
-            .mapIndexed { i, t -> i to t }
-        return instructions.sumOf { (i, op) ->
-            when (op) {
-                "+" -> table.sumOf { it[i] }
-                "*" -> table.fold(1) { acc, next -> acc * next[i] }
-                else -> error("should not happen")
-            }
-        }
-    }
 
-    override fun part2(input: InputRepresentation): Long {
-        val columnSizes = input.lines.last().split("*", "+")
-            .drop(1)
-            .dropLast(1)
-            .map { it.length }
-        val tableRaw = input.lines.dropLast(1).map { line ->
-            buildList {
-                var offset = 0
-                columnSizes.forEach { size ->
-                    this += line.substring(offset, offset + size)
-                    offset += size + 1
-                }
-                this += line.substring(offset)
-            }
-        }
-        val instructions = input.lines.last().split(" ").filter { it.isNotEmpty() }
-            .mapIndexed { i, t -> i to t }
-        val numsTable = instructions.mapIndexed { i, _ ->
-            val relevantColumn = tableRaw.map { it[i] }
-            val maxPosition = relevantColumn.maxOf { it.length } - 1
+    override fun part2(input: InputRepresentation): Long = input
+        .asRawColumns {
+            // Cephalopod math is written right-to-left in columns
+            val maxPosition = it.maxOf { cell -> cell.length } - 1
             (0..maxPosition).map { index ->
-                relevantColumn.joinToString("") { (it.getOrNull(index) ?: ' ').toString() }.filter { it != ' ' }
-                    .toLong()
+                it.joinToString("") { cell -> (cell.getOrNull(index) ?: ' ').toString() }.toAllLongs().first()
             }
         }
-        return instructions.sumOf { (i, op) ->
-            when (op) {
-                "+" -> numsTable[i].sum()
-                "*" -> numsTable[i].fold(1) { acc, next -> acc * next }
-                else -> error("should not happen")
-            }
+        .sumOf { (operator, cells) ->
+            operator.compute(cells)
         }
-    }
 }
 
 fun main() = Day06.run()
