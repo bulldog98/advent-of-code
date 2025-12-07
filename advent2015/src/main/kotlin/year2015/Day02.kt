@@ -1,6 +1,5 @@
 package year2015
 
-import NotImplementedYet
 import adventday.AdventDay
 import adventday.InputRepresentation
 
@@ -14,6 +13,10 @@ data class PackageDimension(
 
     val slack: Int
         get() = listOf(length, width, height).sorted().take(2).fold(1, Int::times)
+
+    val ribbonSize: Int
+        get() = listOf(length, width, height).sorted().take(2).fold(0, Int::plus) * 2 +
+            length * width * height
 
     companion object {
         fun parse(input: String) = input.split("x").let { (l, w, h) ->
@@ -32,8 +35,10 @@ object Day02 : AdventDay(2015, 2, "I Was Told There Would Be No Math") {
         .map { PackageDimension.parse(it) }
         .sumOf { it.surfaceArea.toLong() + it.slack }
 
-    override fun part2(input: InputRepresentation) =
-        NotImplementedYet
+    override fun part2(input: InputRepresentation) = input
+        .lines
+        .map { PackageDimension.parse(it) }
+        .sumOf { it.ribbonSize.toLong() }
 }
 
 fun main() = Day02.run()
