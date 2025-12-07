@@ -1,2 +1,2 @@
 @Suppress("unused")
-object NotImplementedYet
+data object NotImplementedYet
