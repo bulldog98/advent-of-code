@@ -8,14 +8,14 @@ typealias Forest = List<List<Int>>
 fun Forest.isVisible(x: Int, y: Int): Boolean {
     val ownHeight = this[x][y]
     val leftVisible = (0 until x).all { this[it][y] < ownHeight }
-    val rightVisible = (x + 1 until  this[x].size).all { this[it][y] < ownHeight }
-    val topVisible = (0 until  y).all { this[x][it] < ownHeight }
+    val rightVisible = (x + 1 until this[x].size).all { this[it][y] < ownHeight }
+    val topVisible = (0 until y).all { this[x][it] < ownHeight }
     val bottomVisible = (y + 1 until this.size).all { this[x][it] < ownHeight }
     return leftVisible || rightVisible || topVisible || bottomVisible ||
-            x == 0 || y == 0 || x == this[y].size - 1 || y == this.size - 1
+        x == 0 || y == 0 || x == this[y].size - 1 || y == this.size - 1
 }
 
-fun List<String>.parseForest(): Forest = map { it.toList().map { c -> c.digitToInt() }}
+fun List<String>.parseForest(): Forest = map { it.toList().map { c -> c.digitToInt() } }
 
 fun Iterable<Int>.countUnless(pred: (Int) -> Boolean): Int {
     var res = 0
@@ -38,23 +38,25 @@ fun Forest.getVisibleCoords(): Set<Pair<Int, Int>> {
     }
     return foundInvisible
 }
-fun Forest.sceniceMeasure(x: Int, y: Int): Int {
+
+fun Forest.scenicMeasure(x: Int, y: Int): Int {
     val ownHeight = this[x][y]
     val leftVisible = (0 until x).reversed().countUnless { this[it][y] >= ownHeight }
-    val rightVisible = (x + 1 until  this[x].size).countUnless { this[it][y] >= ownHeight }
-    val topVisible = (0 until  y).reversed().countUnless { this[x][it] >= ownHeight }
+    val rightVisible = (x + 1 until this[x].size).countUnless { this[it][y] >= ownHeight }
+    val topVisible = (0 until y).reversed().countUnless { this[x][it] >= ownHeight }
     val bottomVisible = (y + 1 until this.size).countUnless { this[x][it] >= ownHeight }
     return leftVisible * rightVisible * topVisible * bottomVisible
 }
 
-class Day08 : AdventDay(2022, 8) {
+class Day08 : AdventDay(2022, 8, "Treetop Tree House") {
     override fun part1(input: InputRepresentation): Int {
         return input.lines.parseForest().getVisibleCoords().size
     }
+
     override fun part2(input: InputRepresentation): Int {
         val forest = input.lines.parseForest()
-        val visible = forest.getVisibleCoords().maxBy { (x,y) -> forest.sceniceMeasure(x, y)}
-        return forest.sceniceMeasure(visible.first, visible.second)
+        val visible = forest.getVisibleCoords().maxBy { (x, y) -> forest.scenicMeasure(x, y) }
+        return forest.scenicMeasure(visible.first, visible.second)
     }
 }
 

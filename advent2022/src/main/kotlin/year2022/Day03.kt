@@ -18,7 +18,7 @@ private fun <E> Collection<Set<E>>.intersectAll(): Set<E> =
 private fun splitToCompartments(input: String): List<Bucket> =
     listOf(input.take(input.length / 2).toSet(), input.drop(input.length / 2).toSet())
 
-class Day03 : AdventDay(2022, 3) {
+class Day03 : AdventDay(2022, 3, "Rucksack Reorganization") {
     override fun part1(input: InputRepresentation) = input.lines
         .sumOf {
             splitToCompartments(it)

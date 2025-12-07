@@ -58,7 +58,7 @@ fun String.parseInput(): Directory {
     return root
 }
 
-class Day07 : AdventDay(2022, 7) {
+class Day07 : AdventDay(2022, 7, "No Space Left On Device") {
     override fun part1(input: InputRepresentation): Int {
         val root = input.text.parseInput()
         return root.filterInTree { it.fileSize <= 100_000 }.sumOf { it.fileSize }

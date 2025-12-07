@@ -3,7 +3,7 @@ package year2022
 import adventday.AdventDay
 import adventday.InputRepresentation
 
-class Day14 : AdventDay(2022, 14) {
+class Day14 : AdventDay(2022, 14, "Regolith Reservoir") {
     private val startPoint = 500 to 0
     data class Area(
         val blockedByRock: Set<Pair<Int, Int>>,

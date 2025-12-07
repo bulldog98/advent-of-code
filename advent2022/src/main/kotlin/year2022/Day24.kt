@@ -5,7 +5,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import lcm
 
-class Day24 : AdventDay(2022, 24) {
+class Day24 : AdventDay(2022, 24, "Blizzard Basin") {
     private data class Blizzard(val location: Point2D, val movement: Point2D) {
         fun next(boundary: Point2D): Blizzard {
             val nextLocation = location + movement

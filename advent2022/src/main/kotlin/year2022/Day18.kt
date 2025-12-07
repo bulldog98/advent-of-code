@@ -5,7 +5,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import exploreFrom
 
-class Day18 : AdventDay(2022, 18) {
+class Day18 : AdventDay(2022, 18, "Boiling Boulders") {
     enum class Plane {
         XY, YZ, XZ
     }

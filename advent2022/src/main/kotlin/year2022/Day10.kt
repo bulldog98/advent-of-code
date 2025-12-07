@@ -4,7 +4,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import kotlin.math.absoluteValue
 
-class Day10 : AdventDay(2022, 10) {
+class Day10 : AdventDay(2022, 10, "Cathode-Ray Tube") {
     class Screen(
         val rows: Array<BooleanArray> =
             (0 until 6)

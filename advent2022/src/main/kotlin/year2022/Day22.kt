@@ -60,7 +60,7 @@ inline fun Point2D.move(
     return current
 }
 
-class Day22 : AdventDay(2022, 22) {
+class Day22 : AdventDay(2022, 22, "Monkey Map") {
     enum class Direction(val asPointDiff: Point2D, val facing: Int) {
         RIGHT(Point2D.RIGHT, 0),
         DOWN(Point2D.DOWN, 1),

@@ -47,7 +47,7 @@ fun String.parse(): Elem {
     return json.convert()
 }
 
-class Day13 : AdventDay(2022, 13) {
+class Day13 : AdventDay(2022, 13, "Distress Signal") {
     override fun part1(input: InputRepresentation): Int {
         val pairWise = input.lines.chunked(3)
         val stuff = pairWise.mapIndexed { i, (a, b) ->

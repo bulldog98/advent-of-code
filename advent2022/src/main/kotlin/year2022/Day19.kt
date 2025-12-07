@@ -3,7 +3,7 @@ package year2022
 import adventday.AdventDay
 import adventday.InputRepresentation
 
-class Day19 : AdventDay(2022, 19) {
+class Day19 : AdventDay(2022, 19, "Not Enough Minerals") {
     enum class Miner(val bit: Int) {
         ORE(1),
         CLAY(2),

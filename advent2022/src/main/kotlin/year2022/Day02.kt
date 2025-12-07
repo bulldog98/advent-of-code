@@ -59,7 +59,7 @@ private fun score(row: String, strategy: Strategy): Int {
     return score(Shape(a), strategy(a, b))
 }
 
-class Day02 : AdventDay(2022, 2) {
+class Day02 : AdventDay(2022, 2, "Rock Paper Scissors") {
     override fun part1(input: InputRepresentation): Int = input.lines
         .sumOf { score(it, ::strategyPart1) }
 

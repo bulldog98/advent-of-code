@@ -7,7 +7,7 @@ import year2022.day17.CycleInfo
 import year2022.day17.dirFrom
 import year2022.day17.xy
 
-class Day17 : AdventDay(2022, 17) {
+class Day17 : AdventDay(2022, 17, "Pyroclastic Flow") {
     private val lineHorizontalShape = setOf(0 xy 0, 1 xy 0, 2 xy 0, 3 xy 0)
     private val lineVerticalShape   = setOf(0 xy 0, 0 xy 1, 0 xy 2, 0 xy 3)
     private val plusShape           = setOf(1 xy 0, 0 xy 1, 1 xy 1, 2 xy 1, 1 xy 2)

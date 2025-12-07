@@ -6,7 +6,7 @@ import adventday.InputRepresentation
 typealias ValueNumber = Long
 private fun String.toValueNumber(): ValueNumber = toLong()
 
-class Day21 : AdventDay(2022, 21) {
+class Day21 : AdventDay(2022, 21, "Monkey Math") {
     enum class HumanPosition {
         NONE,
         LEFT,

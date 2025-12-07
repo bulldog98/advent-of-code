@@ -59,7 +59,7 @@ private fun computeInstructions(
     }
 }
 
-class Day05 : AdventDay(2022, 5) {
+class Day05 : AdventDay(2022, 5, "Supply Stacks") {
     override fun part1(input: InputRepresentation): String {
         val (start, instructions) = input.asTwoBlocks()
         val result = computeInstructions(start.lines, instructions.lines) { column, i ->

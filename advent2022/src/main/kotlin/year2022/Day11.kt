@@ -4,7 +4,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import lcm
 
-class Day11 : AdventDay(2022, 11) {
+class Day11 : AdventDay(2022, 11, "Monkey in the Middle") {
     data class Monkey(
         val monkeyNumber: Int,
         val items: List<Int>,

@@ -3,7 +3,7 @@ package year2022
 import adventday.AdventDay
 import adventday.InputRepresentation
 
-class Day16 : AdventDay(2022, 16) {
+class Day16 : AdventDay(2022, 16, "Proboscidea Volcanium") {
     data class ValveNode(
         val name: String,
         val flowRate: Int,

@@ -26,7 +26,7 @@ infix fun IntRange.overlap(other: IntRange): Boolean =
     other.first in this || other.last in this
         || first in other || last in other
 
-class Day04 : AdventDay(2022, 4) {
+class Day04 : AdventDay(2022, 4, "Camp Cleanup") {
     override fun part1(input: InputRepresentation) = input.lines.count {
         val (a, b) = parseAssignment(it)
         a contains b || b contains a

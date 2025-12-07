@@ -7,7 +7,7 @@ import kotlin.math.absoluteValue
 private fun manhattenDistance(x: Long, y: Long, foundX: Long, foundY: Long) =
     (x - foundX).absoluteValue + (y - foundY).absoluteValue
 
-class Day15(private val row: Long, private val maxCoordinate: Int) : AdventDay(2022, 15) {
+class Day15(private val row: Long, private val maxCoordinate: Int) : AdventDay(2022, 15, "Beacon Exclusion Zone") {
 
     data class Sensor(val x: Long, val y: Long, val foundX: Long, val foundY: Long) {
         fun safeRangForRow(row: Long): LongRange? {
@@ -42,15 +42,15 @@ class Day15(private val row: Long, private val maxCoordinate: Int) : AdventDay(2
         }
         private val maxX = sensors.maxOf { listOf(it.x + maxXOfSet, it.foundX, 0).max() }
         fun countNonDistressSignalInRow(row: Long, mX: Long = minX, maX: Long = maxX): Int =
-            (mX..maX).filter {  x ->
+            (mX..maX).filter { x ->
                 sensors.any { s ->
                     manhattenDistance(s.x, s.y, s.foundX, s.foundY) >= manhattenDistance(x, row, s.x, s.y) &&
-                            !(s.foundX == x && s.foundY == row)
+                        !(s.foundX == x && s.foundY == row)
                 }
             }.size
 
-        fun safeRangForRow(row: Long): List<LongRange> = sensors.mapNotNull {
-                s -> s.safeRangForRow(row)
+        fun safeRangForRow(row: Long): List<LongRange> = sensors.mapNotNull { s ->
+            s.safeRangForRow(row)
         }
 
         companion object {
@@ -62,6 +62,7 @@ class Day15(private val row: Long, private val maxCoordinate: Int) : AdventDay(2
         val area = Area.of(input.lines)
         return area.countNonDistressSignalInRow(row)
     }
+
     override fun part2(input: InputRepresentation): Long {
         val area = Area.of(input.lines)
         val safeRangesPerLine = Array<List<LongRange>>(maxCoordinate + 1) { mutableListOf() }

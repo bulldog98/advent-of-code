@@ -34,7 +34,7 @@ private fun Terrain(input: List<String>): Terrain {
     return AdjacencyListGraph(nodes, connections::getValue)
 }
 
-class Day12 : AdventDay(2022, 12) {
+class Day12 : AdventDay(2022, 12, "Hill Climbing Algorithm") {
     private fun computeCostFunction(input: List<String>): (Coordinate, Coordinate) -> Long {
         return { u, v -> if (input.atPoint(u) + 1 >= input.atPoint(v)) 1 else Long.MAX_VALUE }
     }

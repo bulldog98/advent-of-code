@@ -23,7 +23,7 @@ private fun swap(first: Day20.Node, second: Day20.Node) {
     beforeFirst.next = second
 }
 
-class Day20 : AdventDay(2022, 20) {
+class Day20 : AdventDay(2022, 20, "Grove Positioning System") {
 
     class CyclicLinkedList {
         lateinit var start: Node

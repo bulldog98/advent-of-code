@@ -8,7 +8,7 @@ import year2022.Day23.Direction.*
 
 typealias PointComputation = Point2D.() -> Set<Point2D>
 
-class Day23 : AdventDay(2022, 23) {
+class Day23 : AdventDay(2022, 23, "Unstable Diffusion") {
     private val Point2D.allNeighbors: Set<Point2D>
         get() = entries.map { this + it.pointDiff }.toSet()
 
