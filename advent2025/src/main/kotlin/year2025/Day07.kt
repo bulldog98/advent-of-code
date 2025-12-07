@@ -4,7 +4,7 @@ import Point2D
 import adventday.AdventDay
 import adventday.InputRepresentation
 import findAllPositionsOf
-import year2025.day0.TachyonManifold
+import year2025.day07.TachyonManifold
 
 private const val splitter = '^'
 

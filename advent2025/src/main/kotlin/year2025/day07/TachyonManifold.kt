@@ -1,4 +1,4 @@
-package year2025.day0
+package year2025.day07
 
 import Point2D
 
