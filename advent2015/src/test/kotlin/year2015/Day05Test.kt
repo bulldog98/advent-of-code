@@ -8,5 +8,8 @@ class Day05Test {
     // the example are just the different examples in one file
 
     @Test
-    fun part1() = assertEquals(2, day.testPart1())
+    fun part1() = assertEquals(2, day.testPart1("test1"))
+
+    @Test
+    fun part2() = assertEquals(2, day.testPart2("test2"))
 }
