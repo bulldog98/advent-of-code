@@ -40,7 +40,7 @@ data class SimulationState(
         val counts = pairCounts.keys.groupBy {
             it.first()
         }.mapValues {
-            it.value.sumOf { pair -> pairCounts[pair]!!.toLong() }
+            it.value.sumOf { pair -> pairCounts[pair]!! }
         }.toMutableMap()
         counts.compute(endChar) { _, count -> (count ?: 0L) + 1L }
         return counts.values.max() - counts.values.min()

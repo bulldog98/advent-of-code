@@ -27,12 +27,13 @@ object Day01 : AdventDay(2023, 1, "Trebuchet?!") {
     override fun part2(input: InputRepresentation): Int = input.lines.sumOf {
         val onlyDigits = it.windowed(5, partialWindows = true).filter { window ->
             window.first().isDigit() || additionalDigits.any { digit -> window.startsWith(digit) }
-        }.map { window ->
+        }.joinToString(separator = "") { window ->
             if (window.first().isDigit())
                 window.first().toString()
             else
                 additionalDigitMapping[additionalDigits.first { d -> window.startsWith(d) }]
-        }.joinToString(separator = "")
+                    ?: error("should not happen")
+        }
         val string = onlyDigits.first().toString() + onlyDigits.last()
         string.toInt()
     }

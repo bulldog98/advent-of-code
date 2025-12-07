@@ -28,7 +28,7 @@ data class HikeMap(private val input: List<String>) {
 
     private operator fun List<String>.get(point2D: Point2D) = this[point2D.y.toInt()][point2D.x.toInt()]
 
-    private fun Graph<Point2D>.computeRatingFor(start: Point2D) = buildList<List<Point2D>> {
+    private fun Graph<Point2D>.computeRatingFor(start: Point2D) = buildList {
         add(listOf(start))
         while (this.any { neighborsOf(it.last()).isNotEmpty() }) {
             val way = this.first { neighborsOf(it.last()).isNotEmpty() }

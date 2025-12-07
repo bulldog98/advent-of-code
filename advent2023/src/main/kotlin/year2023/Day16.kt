@@ -75,6 +75,9 @@ object Day16 : AdventDay(2023, 16, "The Floor Will Be Lava") {
         val energizedTiles by lazy {
             fullySimulatedBeams.map { it.point }.distinct().size
         }
+
+        // only for debugging
+        @Suppress("unused")
         fun prettyPrint() {
             floorMap.mapYBounds.forEach { y ->
                 println(floorMap.mapXBounds.joinToString("") { x ->

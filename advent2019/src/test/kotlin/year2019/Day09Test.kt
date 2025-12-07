@@ -28,7 +28,7 @@ class Day09Test {
 
         @Test
         fun `output large number`() {
-            val program = listOf<Long>(104,1125899906842624,99)
+            val program = listOf(104,1125899906842624,99)
             assertEquals(
                 1125899906842624,
                 IntComputer.parseAsFunctionWithArbitraryOutputAndInput(program)(emptyList()).single()

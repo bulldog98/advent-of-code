@@ -48,6 +48,7 @@ object Day24 : AdventDay(2024, 24, "Crossed Wires") {
         val maxBit = initialComputations.filter { it.variableName.startsWith('z') }
             .maxOf { it.variableName.drop(1).toInt() } - 1
 
+        @Suppress("RemoveExplicitTypeArguments") // compiler can not infer, but idea thinks it can
         val exchanging = buildList<Pair<String, String>> {
             var completedComputations = fold(initialComputations) { comp, (switchA, switchB) ->
                 comp.map { it.rewireOutput(switchA, switchB) }

@@ -126,7 +126,7 @@ object Day15 : AdventDay(2024, 15, "Warehouse Woes") {
         val (map, instructions) = input.asTwoBlocks().mapSecond {
             it.lines.flatMap { line -> line.map { char -> Instruction(char, char.toDirectionVector()) } }
         }.mapFirst {
-            it.lines.map<String, String> { line: String ->
+            it.lines.map { line: String ->
                 line.map { char ->
                     when (char) {
                         '#' -> "##"

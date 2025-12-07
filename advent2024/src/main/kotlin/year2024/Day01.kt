@@ -16,7 +16,7 @@ object Day01 : AdventDay(2024, 1, "Historian Hysteria") {
 
     override fun part2(input: InputRepresentation): Long {
         val firstList = input.lines.map { it: String -> it.substringBefore(" ").toLong() }
-        val secondCounts = buildMap<Long, Long> {
+        val secondCounts = buildMap {
             input.lines.forEach { line ->
                 val num = line.substringAfterLast(" ").toLong()
                 this[num] = this.getOrDefault(num, 0L) + 1L
