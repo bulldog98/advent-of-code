@@ -9,4 +9,7 @@ class Day01Test {
 
     @Test
     fun part1() = assertEquals(0L, day.part1(InputRepresentation("(())")))
+
+    @Test
+    fun part2() = assertEquals(5, day.part2(InputRepresentation("()())")))
 }
