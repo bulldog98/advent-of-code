@@ -24,4 +24,20 @@ class Day03Test {
         fun complex() =
             assertEquals(2, day.part1(InputRepresentation("^v^v^v^v^v")))
     }
+
+    @Nested
+    @DisplayName("part2")
+    inner class Part2 {
+        @Test
+        fun simple() =
+            assertEquals(3, day.part2(InputRepresentation("^v")))
+
+        @Test
+        fun middle() =
+            assertEquals(3, day.part2(InputRepresentation("^>v<")))
+
+        @Test
+        fun complex() =
+            assertEquals(11, day.part2(InputRepresentation("^v^v^v^v^v")))
+    }
 }
