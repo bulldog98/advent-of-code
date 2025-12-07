@@ -4,7 +4,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 
-object Day09 : AdventDay(2023, 9) {
+object Day09 : AdventDay(2023, 9, "Mirage Maintenance") {
     private fun Sequence<Long>.computeHistory() =
         generateSequence(this.toList()) { lastRow ->
             lastRow.windowed(2).map { (a, b) ->

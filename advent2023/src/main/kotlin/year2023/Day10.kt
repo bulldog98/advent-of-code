@@ -6,7 +6,7 @@ import graph.dijkstra
 import year2023.day10.PipeMap
 import year2023.day10.PipeMapWithSqueezingBetweenPipes
 
-object Day10 : AdventDay(2023, 10) {
+object Day10 : AdventDay(2023, 10, "Pipe Maze") {
     override fun part1(input: InputRepresentation): Long {
         val map = PipeMap.of(input.lines)
         val (distance) = map.getAsGraph().dijkstra(map.start) { _, _ -> 1 }

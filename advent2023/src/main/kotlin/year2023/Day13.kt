@@ -4,7 +4,7 @@ import Point2D
 import adventday.AdventDay
 import adventday.InputRepresentation
 
-object Day13: AdventDay(2023, 13) {
+object Day13: AdventDay(2023, 13, "Point of Incidence") {
     sealed interface Reflection {
         val value: Int
     }

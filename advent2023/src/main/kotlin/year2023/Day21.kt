@@ -7,7 +7,7 @@ import findAllPositionsOf
 import java.lang.Math.floorMod
 
 // part 2 is adapted from https://github.com/mdekaste/AdventOfCode2023/blob/master/src/main/kotlin/day21/Day21.kt
-object Day21 : AdventDay(2023, 21) {
+object Day21 : AdventDay(2023, 21, "Step Counter") {
     private fun Point2D.pq(height: Long, width: Long) = Point2D(floorMod(x, height), floorMod(y, width))
 
     data class State(

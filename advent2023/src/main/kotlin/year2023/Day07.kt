@@ -24,7 +24,7 @@ fun Char.cardTypeValue(jokerBad: Boolean = false) = when (this) {
 fun String.asCardTypeValues(jokerBad: Boolean = false) =
     map { c -> c.cardTypeValue(jokerBad) }.joinToString("")
 
-object Day07 : AdventDay(2023, 7) {
+object Day07 : AdventDay(2023, 7, "Camel Cards") {
     override fun part1(input: InputRepresentation): Int =
         input
             .lineSequence

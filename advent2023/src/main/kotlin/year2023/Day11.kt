@@ -5,7 +5,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import findAllPositionsOf
 
-object Day11 : AdventDay(2023, 11) {
+object Day11 : AdventDay(2023, 11, "Cosmic Expansion") {
     private fun manhattanDistance(point2DPoint2DPair: Pair<Point2D, Point2D>) =
         point2DPoint2DPair.first.manhattanDistance(point2DPoint2DPair.second)
 

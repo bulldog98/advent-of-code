@@ -46,7 +46,7 @@ fun LongRange.splitBy(mappings: List<Mapping>): List<LongRange> = when {
     }
 }
 
-object Day05 : AdventDay(2023, 5) {
+object Day05 : AdventDay(2023, 5, "If You Give A Seed A Fertilizer") {
     private fun List<String>.computeMappings() =
         map(String::lines)
             .map { lines ->

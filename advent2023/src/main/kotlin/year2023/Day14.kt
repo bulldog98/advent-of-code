@@ -6,7 +6,7 @@ import adventday.InputRepresentation
 import findAllPositionsOf
 import kotlin.math.abs
 
-object Day14 : AdventDay(2023, 14) {
+object Day14 : AdventDay(2023, 14, "Parabolic Reflector Dish") {
     private fun Point2D.setCountInDirection(count: Int, direction: Point2D): List<Point2D> =
         (1..count).runningFold(this) { cur, _ ->
             cur + direction

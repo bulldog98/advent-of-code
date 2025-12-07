@@ -13,7 +13,7 @@ import io.ksmt.utils.getValue
 import io.ksmt.utils.mkConst
 import kotlin.time.Duration.Companion.seconds
 
-object Day24: AdventDay(2023, 24) {
+object Day24: AdventDay(2023, 24, "Never Tell Me The Odds") {
     data class Line(val m: Double, val c: Double) {
         operator fun invoke(x: Double): Double = x * m + c
     }

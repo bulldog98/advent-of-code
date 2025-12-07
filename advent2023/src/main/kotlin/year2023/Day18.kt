@@ -5,7 +5,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import kotlin.math.abs
 
-object Day18 : AdventDay(2023, 18) {
+object Day18 : AdventDay(2023, 18, "Lavaduct Lagoon") {
     operator fun Point2D.times(times: Int): Point2D =
         Point2D(x * times, y * times)
 

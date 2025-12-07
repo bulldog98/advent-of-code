@@ -7,7 +7,7 @@ import year2023.day03.FieldContentNumber
 import year2023.day03.allSymbols
 import year2023.day03.numbersSurrounding
 
-object Day03 : AdventDay(2023, 3) {
+object Day03 : AdventDay(2023, 3, "Gear Ratios") {
     override fun part1(input: InputRepresentation) = with(Board(input.lines)) {
         allSymbols.flatMap { (symbolPosition, _) ->
             numbersSurrounding(symbolPosition)

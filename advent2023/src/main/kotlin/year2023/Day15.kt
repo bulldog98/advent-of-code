@@ -3,7 +3,7 @@ package year2023
 import adventday.AdventDay
 import adventday.InputRepresentation
 
-object Day15: AdventDay(2023, 15) {
+object Day15: AdventDay(2023, 15, "Lens Library") {
     private fun String.hashWithAppendix1A(): Int {
         var res = 0
         forEach { c ->

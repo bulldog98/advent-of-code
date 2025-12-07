@@ -5,11 +5,10 @@ import adventday.InputRepresentation
 import helper.numbers.NUMBERS_REGEX
 import helper.numbers.toAllLongs
 
-object Day06: AdventDay(2023, 6) {
+object Day06: AdventDay(2023, 6, "Wait For It") {
     private fun Pair<Long, Long>.numberOfWaysToWin() =
-        (1 until first).count {
-            val millisecondsRemaining = first - it
-            val speedPerMilliSecond = it
+        (1 until first).count { speedPerMilliSecond ->
+            val millisecondsRemaining = first - speedPerMilliSecond
             speedPerMilliSecond * millisecondsRemaining > second
         }
 

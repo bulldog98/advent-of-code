@@ -8,7 +8,7 @@ import helper.pair.mapSecond
 import kotlin.math.max
 import kotlin.math.min
 
-object Day19 : AdventDay(2023, 19) {
+object Day19 : AdventDay(2023, 19, "Aplenty") {
     enum class MetalPart(val symbol: Char) {
         ExtremelyCoolLooking('x'),
         Musical('m'),

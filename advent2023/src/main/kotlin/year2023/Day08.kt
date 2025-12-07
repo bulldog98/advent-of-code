@@ -5,7 +5,7 @@ import adventday.InputRepresentation
 import lcm
 import year2023.day08.Network
 
-object Day08 : AdventDay(2023, 8) {
+object Day08 : AdventDay(2023, 8, "Haunted Wasteland") {
     override fun part1(input: InputRepresentation) = input.asTwoBlocks().let { (first, second) ->
         Network(first.lines.first(), second.lines)
             .numberOfSteps("AAA") { node ->

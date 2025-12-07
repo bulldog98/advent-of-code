@@ -7,7 +7,7 @@ import graph.dijkstra
 import java.nio.file.Files
 import java.nio.file.Path
 
-object Day25 : AdventDay(2023, 25) {
+object Day25 : AdventDay(2023, 25, "Snowverload") {
     override fun part1(input: InputRepresentation): Int {
         val nodes = input.lines.flatMap { it.split(" ", ": ") }.toSet()
         val connections = nodes.associateWith { n ->

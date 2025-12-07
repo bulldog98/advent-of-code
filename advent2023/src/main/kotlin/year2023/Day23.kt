@@ -7,7 +7,7 @@ import findAllPositionsOf
 import graph.AdjacencyListGraph
 import graph.Graph
 
-object Day23 : AdventDay(2023, 23) {
+object Day23 : AdventDay(2023, 23, "A Long Walk") {
     private operator fun List<String>.get(point: Point2D): Char = this[point.y.toInt()][point.x.toInt()]
 
     private fun List<String>.buildGraph(ignoreSlops: Boolean = false): Graph<Point2D> =

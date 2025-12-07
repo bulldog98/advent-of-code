@@ -4,7 +4,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import year2023.day02.Game
 
-object Day02 : AdventDay(2023, 2) {
+object Day02 : AdventDay(2023, 2, "Cube Conundrum") {
     private val allowedMax = mapOf(
         "red" to 12,
         "green" to 13,

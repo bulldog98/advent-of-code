@@ -4,9 +4,10 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import year2023.day04.Card
 
-object Day04 : AdventDay(2023, 4) {
+object Day04 : AdventDay(2023, 4, "Scratchcards") {
     override fun part1(input: InputRepresentation) =
-        input.lines.map { it: String -> Card(it) }
+        input.lines
+            .map(::Card)
             .sumOf {
                 it.score
             }

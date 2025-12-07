@@ -4,7 +4,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import lcm
 
-object Day20 : AdventDay(2023, 20) {
+object Day20 : AdventDay(2023, 20, "Pulse Propagation") {
     private sealed interface Pulse {
         data object HighPulse : Pulse
         data object LowPulse : Pulse

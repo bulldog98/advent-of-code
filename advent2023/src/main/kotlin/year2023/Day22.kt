@@ -5,7 +5,7 @@ import adventday.InputRepresentation
 import year2023.day22.Brick
 import year2023.day22.Brick.Companion.settle
 
-object Day22 : AdventDay(2023, 22) {
+object Day22 : AdventDay(2023, 22, "Sand Slabs") {
     override fun part1(input: InputRepresentation): Any {
         val settledBricks = Brick.of(input.lines).settle()
         return settledBricks.count { brick ->

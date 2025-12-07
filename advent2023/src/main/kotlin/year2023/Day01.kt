@@ -16,7 +16,7 @@ private val additionalDigitMapping = mapOf(
 )
 private val additionalDigits = additionalDigitMapping.keys
 
-object Day01 : AdventDay(2023, 1) {
+object Day01 : AdventDay(2023, 1, "Trebuchet?!") {
     override fun part1(input: InputRepresentation): Int = input
         .lines.sumOf {
             val onlyDigits = it.filter { c -> c.isDigit() }

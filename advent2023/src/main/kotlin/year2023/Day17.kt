@@ -5,7 +5,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import java.util.*
 
-object Day17 : AdventDay(2023, 17) {
+object Day17 : AdventDay(2023, 17, "Clumsy Crucible") {
 
     data class Field(val heatMap: Map<Point2D, Int>) {
         val bottomRight = heatMap.keys.maxBy { it.manhattanDistance(Point2D.ORIGIN) }

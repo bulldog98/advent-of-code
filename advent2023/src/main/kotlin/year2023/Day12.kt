@@ -4,7 +4,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import helper.numbers.parseAllInts
 
-object Day12 : AdventDay(2023, 12) {
+object Day12 : AdventDay(2023, 12, "Hot Springs") {
     data class Line(val pattern: String, val numRepresentation: List<Int>) {
         companion object {
             fun of(input: String): Line {

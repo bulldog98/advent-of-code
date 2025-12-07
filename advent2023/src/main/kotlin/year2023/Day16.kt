@@ -4,7 +4,7 @@ import Point2D
 import adventday.AdventDay
 import adventday.InputRepresentation
 
-object Day16 : AdventDay(2023, 16) {
+object Day16 : AdventDay(2023, 16, "The Floor Will Be Lava") {
     data class Beam(val point: Point2D, val direction: Point2D)
 
     fun Beam.next(char: Char) = when (char) {
