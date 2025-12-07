@@ -2,7 +2,6 @@ package year2025
 
 import adventday.AdventDay
 import adventday.InputRepresentation
-import helper.numbers.toAllLongs
 import year2025.day06.Operator
 
 private fun InputRepresentation.extractColumns(): List<List<String>> {
@@ -28,7 +27,7 @@ private fun InputRepresentation.extractColumns(): List<List<String>> {
 }
 
 private fun InputRepresentation.asRawColumns(
-    parseColumn: (List<String>) -> List<Long> = { it.map { column -> column.toAllLongs().first() } }
+    parseColumn: (List<String>) -> List<Long> = { it.map { column -> column.trim().toLong() } }
 ): List<Pair<Operator, List<Long>>> {
     val instructions = lines.last().split(" ").filter { it.isNotEmpty() }
         .map { Operator.parse(it) }
@@ -47,7 +46,7 @@ object Day06 : AdventDay(2025, 6, "Trash Compactor") {
             // Cephalopod math is written right-to-left in columns
             val maxPosition = it.maxOf { cell -> cell.length } - 1
             (0..maxPosition).map { index ->
-                it.joinToString("") { cell -> (cell.getOrNull(index) ?: ' ').toString() }.toAllLongs().first()
+                it.joinToString("") { cell -> (cell.getOrNull(index) ?: ' ').toString() }.trim().toLong()
             }
         }
         .sumOf { (operator, cells) ->
