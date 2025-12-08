@@ -1,6 +1,5 @@
 package year2015
 
-import NotYetImplemented
 import adventday.AdventDay
 import adventday.InputRepresentation
 import year2015.day07.Instruction
@@ -19,6 +18,17 @@ object Day07 : AdventDay(2015, 7, "Some Assembly Required") {
         else -> error("Unhandled case $instruction")
     }
 
+    private fun Map<String, Instruction>.evaluateWire(wire: String): Int {
+        val cache = mutableMapOf<String, Int>()
+        val notEvaluated = keys.toMutableList()
+        while (notEvaluated.isNotEmpty()) {
+            val toEvaluate = notEvaluated.first { cache.canEvaluateInstruction(this[it]!!) }
+            notEvaluated -= toEvaluate
+            cache[toEvaluate] = this[toEvaluate]!!.invoke(cache)
+        }
+        return cache[wire] ?: 0
+    }
+
     override fun part1(input: InputRepresentation): Int = input
         .lines
         .associate { Instruction.parse(it) }
@@ -33,8 +43,14 @@ object Day07 : AdventDay(2015, 7, "Some Assembly Required") {
             cache["a"] ?: 0
         }
 
-    override fun part2(input: InputRepresentation): Any =
-        NotYetImplemented
+    override fun part2(input: InputRepresentation): Any = input
+        .lines
+        .associate { Instruction.parse(it) }
+        .let { lookup ->
+            val firstIterationWireA = lookup.evaluateWire("a")
+            val newInstructions = lookup + ("b" to Instruction.FixedWire(firstIterationWireA.toString()))
+            newInstructions.evaluateWire("a")
+        }
 }
 
 fun main() = Day07.run()
