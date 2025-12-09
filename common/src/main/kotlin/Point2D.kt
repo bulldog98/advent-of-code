@@ -1,6 +1,6 @@
 import kotlin.math.abs
 
-data class Point2D(val x: Long, val y: Long) {
+data class Point2D(val x: Long, val y: Long) : Comparable<Point2D> {
     constructor(x: Int, y: Int) : this(x.toLong(), y.toLong())
 
     operator fun plus(other: Point2D) = Point2D(x + other.x, y + other.y)
@@ -35,4 +35,8 @@ data class Point2D(val x: Long, val y: Long) {
 
     operator fun rangeTo(other: Point2D) = PointRange(this.x..other.x, this.y..other.y)
     operator fun rangeUntil(other: Point2D) = PointRange(this.x..<other.x, this.y..<other.y)
+    override fun compareTo(other: Point2D): Int = when {
+        x == other.x -> y - other.y
+        else -> x - other.x
+    }.toInt()
 }
