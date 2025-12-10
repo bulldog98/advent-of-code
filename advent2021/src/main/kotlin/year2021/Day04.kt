@@ -14,7 +14,7 @@ private fun Board.isWinning(drawn: Collection<Int>): Boolean {
 private fun Board.score(lastNumber: Int, drawn: Collection<Int>) =
     lastNumber * cells.filter { !drawn.contains(it) }.sum()
 
-object Day04 : AdventDay(2021, 4) {
+object Day04 : AdventDay(2021, 4, "Giant Squid") {
     override fun part1(input: InputRepresentation): Int {
         val gameInput = input.toGameInput()
         val (drawn, last) = gameInput.drawnNumbers

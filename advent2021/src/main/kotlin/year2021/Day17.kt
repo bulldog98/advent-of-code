@@ -7,7 +7,7 @@ import helper.numbers.toAllLongs
 import kotlin.math.absoluteValue
 import kotlin.math.sign
 
-object Day17 : AdventDay(2021, 17) {
+object Day17 : AdventDay(2021, 17, "Trick Shot") {
     // x's positive, y's negative
     private data class TargetArea(val xRange: LongRange, val yRange: LongRange) {
         private data class ProbePosition(val position: Point2D, val velocity: Point2D) {

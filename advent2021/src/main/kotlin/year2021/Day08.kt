@@ -8,7 +8,7 @@ val uniqueCountOfSignals = listOf(2, 3, 4, 7)
 
 private fun String.decode(): Int = Encoder(this).value
 
-object Day08 : AdventDay(2021, 8) {
+object Day08 : AdventDay(2021, 8, "Seven Segment Search") {
     override fun part1(input: InputRepresentation): Int = input
         .lines
         .sumOf {

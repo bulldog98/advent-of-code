@@ -17,7 +17,7 @@ private fun Direction.toMovement() = when (first) {
     else -> throw IllegalArgumentException("did not expect $first")
 }
 
-object Day02 : AdventDay(2021, 2) {
+object Day02 : AdventDay(2021, 2, "Dive!") {
     override fun part1(input: InputRepresentation): Int {
         val (depth, hPos) = input.lines.toDirections()
             .map { it.toMovement() }

@@ -5,7 +5,7 @@ import adventday.InputRepresentation
 import year2021.day11.flashCount
 import year2021.day11.simulateAllSteps
 
-object Day11 : AdventDay(2021, 11) {
+object Day11 : AdventDay(2021, 11, "Dumbo Octopus") {
     override fun part1(input: InputRepresentation): Int =
         input.asCharMap()
             .mapValues { it.value.digitToInt() }

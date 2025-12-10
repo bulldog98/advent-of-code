@@ -4,7 +4,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import year2021.day16.Packet
 
-object Day16 : AdventDay(2021, 16) {
+object Day16 : AdventDay(2021, 16, "Packet Decoder") {
 
     override fun part1(input: InputRepresentation) = Packet.sumOf(Packet.parseHexString(input.text)) {
         it.version

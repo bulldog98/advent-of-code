@@ -5,7 +5,7 @@ import adventday.InputRepresentation
 import year2021.day09.HeightMap
 import year2021.day09.computeBasin
 
-object Day09 : AdventDay(2021, 9) {
+object Day09 : AdventDay(2021, 9, "Smoke Basin") {
     override fun part1(input: InputRepresentation): Int {
         val heightMap = HeightMap(input.lines)
         return heightMap.lowPoints.sumOf { heightMap[it] + 1 }

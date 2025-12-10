@@ -5,7 +5,7 @@ import adventday.InputRepresentation
 import year2021.day06.stepXDays
 import year2021.day06.toFishSwarm
 
-object Day06 : AdventDay(2021, 6) {
+object Day06 : AdventDay(2021, 6, "Lanternfish") {
     override fun part1(input: InputRepresentation): Long {
         val fish = input.lines[0].toFishSwarm()
         return fish.stepXDays(80).values.fold(0L, Long::plus)

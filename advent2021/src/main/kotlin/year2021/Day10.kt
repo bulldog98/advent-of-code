@@ -5,7 +5,7 @@ import adventday.InputRepresentation
 import year2021.day10.computeEndState
 import year2021.day10.scoreCompletion
 
-object Day10 : AdventDay(2021, 10) {
+object Day10 : AdventDay(2021, 10, "Syntax Scoring") {
     override fun part1(input: InputRepresentation): Int = input
         .lines
         .sumOf { line ->

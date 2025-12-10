@@ -8,7 +8,7 @@ private operator fun UInt.get(index: Int) = (this shr (UInt.SIZE_BITS - 1 - inde
 
 private fun UInt.invert(bits: Int) = inv() % 2.0.pow(bits).toUInt()
 
-object Day03 : AdventDay(2021, 3) {
+object Day03 : AdventDay(2021, 3, "Binary Diagnostic") {
     override fun part1(input: InputRepresentation): Int {
         val parsed = input.lines.map { it: String -> it.toUInt(2) }
         val gamma = (0 until UInt.SIZE_BITS).toList().map { pos ->

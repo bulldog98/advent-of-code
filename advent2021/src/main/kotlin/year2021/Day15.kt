@@ -11,7 +11,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import year2021.day15.*
 
-object Day15 : AdventDay(2021, 15) {
+object Day15 : AdventDay(2021, 15, "Chiton") {
     override fun part1(input: InputRepresentation): Long {
         val field = Field.of(input.lines)
         val (distance) = field.asGraph()

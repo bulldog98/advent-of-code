@@ -20,7 +20,7 @@ private fun Collection<Int>.alignTo(i: Int, cost: (Int) -> Int = ::abs): Int = a
 
 fun increaseByStep(n: Int): Int = (n * (n+1)) / 2
 
-object Day07 : AdventDay(2021, 7) {
+object Day07 : AdventDay(2021, 7, "The Treachery of Whales") {
     override fun part1(input: InputRepresentation): Int = with(input.lines[0].split(",").map(String::toInt)) {
         indices.minOfOrNull {
             this.alignTo(it)

@@ -5,7 +5,7 @@ import adventday.InputRepresentation
 import graph.AdjacencyListGraph
 import graph.Graph
 
-object Day12 : AdventDay(2021, 12) {
+object Day12 : AdventDay(2021, 12, "Passage Pathing") {
     private fun InputRepresentation.asGraph(): Graph<String> {
         val edges = lines.map { it: String ->
             it.split("-").toSet()

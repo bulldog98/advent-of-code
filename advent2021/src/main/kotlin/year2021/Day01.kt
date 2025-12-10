@@ -3,7 +3,7 @@ package year2021
 import adventday.AdventDay
 import adventday.InputRepresentation
 
-object Day01 : AdventDay(2021, 1) {
+object Day01 : AdventDay(2021, 1, "Sonar Sweep") {
     override fun part1(input: InputRepresentation): Int {
         return input.lines.map { it: String -> it.toInt() }.fold(-1 to -1) { (sum, last), curr ->
             val increase = if (last < curr) 1 else 0

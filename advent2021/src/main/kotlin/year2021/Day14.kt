@@ -10,7 +10,7 @@ private fun InputRepresentation.asSimulationStateInput() = asTwoBlocks()
     .mapFirst { it.lines }
     .mapSecond { it.lines }
 
-object Day14 : AdventDay(2021, 14) {
+object Day14 : AdventDay(2021, 14, "Extended Polymerization") {
     override fun part1(input: InputRepresentation) =
         SimulationState(input.asSimulationStateInput())
             .simulate()
