@@ -38,7 +38,9 @@ object Day10 : AdventDay(2025, 10, "Factory") {
                 KZ3Solver(this).use { solver ->
                     machineEquations.addButtonGeRestrictions(solver)
                     machineEquations.addJoltageRestrictions(solver)
+                    @Suppress("SpellCheckingInspection")
                     machineEquations.joltageVariables.forEachIndexed { joltage, joltageVariable ->
+                        @Suppress("SpellCheckingInspection")
                         val buttonsIncreasingJoltage = machineEquations.buttonsAffectingEquation(joltage.toLong())
                         solver.assertAndTrack(joltageVariable eq buttonsIncreasingJoltage)
                     }
