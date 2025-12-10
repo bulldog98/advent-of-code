@@ -22,47 +22,32 @@ object Day09 : AdventDay(2015, 9, "All in a Single Night") {
         }
     }
 
+    private fun List<String>.distanceWith(connections: List<Connection>): Int =
+        windowed(2)
+            .sumOf { (a, b) ->
+                connections.first { a in it && b in it }.distance
+            }
+
+    private fun InputRepresentation.toConnectionsAndCities(): Pair<List<Connection>, List<String>> = lines
+        .map { Connection.parse(it) }
+        .let { it to it.flatMap { (a, b) -> listOf(a, b) }.distinct() }
+
     override fun part1(input: InputRepresentation): Int = input
-        .lines
-        .map(Connection::parse)
-        .let { distances ->
-            val cities = distances.flatMap { (a, b) -> listOf(a, b) }.distinct()
-            cities
-                .allOrderings()
-                .filter {
-                    it.windowed(2).all { (from, to) ->
-                        distances.count { connection ->
-                            from in connection && to in connection
-                        } > 0
-                    }
-                }
+        .toConnectionsAndCities()
+        .let { (connections, cities) ->
+            // every way is possible since all cities are connected and only 8 cities in real input so bruteforce
+            cities.allOrderings()
                 .minOf {
-                    it.windowed(2)
-                        .sumOf { (a, b) ->
-                            distances.first { a in it && b in it }.distance
-                        }
+                    it.distanceWith(connections)
                 }
         }
 
-    override fun part2(input: InputRepresentation): Any =input
-        .lines
-        .map(Connection::parse)
-        .let { distances ->
-            val cities = distances.flatMap { (a, b) -> listOf(a, b) }.distinct()
-            cities
-                .allOrderings()
-                .filter {
-                    it.windowed(2).all { (from, to) ->
-                        distances.count { connection ->
-                            from in connection && to in connection
-                        } > 0
-                    }
-                }
+    override fun part2(input: InputRepresentation): Int = input
+        .toConnectionsAndCities()
+        .let { (connections, cities) ->
+            cities.allOrderings()
                 .maxOf {
-                    it.windowed(2)
-                        .sumOf { (a, b) ->
-                            distances.first { a in it && b in it }.distance
-                        }
+                    it.distanceWith(connections)
                 }
         }
 }
