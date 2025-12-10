@@ -1,38 +1,37 @@
 package year2015.day07
 
-sealed interface Instruction : (Map<String, Int>) -> Int {
-    fun Map<String, Int>.lookup(variableOrNumber: String) =
-        variableOrNumber.toIntOrNull() ?: getValue(variableOrNumber)
+sealed interface Instruction : (Map<String, UShort>) -> UShort {
+    fun Map<String, UShort>.lookup(variableOrNumber: String) =
+        variableOrNumber.toUShortOrNull() ?: getValue(variableOrNumber)
 
     data class FixedWire(val valueOrNumber: String) : Instruction {
-        override fun invoke(lookupTable: Map<String, Int>): Int = lookupTable
+        override fun invoke(lookupTable: Map<String, UShort>): UShort = lookupTable
             .lookup(valueOrNumber)
     }
 
     data class And(val left: String, val right: String) : Instruction {
-
-        override fun invoke(lookupTable: Map<String, Int>): Int =
+        override fun invoke(lookupTable: Map<String, UShort>): UShort =
             lookupTable.lookup(left).and(lookupTable.lookup(right))
     }
 
     data class Or(val left: String, val right: String) : Instruction {
-        override fun invoke(lookupTable: Map<String, Int>): Int =
+        override fun invoke(lookupTable: Map<String, UShort>): UShort =
             lookupTable.lookup(left)
                 .or(lookupTable.lookup(right))
     }
 
     data class LeftShift(val left: String, val right: Int) : Instruction {
-        override fun invoke(lookup: Map<String, Int>): Int =
+        override fun invoke(lookup: Map<String, UShort>): UShort =
             lookup.lookup(left).rotateLeft(right)
     }
 
     data class RightShift(val left: String, val amount: Int) : Instruction {
-        override fun invoke(lookup: Map<String, Int>): Int =
+        override fun invoke(lookup: Map<String, UShort>): UShort =
             lookup.lookup(left).rotateRight(amount)
     }
 
     data class Not(val variable: String) : Instruction {
-        override fun invoke(lookup: Map<String, Int>): Int =
+        override fun invoke(lookup: Map<String, UShort>): UShort =
             lookup.lookup(variable).inv()
     }
 
