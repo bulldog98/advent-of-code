@@ -11,3 +11,11 @@ fun <E> Collection<E>.pairings(): Sequence<Pair<E, E>> = when {
         }
     }
 }
+
+fun <T : Comparable<T>> Collection<T>.allOrderings(): Sequence<List<T>> = when {
+    isEmpty() -> emptySequence()
+    size == 1 -> sequenceOf(this.toList())
+    else -> asSequence().flatMap {
+        (this - it).allOrderings().map { ordering -> listOf(it) + ordering }
+    }
+}
