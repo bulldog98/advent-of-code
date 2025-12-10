@@ -4,7 +4,7 @@ import adventday.AdventDay
 import adventday.InputRepresentation
 import year2019.computer.IntComputer
 
-object Day09: AdventDay(2019, 9) {
+object Day09: AdventDay(2019, 9, "Sensor Boost") {
     override fun part1(input: InputRepresentation): Long {
         val output = mutableListOf<Long>()
         val computer = IntComputer.parse(input, { output += it}) { 1 }

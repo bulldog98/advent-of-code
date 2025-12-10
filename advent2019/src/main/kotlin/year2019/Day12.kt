@@ -1,5 +1,6 @@
 package year2019
 
+import NotYetImplemented
 import Point3D
 import adventday.AdventDay
 import adventday.InputRepresentation
@@ -38,7 +39,7 @@ fun List<Planet>.applyVelocity() = map {
     )
 }
 
-class Day12(private val numberOfRounds: Int) : AdventDay(2019, 12) {
+class Day12(private val numberOfRounds: Int) : AdventDay(2019, 12, "The N-Body Problem") {
     private fun List<Planet>.simulation(): Sequence<List<Planet>> = generateSequence(this) {
         it.applyGravity().applyVelocity()
     }
@@ -50,7 +51,8 @@ class Day12(private val numberOfRounds: Int) : AdventDay(2019, 12) {
             .first()
             .sumOf { it.computeEnergy() }
 
-    override fun part2(input: InputRepresentation): Long = TODO("Not yet implemented")
+    override fun part2(input: InputRepresentation): Any =
+        NotYetImplemented
 }
 
 fun main() = Day12(1000).run()

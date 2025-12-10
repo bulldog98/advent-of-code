@@ -7,7 +7,7 @@ import adventday.InputRepresentation
 class Day08(
     private val width: Int,
     private val height: Int
-) : AdventDay(2019, 8) {
+) : AdventDay(2019, 8, "Space Image Format") {
     private data class Layer(val rows: List<List<Int>>) {
         fun countOfDigits(digit: Int) = rows.sumOf { row ->
             row.count { it == digit }

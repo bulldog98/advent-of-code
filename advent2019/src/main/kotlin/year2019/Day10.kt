@@ -8,7 +8,7 @@ import gcd
 import kotlin.math.absoluteValue
 import kotlin.math.atan2
 
-object Day10: AdventDay(2019, 10) {
+object Day10: AdventDay(2019, 10, "Monitoring Station") {
     // computes the smallest vector x and c such that this + c * x == other, for some c >= 0
     private fun Point2D.directionVector(other: Point2D): Pair<Point2D, Long> = when {
         this == other -> error("no such vector")

@@ -3,7 +3,7 @@ package year2019
 import adventday.AdventDay
 import adventday.InputRepresentation
 
-object Day04: AdventDay(2019, 4) {
+object Day04: AdventDay(2019, 4, "Secure Container") {
     fun List<Char>.testPwCriteriaPart1() = allNotDecreasing() && zipWithNext().any { (a, b) -> a == b }
     fun List<Char>.testPwCriteriaPart2() = allNotDecreasing() && hasGroupOfExactLength2()
 

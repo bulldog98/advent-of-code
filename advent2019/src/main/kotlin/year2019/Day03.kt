@@ -6,7 +6,7 @@ import adventday.InputRepresentation
 import helper.numbers.toAllLongs
 import helper.pair.mapSecond
 
-object Day03 : AdventDay(2019, 3) {
+object Day03 : AdventDay(2019, 3, "Crossed Wires") {
     enum class Direction(val asPoint: Point2D) {
         LEFT(Point2D.LEFT),
         RIGHT(Point2D.RIGHT),

@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import year2019.computer.IntComputer
 
-object Day07 : AdventDay(2019, 7) {
+object Day07 : AdventDay(2019, 7, "Amplification Circuit") {
     private fun <E> List<E>.allPermutations(): Sequence<List<E>> = when {
         isEmpty() -> emptySequence()
         size == 1 -> sequenceOf(listOf(single()))

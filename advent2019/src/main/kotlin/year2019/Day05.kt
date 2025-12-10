@@ -5,7 +5,7 @@ import adventday.InputRepresentation
 import kotlinx.coroutines.runBlocking
 import year2019.computer.IntComputer
 
-object Day05: AdventDay(2019, 5) {
+object Day05: AdventDay(2019, 5, "Sunny with a Chance of Asteroids") {
     override fun part1(input: InputRepresentation): Long = runBlocking {
         val output = mutableListOf<Long>()
         val computer = IntComputer.parse(input, output::add) { 1 }

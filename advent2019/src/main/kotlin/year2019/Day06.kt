@@ -6,7 +6,7 @@ import graph.AdjacencyListGraph
 import graph.Graph
 import graph.dijkstra
 
-object Day06: AdventDay(2019, 6) {
+object Day06: AdventDay(2019, 6, "Universal Orbit Map") {
     // assume Graph has no cycles
     private fun Graph<String>.countOrbitsOf(
         node: String,

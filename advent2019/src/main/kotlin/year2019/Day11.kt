@@ -6,7 +6,7 @@ import adventday.InputRepresentation
 import kotlinx.coroutines.runBlocking
 import year2019.computer.IntComputer
 
-object Day11: AdventDay(2019, 11) {
+object Day11: AdventDay(2019, 11, "Space Police") {
     private fun Point2D.rotateLeft90Degrees() = when (this) {
         Point2D.UP -> Point2D.LEFT
         Point2D.LEFT -> Point2D.DOWN
