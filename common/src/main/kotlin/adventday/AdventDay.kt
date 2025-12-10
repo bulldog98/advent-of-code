@@ -2,7 +2,7 @@ package adventday
 
 import kotlin.time.measureTimedValue
 
-abstract class AdventDay(val year: Int, val day: Int, val title: String = "unknown") {
+abstract class AdventDay(val year: Int, val day: Int, val title: String) {
     private val inputFiles: InputFiles = InputFiles(year, day)
 
     abstract fun part1(input: InputRepresentation) : Any
