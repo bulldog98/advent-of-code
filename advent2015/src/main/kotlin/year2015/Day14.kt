@@ -1,10 +1,9 @@
 package year2015
 
-import NotYetImplemented
 import adventday.AdventDay
 import adventday.InputRepresentation
 
-object Day14 : AdventDay(2015, 14, "Reindeer Olympics") {
+class Day14(val winningTime: Int) : AdventDay(2015, 14, "Reindeer Olympics") {
     data class Reindeer(val name: String, val flightSpeed: Int, val flightTime: Int, val restTime: Int) {
         companion object {
             private val regex =
@@ -31,17 +30,29 @@ object Day14 : AdventDay(2015, 14, "Reindeer Olympics") {
         }
     }
 
-    const val FIRST_WINNING_TIME = 2503
+    fun List<Reindeer>.scoreAfter(seconds: Int): Map<Reindeer, Int> {
+        val score = associate { it to 0 }.toMutableMap()
+        val firstRoundWinner = maxBy { it.distanceAfter(1) }
+        score[firstRoundWinner] = score[firstRoundWinner]!! + 1
+        (1..seconds).forEach { second ->
+            val winner = maxBy { it.distanceAfter(second) }
+            score[winner] = score[winner]!! + 1
+        }
+        return score
+    }
 
     override fun part1(input: InputRepresentation): Int = input
         .lines
         .map(Reindeer::parse)
         .maxOf {
-            it.distanceAfter(FIRST_WINNING_TIME)
+            it.distanceAfter(winningTime)
         }
 
-    override fun part2(input: InputRepresentation): Any =
-        NotYetImplemented
+    override fun part2(input: InputRepresentation): Int  = input
+        .lines
+        .map(Reindeer::parse)
+        .scoreAfter(winningTime)
+        .maxOf { it.value }
 }
 
-fun main() = Day14.run()
+fun main() = Day14(2503).run()

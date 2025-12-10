@@ -1,17 +1,14 @@
 package year2015
 
-import adventday.InputFiles
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import year2015.Day14.Reindeer
 
 class Day14Test {
-    val day = Day14
-    val inputFiles = InputFiles(2015, 14)
+    val day = Day14(1000)
 
     @Test
-    fun part1() = assertEquals(
-        listOf(1120, 1056),
-        inputFiles.getFileWithSuffix("test").lines.map(Reindeer::parse).map { it.distanceAfter(1000)}
-    )
+    fun part1() = assertEquals(1120, day.testPart1())
+
+    @Test
+    fun part2() = assertEquals(689, day.testPart2())
 }
