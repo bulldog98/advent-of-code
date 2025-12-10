@@ -1,6 +1,5 @@
 package year2015
 
-import NotYetImplemented
 import adventday.AdventDay
 import adventday.InputRepresentation
 import collections.allOrderings
@@ -25,17 +24,38 @@ object Day13 : AdventDay(2015, 13, "Knights of the Dinner Table") {
         }
     }
 
-    override fun part1(input: InputRepresentation): Long = input
-        .lines
+    fun InputRepresentation.computeAssignmentsAndPersons() = lines
         .map(Assignment::parse)
         .let { assignments ->
-            val persons = assignments.map { it.personA }.distinct()
-            persons.allOrderings()
-                .maxOf { it.score(assignments) }
+            assignments to assignments.map { it.personA }.distinct()
         }
 
-    override fun part2(input: InputRepresentation): Any =
-        NotYetImplemented
+    fun List<String>.maxScore(assignments: List<Assignment>): Long =
+        allOrderings()
+            .maxOf { persons ->
+                persons
+                    .score(assignments)
+            }
+
+    override fun part1(input: InputRepresentation): Long = input
+        .computeAssignmentsAndPersons()
+        .let { (assignments, persons) ->
+            persons.maxScore(assignments)
+        }
+
+    override fun part2(input: InputRepresentation): Long = input
+        .computeAssignmentsAndPersons()
+        .let { (assignments, persons) ->
+            val myself = "Myself"
+            val personsIncludingMyself = persons + myself
+            val assignmentsAlsoMyself = assignments + persons.flatMap {
+                listOf(
+                    Assignment(myself, it, 0),
+                    Assignment(it, myself, 0),
+                )
+            }
+            personsIncludingMyself.maxScore(assignmentsAlsoMyself)
+        }
 }
 
 fun main() = Day13.run()
