@@ -2,19 +2,15 @@ package year2015
 
 import adventday.AdventDay
 import adventday.InputRepresentation
-import year2015.Day11.component1
-import year2015.Day11.component2
-import year2015.Day11.component3
+import utils.string.component1
+import utils.string.component2
+import utils.string.component3
 
 object Day11 : AdventDay(2015, 11, "Corporate Policy") {
     operator fun String.inc(): String = when {
         last() != 'z' -> dropLast(1) + last().inc()
         else -> dropLast(1).inc() + 'a'
     }
-
-    operator fun String.component1() = this[0]
-    operator fun String.component2() = this[1]
-    operator fun String.component3() = this[2]
 
     fun String.passwordIsValid(): Boolean =
         // three increasing chars in a row (no gaps)

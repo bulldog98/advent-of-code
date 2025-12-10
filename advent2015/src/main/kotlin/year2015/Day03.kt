@@ -3,8 +3,8 @@ package year2015
 import Point2D
 import adventday.AdventDay
 import adventday.InputRepresentation
-import year2015.Day03.component1
-import year2015.Day03.component2
+import utils.string.component1
+import utils.string.component2
 
 object Day03 : AdventDay(2015, 3, "Perfectly Spherical Houses in a Vacuum") {
     private fun Char.toDirection() = when (this) {
@@ -14,8 +14,6 @@ object Day03 : AdventDay(2015, 3, "Perfectly Spherical Houses in a Vacuum") {
         'v' -> Point2D.DOWN
         else -> error("not supported direction")
     }
-    private operator fun String.component1() = this[0]
-    private operator fun String.component2() = this[1]
 
     override fun part1(input: InputRepresentation): Int = input
         .lines[0]

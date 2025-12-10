@@ -2,9 +2,9 @@ package year2015
 
 import adventday.AdventDay
 import adventday.InputRepresentation
-import year2015.Day05.component1
-import year2015.Day05.component2
-import year2015.Day05.component3
+import utils.string.component1
+import utils.string.component2
+import utils.string.component3
 
 private val vowels = "aeiou".toSet()
 private val badStrings = setOf("ab", "cd", "pq", "xy")
@@ -22,10 +22,6 @@ private fun InputRepresentation.countNiceStrings(vararg rules: Rule): Int = line
     }
 
 object Day05 : AdventDay(2015, 5, "") {
-    private operator fun String.component1() = this[0]
-    private operator fun String.component2() = this[1]
-    private operator fun String.component3() = this[2]
-
     private data object Has3Vowels : Rule {
         override fun invoke(word: String): Boolean = word.count { c -> c in vowels } >= 3
     }
