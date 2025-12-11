@@ -1,6 +1,5 @@
 package year2015
 
-import NotYetImplemented
 import adventday.AdventDay
 import adventday.InputRepresentation
 import helper.numbers.toAllLongs
@@ -22,8 +21,18 @@ class Day17(val litersOfEggnog: Int) : AdventDay(2015, 17, "No Such Thing as Too
         .allSubsets()
         .count { it.sum() == litersOfEggnog.toLong() }
 
-    override fun part2(input: InputRepresentation): Any =
-        NotYetImplemented
+    override fun part2(input: InputRepresentation): Int = input
+        .text
+        .toAllLongs()
+        .toList()
+        .allSubsets()
+        .filter { it.sum() == litersOfEggnog.toLong() }
+        .let { possibleWays ->
+            val minNumberContainers = possibleWays.minOf { it.count { it > 0 } }
+            possibleWays.count {
+                it.count { it > 0 } == minNumberContainers
+            }
+        }
 }
 
 fun main() = Day17(150).run()
