@@ -28,9 +28,9 @@ class Day17(val litersOfEggnog: Int) : AdventDay(2015, 17, "No Such Thing as Too
         .allSubsets()
         .filter { it.sum() == litersOfEggnog.toLong() }
         .let { possibleWays ->
-            val minNumberContainers = possibleWays.minOf { it.count { it > 0 } }
+            val minNumberContainers = possibleWays.minOf { it.size }
             possibleWays.count {
-                it.count { it > 0 } == minNumberContainers
+                it.size == minNumberContainers
             }
         }
 }
