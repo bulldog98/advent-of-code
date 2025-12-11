@@ -1,31 +1,45 @@
 package year2025
 
-import NotYetImplemented
 import adventday.AdventDay
 import adventday.InputRepresentation
-import graph.AdjacencyListGraph
-import graph.Graph
 
 object Day11 : AdventDay(2025, 11, "Reactor") {
-    fun <T> Graph<T>.allPaths(from: T, to: T, visited: Set<T> = emptySet(), prefix: List<T> = emptyList()): List<List<T>> = when {
-        from == to -> listOf(prefix)
-        else -> neighborsOf(from).flatMap { newFrom -> allPaths(newFrom, to, visited + from, prefix + from) }
-    }
+    val splitRegex = Regex(""" |: """)
 
+    fun InputRepresentation.asLookupMap() = lines
+        .map { it.split(splitRegex) }
+        .associate { it[0] to it.drop(1) }
 
-    override fun part1(input: InputRepresentation): Int = input
-        .lines
-        .let { lines ->
-            val nodes = lines.flatMap { it.split(": ", " ") }.distinct()
-            val graph = AdjacencyListGraph(nodes) { node ->
-                lines.first { it.startsWith(node) }.split(": ", " ").drop(1)
+    fun Map<String, List<String>>.countPathsFrom(
+        node: String,
+        visitedDac: Boolean,
+        visitedFft: Boolean,
+        visited: MutableMap<Triple<String, Boolean, Boolean>, Long> = mutableMapOf(),
+        conditionForValidPath: (Boolean, Boolean) -> Boolean = Boolean::and
+    ): Long =
+        visited.getOrPut(Triple(node, visitedDac, visitedFft)) {
+            fun countNextPaths(
+                visited: MutableMap<Triple<String, Boolean, Boolean>, Long>,
+                node: String,
+                visitedDac: Boolean,
+                visitedFft: Boolean,
+                conditionForValidPath: (Boolean, Boolean) -> Boolean
+            ) = this[node].orEmpty().sumOf { countPathsFrom(it, visitedDac, visitedFft, visited, conditionForValidPath) }
+            when (node) {
+                "dac" -> countNextPaths(visited, node, visitedDac = true, visitedFft, conditionForValidPath)
+                "fft" -> countNextPaths(visited, node, visitedDac, visitedFft = true, conditionForValidPath)
+                "out" if (conditionForValidPath(visitedDac, visitedFft)) -> 1L
+                else -> countNextPaths(visited, node, visitedDac, visitedFft, conditionForValidPath)
             }
-            val paths = graph.allPaths("you", "out")
-            paths.size
         }
 
-    override fun part2(input: InputRepresentation): Any =
-        NotYetImplemented
+    override fun part1(input: InputRepresentation): Long = input
+        .asLookupMap()
+        .countPathsFrom("you", visitedDac = false, visitedFft = false) { _, _ -> true }
+
+    override fun part2(input: InputRepresentation): Long = input
+        .asLookupMap()
+        .countPathsFrom("svr", visitedDac = false, visitedFft = false)
 }
 
 fun main() = Day11.run()
