@@ -4,7 +4,7 @@ coroutinesVersion = "1.10.2"
 serializationVersion = "1.10.0"
 benchmarkVersion = "0.4.13"
 ktorVersion = "3.4.0"
-junitVersion = "6.0.2"
+junitVersion = "6.0.3"
 junitPlatformVersion = "6.0.3"
 ksmtVersion = "0.6.4"
 
