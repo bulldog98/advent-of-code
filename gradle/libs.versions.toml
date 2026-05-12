@@ -1,6 +1,6 @@
 [versions]
 kotlinVersion = "2.3.21"
-coroutinesVersion = "1.10.2"
+coroutinesVersion = "1.11.0"
 serializationVersion = "1.11.0"
 benchmarkVersion = "0.4.13"
 ktorVersion = "3.4.3"
