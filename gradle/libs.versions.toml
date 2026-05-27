@@ -5,7 +5,7 @@ serializationVersion = "1.11.0"
 benchmarkVersion = "0.4.13"
 ktorVersion = "3.5.0"
 junitVersion = "6.0.3"
-junitPlatformVersion = "6.0.3"
+junitPlatformVersion = "6.1.0"
 ksmtVersion = "0.6.4"
 
 [libraries]
