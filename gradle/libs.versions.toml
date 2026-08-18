@@ -6,7 +6,7 @@ benchmarkVersion = "0.4.13"
 ktorVersion = "3.5.2"
 junitVersion = "6.1.2"
 junitPlatformVersion = "6.1.2"
-ksmtVersion = "0.6.4"
+ksmtVersion = "0.6.7"
 
 [libraries]
 kotlin-plugin-jvm = { group = "org.jetbrains.kotlin.jvm", name = "org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kotlinVersion" }
